@@ -1,0 +1,96 @@
+<div
+  style="padding:0px;background:white;border-radius:6px;box-shadow:0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03)">
+
+  <!-- [iconUrl]="rider.icon" -->
+
+  <!-- [label]="{color: 'white', text: rider.label}" -->
+
+  <agm-map *ngIf="false" [zoom]="14" [latitude]="lat" [longitude]="lng" [streetViewControl]="false">
+    <!-- <agm-marker *ngFor="let rider of riders" [latitude]="rider.lat" [longitude]="rider.lng" [iconUrl]="'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565228910/tools/pin.png'">
+      <agm-info-window>
+        <div>
+          {{rider.nombre}}
+        </div>
+        <div>
+          +56 9 {{rider.telefono}}
+        </div>
+      </agm-info-window>
+    </agm-marker> -->
+
+    <agm-direction [origin]="origin" [destination]="destination">
+    </agm-direction>
+
+
+    <!-- <agm-marker [latitude]="-33.454930" [longitude]="-70.669694" [iconUrl]="iconBicicleta">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentes
+        </div>
+        <div>
+          +56 9 88973292
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker [latitude]="-33.444930" [longitude]="-70.649694" [iconUrl]="iconBicicleta">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentes
+        </div>
+        <div>
+          +56 9 76812201
+        </div>
+        <div>
+          Contrato
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker [latitude]="-33.453930" [longitude]="-70.671694" [iconUrl]="iconBicicleta">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentes
+        </div>
+        <div>
+          +56 9 88973292
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker [latitude]="-33.455930" [longitude]="-70.662694" [iconUrl]="iconMoto">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentes
+        </div>
+        <div>
+          +56 9 88973292
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker [latitude]="-33.458930" [longitude]="-70.674694" [iconUrl]="iconMoto">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentes
+        </div>
+        <div>
+          +56 9 88973292
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker [latitude]="-33.451930" [longitude]="-70.660694" [iconUrl]="iconMoto">
+      <agm-info-window>
+        <div>
+          Oscar Garcia Fuentess
+        </div>
+        <div>
+          +56 9 88973292
+        </div>
+      </agm-info-window>
+    </agm-marker> -->
+
+  </agm-map>
+
+
+</div>

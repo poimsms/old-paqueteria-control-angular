@@ -1,0 +1,357 @@
+<div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
+
+    <div style="border-radius:6px 6px 0px 0px;color:#4e73df;background:#f8f9fc;padding:10px;font-weight:550">
+      Pedidos
+    </div>
+  
+  
+    <div style="padding:15px;display:flex;">
+  
+      <a (click)="showFiltros = true"
+        style="background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-filter" style="font-size:20px;color:#bbb"></i>
+      </a>
+      <a (click)="showBusqueda = true"
+        style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
+      </a>
+      <a (click)="showCrearRider = true"
+        style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
+      </a>
+  
+    </div>
+  
+  
+    <div style="width:100%;text-align:right;margin-bottom:5px;padding-right:15px;color:#666">
+      10 pedidos asignados - 3 pedidos nuevos
+    </div>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Rider</th>
+          <th scope="col">Hora</th>
+          <th scope="col">Vehículo</th>
+          <th scope="col">Distancia</th>
+          <th scope="col">Método de Pago</th>
+          <th scope="col">Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+
+          <tr>
+              <th scope="row"> 1 </th>
+              <td> Daniela Fuentes
+                  <div>78372993</div>
+              </td>
+              <td> 
+                  &mdash;
+              </td>  
+              <td> 13:04 </td>
+              <td> Moto </td>
+              <td> 3.512 km </td>
+              <td> Efectivo </td>  
+              <td>
+                <i class="fas fa-toggle-on"
+                  style="color:dodgerblue;font-size:24px"></i>
+              </td>
+            </tr>
+
+        <tr>
+          <th scope="row"> 2 </th>
+          <td> Joopiter SpA
+              <div>78372993</div> 
+            <h6>
+              <span
+                class="badge badge-secondary">
+                Empresa
+              </span>
+            </h6>
+          </td>
+          <td> 
+            <div>Oscar Garcia Fuentes</div> 
+            <div>78372993</div> 
+          </td>
+          <td> 12:50 </td>
+          <td> Moto </td>
+          <td> 2.500 km </td>
+          <td> Tarjeta </td>
+          <td>
+            <i class="fas fa-toggle-on"
+              style="color:dodgerblue;font-size:24px"></i>
+          </td>
+        </tr>
+
+        <tr>
+            <th scope="row"> 3 </th>
+            <td> Juan Esteban Diaz
+                <div>78372993</div>
+            </td>
+            <td> 
+             <div>Daniel Perez</div>
+             <div>8392703</div>
+            </td>  
+            <td> 12:43 </td>
+            <td> Bicicleta </td>
+            <td> 1.292 km </td>
+            <td> Tarjeta </td>  
+            <td>
+              <i class="fas fa-toggle-on"
+                style="color:dodgerblue;font-size:24px"></i>
+            </td>
+          </tr>
+
+      </tbody>
+    </table>
+  
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div *ngIf="showFiltros"
+    style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+    <div
+      style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+      <div (click)="close_filtros()" style="position:absolute;top:-5px;right:-5px;color:#555">
+        <i class="fas fa-times-circle" style="font-size:25px"></i>
+      </div>
+      <div style="display:flex;align-items:center;font-weight:550">
+        <i class="fas fa-filter" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+        Filtros
+      </div>
+  
+      <div style="margin-top:20px">
+        Periodo
+      </div>
+  
+      <div style="display:flex;border:1px solid #eee;padding:5px">
+        <div style="border-right:1px solid #eee;padding:7px;padding-top:0px;padding-bottom:0px">
+          <div style="font-size:14px;margin-bottom:-5px;">
+            Inicio
+          </div>
+          <div>
+            <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+            <input id="date" type="date" [(ngModel)]="filterOptions.inicio" />
+          </div>
+        </div>
+        <div style="padding:7px;padding-top:0px;padding-bottom:0px">
+          <div style="font-size:14px;margin-bottom:-5px;">
+            Término
+          </div>
+          <div>
+            <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+            <input id="date" type="date" [(ngModel)]="filterOptions.termino" />
+          </div>
+        </div>
+      </div>
+  
+      <div style="margin-top:20px">
+        Tipo de relación
+      </div>
+  
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label (click)="filterOptions.relacion = 'contrato'" class="btn btn-light">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> Contrato
+        </label>
+        <label (click)="filterOptions.relacion = 'servicio'" class="btn btn-light">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Prestación de servicio
+        </label>
+        <label (click)="filterOptions.relacion = 'todo'" class="btn btn-light active">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+        </label>
+      </div>
+  
+      <div style="margin-top:20px">
+        Cuenta
+      </div>
+  
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label (click)="filterOptions.cuenta = 'desactivada'" class="btn btn-light" [ngClass]="{'active': filterOptions.cuenta == 'desactivada'}">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> Desactivada
+        </label>
+        <label (click)="filterOptions.cuenta = 'activada'" class="btn btn-light" [ngClass]="{'active': filterOptions.cuenta == 'activada'}">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Activada
+        </label>
+        <label (click)="filterOptions.cuenta = 'todo'" class="btn btn-light" [ngClass]="{'active': filterOptions.cuenta == 'todo'}">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+        </label>
+      </div>
+  
+      <div style="margin-top:30px"></div>
+  
+      <button (click)="filtrar()" type="button" class="btn btn-outline-primary btn-block">
+        Aplicar filtros
+      </button>
+  
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <div *ngIf="showBusqueda"
+    style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+    <div
+      style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+      <div (click)="close_busqueda()" style="position:absolute;top:-5px;right:-5px;color:#555">
+        <i class="fas fa-times-circle" style="font-size:25px"></i>
+      </div>
+      <div style="display:flex;align-items:center;font-weight:550">
+        <i class="fas fa-search" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+        Búsqueda
+      </div>
+      <div style="margin-top:20px">
+        Teléfono
+      </div>
+      <div
+        style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:250px">
+        <div style="background:#eee;color:#555;padding:3px">
+          +56 9
+        </div>
+        <input type="tel" placeholder="" [(ngModel)]="telefono_search" />
+      </div>
+      <div style="margin-top:20px">
+        Periodo
+      </div>
+      <div style="display:flex;border:1px solid #eee;padding:5px">
+        <div style="border-right:1px solid #eee;padding:7px;padding-top:0px;padding-bottom:0px">
+          <div style="font-size:14px;margin-bottom:-5px;">
+            Inicio
+          </div>
+          <div>
+            <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+            <input id="date" type="date" [(ngModel)]="phoneOptions.inicio" />
+          </div>
+        </div>
+        <div style="padding:7px;padding-top:0px;padding-bottom:0px">
+          <div style="font-size:14px;margin-bottom:-5px;">
+            Término
+          </div>
+          <div>
+            <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+            <input id="date" type="date" [(ngModel)]="phoneOptions.termino" />
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:30px"></div>
+  
+      <button (click)="buscar()" type="button" class="btn btn-outline-primary btn-block">
+        Buscar rider
+      </button>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  <div *ngIf="showCrearRider"
+    style="overflow-y:scroll;z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
+    <div
+      style="margin-top:25px;margin-bottom:30px;position:relative;padding:40px;padding-left:60px;padding-right:60px;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
+      <div (click)="close_crear_rider()" style="position:absolute;top:-5px;right:-5px;color:#555">
+        <i class="fas fa-times-circle" style="font-size:25px"></i>
+      </div>
+      <div style="display:flex;align-items:center;font-weight:550">
+        <i class="fas fa-user-circle" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+        Nuevo Rider
+      </div>
+  
+      <div style="margin-top:20px;color:#666">
+        Agregar imagen:
+      </div>
+  
+      <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
+        <div
+          style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
+          <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
+          <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
+        </div>
+      </div>
+  
+      <div style="margin-top:25px;display:flex;align-items:center">
+        <div style="color:#666;margin-right:20px">
+          Vehículo:
+        </div>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{vehiculo}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" (click)="vehiculo = 'Bicicleta'">Bicicleta</a>
+            <a class="dropdown-item" (click)="vehiculo = 'Moto'">Moto</a>
+            <a class="dropdown-item" (click)="vehiculo = 'Camioneta'">Camioneta</a>
+          </div>
+        </div>
+      </div>
+  
+      <div style="margin-top:10px;display:flex;align-items:center">
+        <div style="color:#666;margin-right:20px">
+          Relación:
+        </div>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{relacion}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" (click)="relacion = 'Contrato'">Contrato</a>
+            <a class="dropdown-item" (click)="relacion = 'Prestación de servicios'">Prestación de servicios</a>
+          </div>
+        </div>
+      </div>
+  
+  
+      <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
+        <input type="text" placeholder="Nombre" [(ngModel)]="nombre" />
+      </div>
+  
+      <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
+        <input type="email" placeholder="Email" [(ngModel)]="email" />
+      </div>
+      <div style="margin-top:20px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center">
+        <div style="background:#eee;color:#555;padding:3px">
+          +56 9
+        </div>
+        <input type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
+      </div>
+      <div *ngIf="error_telefono" style="margin-top:5px;color:red">
+        Deben ser 8 digitos
+      </div>
+      <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
+        <input type="password" placeholder="Crear una contraseña" [(ngModel)]="password_1" />
+      </div>
+      <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
+        <input type="password" placeholder="Confirmar contraseña" [(ngModel)]="password_2" />
+      </div>
+      <div *ngIf="error_password" style="margin-top:5px;color:red">
+        Las contraseñas deben ser idénticas
+      </div>
+      <div *ngIf="error_vehiculo" style="margin-top:15px;color:red">
+        Debe seleccionar un vehículo
+      </div>
+      <div *ngIf="error_info_incompleta" style="margin-top:15px;color:red">
+        Por favor completar todos los campos
+      </div>
+  
+      <div style="margin-top:20px;"></div>
+  
+      <button (click)="crearRider()" type="button" class="btn btn-outline-primary btn-block">
+        Crear cuenta
+      </button>
+    </div>
+  </div>

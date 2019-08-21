@@ -1,0 +1,48 @@
+<div style="background:#999;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center">
+
+  
+  <div style="padding:30px;border-radius:4px;background:white">
+    
+    <button (click)="crearCliente()" type="button" class="btn btn-warning btn-block btn-lg">
+      Crear
+    </button>
+
+    <div style="width:100%;text-align:center;color:#444;font-size:30px;font-weight:550">
+      Iniciar sesión
+    </div>
+
+    <div style="width:100%;text-align:center;color:#1864ab;font-size:18px;font-weight:550">
+      Panel de control MoviApp
+    </div>
+
+    <div style="margin-top:30px;color:#444;font-size:18px;font-weight:550">
+      Email
+    </div>
+
+    <input style="margin-top:5px" type="text" placeholder="Ej. poimsm@gmail.com" [(ngModel)]="email" />
+
+    <div style="margin-top:30px;color:#444;font-size:18px;font-weight:550">
+      Contraseña
+    </div>
+
+    <input style="margin-top:5px" type="password" placeholder="" [(ngModel)]="password" />
+    
+    <div *ngIf="isErr" style="color:red">
+      Email o contraseña incorrectos
+    </div>
+
+    <div style="margin-top:30px;width:100%"></div>
+
+    <button *ngIf="!isLoading" (click)="login()" type="button" class="btn btn-primary btn-block btn-lg">
+      Iniciar sesión <i class="fas fa-sign-in-alt" style="margin-left:10px"></i>
+    </button>
+
+    <button *ngIf="isLoading" type="button" disabled class="btn btn-primary btn-block btn-lg">
+      Iniciar sesión <i class="fas fa-sign-in-alt" style="margin-left:10px"></i>
+    </button>
+
+
+
+  </div>
+
+</div>

@@ -1,0 +1,318 @@
+<div *ngIf="_control.map_filtros"
+  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  <div
+    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+    <div (click)="close('filtros')" style="position:absolute;top:-5px;right:-5px;color:#555">
+      <i class="fas fa-times-circle" style="font-size:32px"></i>
+    </div>
+    <div style="display:flex;align-items:center;font-weight:550">
+      <i class="fas fa-filter" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+      Filtros
+    </div>
+
+    <div style="margin-top:20px">
+      Tipo de vehículo
+    </div>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label (click)="filtro.vehiculo.value = 'bici'" class="btn btn-light"
+        [ngClass]="{'active': filtro.vehiculo.value == 'bici'}">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked> Bicicleta
+      </label>
+      <label (click)="filtro.vehiculo.value = 'moto'" class="btn btn-light"
+        [ngClass]="{'active': filtro.vehiculo.value == 'moto'}">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Moto
+      </label>
+      <label (click)="filtro.vehiculo.field = 'todo'; filtro.vehiculo.value = 'todo'" class="btn btn-light active"
+        [ngClass]="{'active': filtro.vehiculo.value == 'todo'}">
+        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+      </label>
+    </div>
+
+    <div style="margin-top:20px">
+      Actividad
+    </div>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label (click)="filtro.actividad.value = 'disponible'" class="btn btn-light"
+        [ngClass]="{'active': filtro.actividad.value == 'disponible'}">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked> Disponible
+      </label>
+      <label (click)="filtro.actividad.value = 'ocupado'" class="btn btn-light"
+        [ngClass]="{'active': filtro.actividad.value == 'ocupado'}">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Realizando pedido
+      </label>
+      <label (click)="filtro.actividad.field = 'todo'; filtro.actividad.value = 'todo'" class="btn btn-light"
+        [ngClass]="{'active': filtro.actividad.value == 'todo'}">
+        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+      </label>
+    </div>
+
+    <div style="margin-top:20px">
+      Relación
+    </div>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label (click)="filtro.relacion.value = 'contrato'" class="btn btn-light"
+        [ngClass]="{'active': filtro.relacion.value == 'contrato'}">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked> Contrato
+      </label>
+      <label (click)="filtro.relacion.value = 'servicio'" class="btn btn-light"
+        [ngClass]="{'active': filtro.relacion.value == 'servicio'}">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Prestación de servicio
+      </label>
+      <label (click)="filtro.relacion.field = 'todo'; filtro.relacion.value = 'todo'" class="btn btn-light"
+        [ngClass]="{'active': filtro.relacion.value == 'todo'}">
+        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+      </label>
+    </div>
+
+    <div style="margin-top:30px"></div>
+
+    <button (click)="filtrar()" type="button" class="btn btn-outline-primary btn-block">
+      Aplicar filtros
+    </button>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="_control.map_tarifas"
+  style="margin-top:0px;overflow-y:scroll;z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
+  <div
+    style="margin-top:25px;margin-bottom:30px;position:relative;width:450px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
+
+    <div
+      style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#039BE5">
+      <div *ngIf="_control.map_tarifas_noche" style="font-weight:550;color:white;font-size:20px">
+        Tarfias nocturnas
+      </div>
+      <div *ngIf="_control.map_tarifas_dia" style="font-weight:550;color:white;font-size:20px">
+        Tarfias diurnas
+      </div>
+      <div (click)="close('tarifa')"
+        style="width:40px;height:40px;border-radius:50%;background:#0389CA;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-times" style="font-size:22px;color:whitesmoke"></i>
+      </div>
+    </div>
+
+
+    <div style="padding:30px">
+
+
+      <div style="color:#444;font-size:18px;width:100%">
+        Tarifas para moto
+      </div>
+
+
+      <div style="margin-top:20px;width:100%;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="margin-top:0px">
+            Base
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.moto.base" [(ngModel)]="tarifas.moto.base" />
+          </div>
+        </div>
+
+        <div>
+          <div style="margin-top:0px">
+            Mínima
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.moto.minima" [(ngModel)]="tarifas.moto.minima" />
+          </div>
+        </div>
+        <div>
+          <div style="margin-top:0px">
+            Por distancia
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.moto.distancia" [(ngModel)]="tarifas.moto.distancia" />
+          </div>
+        </div>
+
+      </div>
+
+
+      <div style="margin-top:20px">
+        Límite aplicación tarifa mínima
+      </div>
+
+      <div
+        style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:200px">
+        <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:15px"></i>
+        <div style="padding:10px">
+          4.0 km
+        </div>
+        <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:15px"></i>
+      </div>
+
+
+      <div
+        style="margin-top:30px;color:#444;font-size:18px;width:100%;display:flex;align-items:center;justify-content:space-between">
+        Tarifas para bicicleta
+        <div (click)="bici_editar_tarifas =  true" style="color:dodgerblue;font-size:14px;font-weight:550">
+          Editar
+          <i class="fas fa-pen" style="margin:5px;font-size:18px;color:#bbb"></i>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;width:100%;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="margin-top:0px">
+            Base
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.bici.base" [(ngModel)]="tarifas.bici.base" />
+          </div>
+        </div>
+        <div>
+          <div style="margin-top:0px">
+            Mínima
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.bici.minima" [(ngModel)]="tarifas.bici.minima" />
+          </div>
+        </div>
+        <div>
+          <div style="margin-top:0px">
+            Por distancia
+          </div>
+          <div
+            style="margin-top:0px;padding:4px;padding-left:10px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;width:100px">
+            $
+            <input type="text" [placeholder]="tarifas.bici.distancia" [(ngModel)]="tarifas.bici.distancia" />
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        Límite aplicación tarifa mínima
+      </div>
+
+      <div
+        style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:200px">
+        <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:15px"></i>
+        <div style="padding:10px">
+          4.0 km
+        </div>
+        <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:15px"></i>
+      </div>
+
+
+      <div style="margin-top:30px"></div>
+
+      <button (click)="actualizarTarifas()" type="button" class="btn btn-outline-primary btn-block">
+        Actualizar tarifas
+      </button>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="_control.map_horario"
+  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  <div style="width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
+
+    <!-- Establesca la franja horaria para aplicar la tarifa nocturna -->
+
+
+    <div
+      style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#039BE5">
+      <div style="display:flex;align-items:center;font-weight:550;color:white;font-size:20px">
+        Horario de cambio
+      </div>
+      <div (click)="close('horario')"
+        style="width:40px;height:40px;border-radius:50%;background:#0389CA;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-times" style="font-size:22px;color:whitesmoke"></i>
+      </div>
+    </div>
+
+    <div style="padding:30px">
+
+      <div>
+        Establesca la franja horaria para aplicar la tarifa nocturna
+
+      </div>
+
+      <div style="margin-top:30px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:18px;width:130px">Cambio noche:</div>
+        <div
+          style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:150px">
+          <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:10px"></i>
+          <div style="padding:10px">
+            22:00
+          </div>
+          <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:10px"></i>
+        </div>
+        <div></div>
+        <!-- <div style="color:dodgerblue;font-size:14px;font-weight:550">
+        Editar
+        <i class="fas fa-pen" style="margin:5px;font-size:18px;color:#bbb"></i>
+      </div> -->
+      </div>
+
+      <div style="margin-top:30px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:18px;width:130px">Cambio día:</div>
+        <div
+          style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:150px">
+          <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:10px"></i>
+          <div style="padding:10px">
+            9:00
+          </div>
+          <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:10px"></i>
+        </div>
+        <div></div>
+        <!-- <div style="color:dodgerblue;font-size:14px;font-weight:550">
+        Editar
+        <i class="fas fa-pen" style="margin:5px;font-size:18px;color:#bbb"></i>
+      </div> -->
+      </div>
+
+      <div style="margin-top:30px"></div>
+
+      <button (click)="actualizarHorario()" type="button" class="btn btn-outline-primary btn-block">
+        Actualizar horario
+      </button>
+    </div>
+
+
+  </div>

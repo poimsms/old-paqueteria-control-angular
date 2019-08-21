@@ -1,0 +1,11 @@
+input {
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: none !important;
+    border:1px solid #eee;
+    /* background: #eee; */
+    padding: 10px;
+    width:330px;
+    border-radius:5px;
+    height:50px;
+}
