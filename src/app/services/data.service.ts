@@ -90,39 +90,49 @@ export class DataService {
   //        RIDERS
   // ---------------------------
 
-  crearRider(body) {
-    return new Promise((resolve, reject) => {
-      const url = `${this.apiURL}/dashboard/riders-create-account`;
-      this.http.post(url, body).toPromise().then((rider: any) => {
-        this.crearRiderFirebase(rider);
-        this.crearPedidoFirebase(rider._id);
-        resolve(true);
-      });
-    });
+  crearCuenta(body) {
+    const url = `${this.apiURL}/dashboard/signup`;
+    return this.http.post(url, body).toPromise();
   }
 
-  crearRiderFirebase(rider) {
+  createRiderFirebase(rider) {
+
     const data = {
-      cliente: '',
-      lat: 0,
-      lng: 0,
+      entregadoId: '',
+      rechazadoId: '',
+      aceptadoId: '',
       pedido: '',
-      rider: rider._id,
-      nombre: rider.nombre,
-      telefono: rider.telefono,
-      vehiculo: rider.vehiculo,
-      tienePedido: false
+      actividad: 'disponible',
+      isOnline: false,
+      isActive: true,
+      nuevaSolicitud: false,
+      pagoPendiente: false,
+      rider: rider._id
     }
+
     this.db.collection("riders").doc(rider._id).set(data);
   }
 
-  crearPedidoFirebase(id) {
+  createRiderCoorsFirebase(rider) {
+
     const data = {
       nuevoPedido: false,
-      rider: id,
-      pedido: ''
+      rider: rider._id,
+      pedido: '',
+      cliente: '',
+      isActive: true,
+      isOnline: true,
+      lat: 0,
+      lng: 0,
+      nombre: rider.nombre,
+      vehiculo: rider.vehiculo,
+      relacion: rider.relacion,
+      telefono: rider.telefono,
+      todo: 'todo',
+      actividad: 'disponible'
     }
-    this.db.collection("pedidos_riders").doc(id).set(data);
+
+    this.db.collection("riders_coors").doc(rider._id).set(data);
   }
 
   updateRiderFirebase(id, data) {
@@ -139,12 +149,12 @@ export class DataService {
     return this.http.post(url, options).toPromise();
   }
 
-  findPedidosByPhone(filter) {
-    const url = `${this.apiURL}/dashboard/pedidos-get-by-phone`;
+  findPedidosByPhoneRider(filter) {
+    const url = `${this.apiURL}/dashboard/pedidos-get-by-phone-rider`;
     return this.http.post(url, filter).toPromise();
   }
 
-  getRiderByFilter(filter) {
+  getRidersByFilter(filter) {
     const url = `${this.apiURL}/dashboard/riders-get-by-filter`;
     return this.http.post(url, filter).toPromise();
   }
@@ -163,8 +173,6 @@ export class DataService {
     return this.http.put(url, body).toPromise();
   }
 
-
-
   // ---------------------------
   //        EMPRESA
   // ---------------------------
@@ -174,6 +182,27 @@ export class DataService {
     const url = `${this.apiURL}/dashboard/empresa-create-account`;
     return this.http.post(url, body).toPromise();
   }
+
+  getEmpresasByFilter(filter) {
+    const url = `${this.apiURL}/dashboard/empresas-get-by-filter`;
+    return this.http.post(url, filter).toPromise();
+  }
+
+  findPedidosByPhoneEmpresa(filter) {
+    const url = `${this.apiURL}/dashboard/pedidos-get-by-phone-empresa`;
+    return this.http.post(url, filter).toPromise();
+  }
+
+  // ---------------------------
+  //        IMAGENES
+  // ---------------------------
+
+
+  uploadImage(body) {
+    const url = `${this.apiURL}/imgs/upload`;
+    return this.http.post(url, body).toPromise();
+  }
+
 
 
   // ---------------------------

@@ -13,7 +13,6 @@ export class RidersComponent implements OnInit {
   nombre: string;
   email: string;
   telefono: string;
-  telefono_search: string;
   password_1: string;
   password_2: string;
   vehiculo = 'Seleccionar';
@@ -21,18 +20,26 @@ export class RidersComponent implements OnInit {
 
   riders = [];
   pedidos = [];
+  imagen: any;
 
   isRiders = true;
   isBusqueda = false;
+  isUploadedImg = false;
 
   error_info_incompleta = false;
-  error_telefono = false;
+  error_8_digitos_telefono = false;
+  error_num_telefono = false;
+  error_telefono_existe = false;
   error_password = false;
   error_vehiculo = false;
+  error_relacion = false;
+  error_imagen = false;
 
   showFiltros = false;
   showBusqueda = false;
-  showCrearRider = false;
+  showCrear = false;
+
+  isLoading = false;
 
   filtro = {
     cuenta: 'activada',
@@ -88,22 +95,17 @@ export class RidersComponent implements OnInit {
   }
 
   getRiders() {
-    
-    this._data.getRiderByFilter(this.filtro).then((data: any) => {
-     
-        this.riders = [];
-        this.riders = data.riders;
-        console.log(this.riders)
-     
+    this._data.getRidersByFilter(this.filtro).then((data: any) => {
+      this.riders = [];
+      this.riders = data.riders;
     });
   }
-
 
   toggleAccount(rider) {
     this._data.riderToggleAccount(rider).then((res: any) => {
       if (res.activation) {
         this._data.updateRiderFirebase(rider._id, { isActive: false })
-        this.toastr.success('El usuario ya puede acceder a la plataforma', 'Cuanta activada');
+        this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
       } else {
         this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
       }
@@ -111,21 +113,30 @@ export class RidersComponent implements OnInit {
     });
   }
 
+  onFileSelected(event) {
+    const file = event.target.files[0];
+    const fd = new FormData();
+    fd.append('image', file, file.name);
+    this._data.uploadImage(fd).then(res => {
+      this.isUploadedImg = true;
+      this.imagen = res;
+    });
+  }
 
   crearRider() {
 
     this.resetErros();
 
-    if (!(this.nombre && this.email && this.telefono && this.password_1 && this.password_2)) {
-      return this.error_info_incompleta = true;
+    if (!this.isUploadedImg) {
+      return this.error_imagen = true;
     }
 
     if (!Number(this.telefono)) {
-      return this.error_telefono = true;
+      return this.error_num_telefono = true;
     }
 
     if (this.telefono.length != 8) {
-      return this.error_telefono = true;
+      return this.error_8_digitos_telefono = true;
     }
 
     if (this.password_1 != this.password_2) {
@@ -136,27 +147,43 @@ export class RidersComponent implements OnInit {
       return this.error_vehiculo = true;
     }
 
+    if (this.relacion == 'Seleccionar') {
+      return this.error_relacion = true;
+    }
+
+
+    if (!(this.nombre && this.email)) {
+      this.error_info_incompleta = true;
+    }
+
+    this.isLoading = true;
+
     const body = {
       nombre: this.nombre,
       email: this.email,
       telefono: this.telefono,
       password: this.password_1,
       vehiculo: this.vehiculo,
-      relacion: this.relacion
+      relacion: this.relacion,
+      img: this.imagen,
+      rol: 'rider'
     }
 
-    this._data.crearRider(body).then((data: any) => {
+    this._data.crearCuenta(body).then((data: any) => {
       if (data.ok) {
         this.toastr.success('Cuenta creada con exito', 'Nuevo rider');
+        this._data.createRiderCoorsFirebase(data.usuario);
+        this._data.createRiderFirebase(data.usuario);
+        this.close_crear();
       } else {
-        this.toastr.error('No se logro crear la cuenta', 'Error');
+        this.error_telefono_existe = true;
       }
-      this.close_crear_rider();
+      this.isLoading = false;
     });
   }
 
-  close_crear_rider() {
-    this.showCrearRider = false;
+  close_crear() {
+    this.showCrear = false;
     this.telefono = undefined;
     this.nombre = undefined;
     this.email = undefined;
@@ -164,15 +191,20 @@ export class RidersComponent implements OnInit {
     this.password_2 = undefined;
     this.vehiculo = 'Seleccionar';
     this.relacion = 'Seleccionar';
+    this.isUploadedImg = false;
 
     this.resetErros();
   }
 
   resetErros() {
     this.error_info_incompleta = false;
-    this.error_telefono = false;
+    this.error_8_digitos_telefono = false;
+    this.error_num_telefono = false;
+    this.error_telefono_existe = false;
     this.error_password = false;
     this.error_vehiculo = false;
+    this.error_relacion = false;
+    this.error_imagen = false;
   }
 
   close_busqueda() {
@@ -191,9 +223,8 @@ export class RidersComponent implements OnInit {
   }
 
   buscar() {
-    this._data.findPedidosByPhone(this.filtro_telefono)
+    this._data.findPedidosByPhoneRider(this.filtro_telefono)
       .then((data: any) => {
-        console.log(data);
         this.pedidos = data.pedidos;
         this.isBusqueda = true;
         this.isRiders = false;

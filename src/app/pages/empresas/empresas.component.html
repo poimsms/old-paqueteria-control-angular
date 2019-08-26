@@ -1,16 +1,167 @@
 <div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
 
-  <div style="border-radius:6px 6px 0px 0px;color:#4e73df;background:#f8f9fc;padding:10px;font-weight:550">
+  <div
+    style="border-radius:6px 6px 0px 0px;color:white;background:dodgerblue;padding:20px;font-weight:550;font-size:20px">
     Empresas
   </div>
 
 
-  <div style="font-size:20px;color:#333;margin-left:15px">
-    Filtros
+  <div style="padding:15px;display:flex;">
+
+    <a (click)="showFiltros = true"
+      style="background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-filter" style="font-size:20px;color:#bbb"></i>
+    </a>
+    <a (click)="showBusqueda = true"
+      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
+    </a>
+    <a (click)="showCrear = true"
+      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
+    </a>
+
   </div>
 
-  <div style="padding:15px;padding-top:5px;display:flex;align-items:center;justify-content:space-between">
 
+
+  <table class="table" *ngIf="isEmpresas">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Email</th>
+        <th scope="col">Activo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let empresa of empresas; let i = index">
+        <th scope="row"> {{i + 1}} </th>
+        <td> {{empresa.nombre}} </td>
+        <td> {{empresa.direccion}} </td>
+        <td> {{empresa.telefono}} </td>
+        <td> {{empresa.email}} </td>
+        <td>
+          <i (click)="toggleAccount(empresa)" *ngIf="!empresa.isActive" class="fas fa-toggle-off"
+            style="color:#bbb;font-size:24px"></i>
+          <i (click)="toggleAccount(empresa)" *ngIf="empresa.isActive" class="fas fa-toggle-on"
+            style="color:dodgerblue;font-size:24px"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <table class="table" *ngIf="isBusqueda">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Rider</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Medio de pago</th>
+        <th scope="col">Costo</th>
+        <th scope="col">Distancia</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidos; let i = index">
+        <th scope="row"> {{i + 1}} </th>
+        <td> {{pedido.rider.nombre}} </td>
+        <td> {{pedido.fecha}} </td>
+        <td> {{pedido.metodoPago}} </td>
+        <td> {{pedido.costo}} </td>
+        <td> {{pedido.distancia / 1000}} km </td>
+        <td>
+          Detalles
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="showFiltros"
+  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  <div
+    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+    <div (click)="close_filtros()" style="position:absolute;top:-5px;right:-5px;color:#555">
+      <i class="fas fa-times-circle" style="font-size:32px"></i>
+    </div>
+    <div style="display:flex;align-items:center;font-weight:550">
+      <i class="fas fa-filter" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+      Filtros
+    </div>
+
+    <div style="margin-top:20px">
+      Cuenta
+    </div>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label (click)="filtro.cuenta = 'activada'" class="btn btn-light"
+        [ngClass]="{'active': filtro.cuenta == 'activada'}">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked> Activada
+      </label>
+      <label (click)="filtro.cuenta = 'desactivada'" class="btn btn-light"
+        [ngClass]="{'active': filtro.cuenta == 'desactivada'}">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Desactivada
+      </label>
+      <label (click)="filtro.cuenta = 'todo'" class="btn btn-light" [ngClass]="{'active': filtro.cuenta == 'todo'}">
+        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
+      </label>
+    </div>
+
+    <div style="margin-top:30px"></div>
+
+    <button (click)="filtrar()" type="button" class="btn btn-outline-primary btn-block">
+      Aplicar filtros
+    </button>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+<div *ngIf="showBusqueda"
+  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  <div
+    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+    <div (click)="close_busqueda()" style="position:absolute;top:-5px;right:-5px;color:#555">
+      <i class="fas fa-times-circle" style="font-size:32px"></i>
+    </div>
+    <div style="display:flex;align-items:center;font-weight:550">
+      <i class="fas fa-search" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+      Búsqueda
+    </div>
+    <div style="margin-top:20px">
+      Teléfono
+    </div>
+    <div
+      style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:400px">
+      <div style="background:#eee;color:#555;padding:3px;">
+        +56 9
+      </div>
+      <input type="tel" placeholder="" [(ngModel)]="filtro_telefono.telefono" />
+    </div>
+    <div style="margin-top:20px">
+      Periodo
+    </div>
     <div style="display:flex;border:1px solid #eee;padding:5px">
       <div style="border-right:1px solid #eee;padding:7px;padding-top:0px;padding-bottom:0px">
         <div style="font-size:14px;margin-bottom:-5px;">
@@ -18,7 +169,7 @@
         </div>
         <div>
           <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
-          <input id="date" type="date" value="2017-06-01" />
+          <input id="date" type="date" [(ngModel)]="filtro_telefono.inicio" />
         </div>
       </div>
       <div style="padding:7px;padding-top:0px;padding-bottom:0px">
@@ -27,185 +178,15 @@
         </div>
         <div>
           <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
-          <input id="date" type="date" value="2017-06-01" />
+          <input id="date" type="date" [(ngModel)]="filtro_telefono.termino" />
         </div>
       </div>
     </div>
+    <div style="margin-top:30px"></div>
 
-    <div  class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-light active">
-          <input type="radio" name="options" id="option1" autocomplete="off" checked> Desactivada
-        </label>
-        <label class="btn btn-light">
-          <input type="radio" name="options" id="option2" autocomplete="off"> Activada
-        </label>
-        <label class="btn btn-light">
-          <input type="radio" name="options" id="option3" autocomplete="off"> Todo
-        </label>
-      </div> 
-
-
-    <button (click)="newEmpresa = true" type="button" class="btn btn-outline-primary" style="margin-left:0px">
-      Aplicar filtros
+    <button (click)="buscar()" type="button" class="btn btn-outline-primary btn-block">
+      Buscar rider
     </button>
-
-    <div style="width:15px"></div>
-
-  </div>
-
-
-  <div style="font-size:20px;color:#333;margin-left:15px">
-    Búsqueda
-  </div>
-
-  <div style="margin-top:5px;display:flex;align-items:center;padding-left:15px">
-
-    <div style="border-radius:0px;border:1px solid #eee;display:flex;align-items:center;">
-      <div
-        style="border-radius:0px 0px 0px 0px;width:55px;height:40px;background:#eee;color:#555;padding:3px;display:flex;align-items:center;justify-content:center">
-        +56 9
-      </div>
-      <input type="text" placeholder="Teléfono" [(ngModel)]="telefono_search" />
-    </div>
-    <button type="button" class="btn btn-outline-primary" style="margin-left:30px">
-      Buscar
-    </button>
-  </div>
-
-
-  <div style="margin-top:20px;font-size:20px;color:#333;margin-left:15px">
-    Opciones
-  </div>
-  <div style="margin-left:15px;margin-top:5px">
-    <button (click)="newEmpresa = true" type="button" class="btn btn-outline-primary">
-      <i class="fas fa-plus"></i>
-      Crear Empresa
-    </button>
-  </div>
-
-
-  <div style="height:20px;width:10px"></div>
-
-
-
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Empresa</th>
-        <th scope="col">Dirección</th>
-        <th scope="col">Teléfono</th>
-        <th scope="col">Pedidos</th>
-        <th scope="col">Deuda</th>
-        <th scope="col">Solicitud</th>
-        <th scope="col">Activo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr (click)="hola()">
-        <th scope="row">1</th>
-        <td>
-          <a (click)="showEmpresa = true">
-            Joopiter company SpA
-          </a>
-        </td>
-        <td>
-          <div style="width:150px">
-            Simon Bolivar 802, población Menzel
-          </div>
-        </td>
-        <td>9738122</td>
-        <td>12</td>
-        <td>$1500</td>
-
-        <td>
-          <span class="badge badge-success">Aceptada</span>
-        </td>
-        <td>
-          <i (click)="isActive = false" *ngIf="isActive" class="fas fa-toggle-off"
-            style="color:#bbb;font-size:24px"></i>
-
-          <i (click)="isActive = true" *ngIf="!isActive" class="fas fa-toggle-on"
-            style="color:dodgerblue;font-size:24px"></i>
-          <!-- <button type="button" class="btn btn-secondary">Habilitar</button> -->
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Camioneta</td>
-        <td>9738122</td>
-        <td>12</td>
-        <td>$1500</td>
-
-        <td>
-          <span class="badge badge-secondary">Pendiente</span>
-        </td>
-        <td>
-          <i class="fas fa-toggle-on" style="color:dodgerblue;font-size:24px"></i>
-
-          <!-- <button type="button" class="btn btn-light">Suspender</button> -->
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>Moto</td>
-        <td>9738122</td>
-        <td>12</td>
-        <td>$1500</td>
-
-        <td>
-          <span class="badge badge-secondary">Pendiente</span>
-        </td>
-        <td>
-          <i class="fas fa-toggle-off" style="color:#bbb;font-size:24px"></i>
-          <!-- <button type="button" class="btn btn-light">Suspender</button> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
-
-
-
-
-
-
-<div *ngIf="showEmpresa"
-  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
-  <div
-    style="position:relative;padding:40px;padding-left:60px;padding-right:60px;width:400px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
-    <div (click)="showEmpresa = false" style="position:absolute;top:-5px;right:-5px;color:#555">
-      <i class="fas fa-times-circle" style="font-size:25px"></i>
-    </div>
-    <div style="display:flex;align-items:center;font-weight:550">
-      <i class="fas fa-user-circle" style="font-size:30px;color:#bbb;margin-right:10px"></i>
-      Joopiter Company SpA
-    </div>
-    <div style="margin-top:15px">
-      Marcar deuda como:
-    </div>
-
-    <div class="slidecontainer">
-      <input type="range" min="1" max="15000" value="50" class="slider" id="myRange" [(ngModel)]="mm">
-    </div>
-    <h2> ${{mm}} </h2>
-    <div style="display:flex;align-items:center">
-      <div style="margin-left:20px;">
-        <i class="far fa-dot-circle" style="color:dodgerblue;margin-right:5px"></i>
-        Pagada
-      </div>
-      <div style="margin-left:20px">
-        <i class="far fa-circle" style="color:#bbb;margin-right:5px"></i>
-        Pendiente
-      </div>
-    </div>
-    <div style="margin-top:40px;display:flex;align-items:center;justify-content:center">
-      <button (click)="showEmpresa = false" class="btn btn-primary">Aceptar</button>
-    </div>
   </div>
 </div>
 
@@ -213,23 +194,40 @@
 
 
 
-<div *ngIf="newEmpresa"
-  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+<div *ngIf="showCrear"
+  style="overflow-y:scroll;z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
   <div
-    style="position:relative;padding:40px;padding-left:60px;padding-right:60px;width:450px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
-    <div (click)="close_crear_empresa()" style="position:absolute;top:-5px;right:-5px;color:#555">
-      <i class="fas fa-times-circle" style="font-size:25px"></i>
+    style="margin-top:25px;margin-bottom:30px;position:relative;padding:40px;padding-left:60px;padding-right:60px;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
+    <div (click)="close_crear()" style="position:absolute;top:-5px;right:-5px;color:#555">
+      <i class="fas fa-times-circle" style="font-size:32px"></i>
     </div>
     <div style="display:flex;align-items:center;font-weight:550">
       <i class="fas fa-user-circle" style="font-size:30px;color:#bbb;margin-right:10px"></i>
-      Nueva Empresaa
+      Nueva empresa
     </div>
+
+    <div style="margin-top:20px;color:#666">
+      Agregar imagen:
+    </div>
+
+    <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
+
+    <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
+
+      <div *ngIf="!isUploadedImg" (click)="fileInput.click()"
+        style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
+        <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
+        <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
+      </div>
+
+      <img *ngIf="isUploadedImg" [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+
+    </div>
+
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
       <input type="text" placeholder="Nombre de la empresa" [(ngModel)]="nombre" />
     </div>
-    <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="text" placeholder="Dirección" [(ngModel)]="direccion" />
-    </div>
+
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
       <input type="email" placeholder="Email" [(ngModel)]="email" />
     </div>
@@ -239,11 +237,14 @@
       </div>
       <input type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
     </div>
-    <div *ngIf="error_telefono" style="margin-top:5px;color:red">
+    <div *ngIf="error_8_digitos_telefono" style="margin-top:5px;color:red">
       Deben ser 8 digitos
     </div>
+    <div *ngIf="error_num_telefono" style="margin-top:5px;color:red">
+      Deben ser solo números
+    </div>
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="password" placeholder="Crea una contraseña" [(ngModel)]="password_1" />
+      <input type="password" placeholder="Crear una contraseña" [(ngModel)]="password_1" />
     </div>
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
       <input type="password" placeholder="Confirmar contraseña" [(ngModel)]="password_2" />
@@ -251,11 +252,32 @@
     <div *ngIf="error_password" style="margin-top:5px;color:red">
       Las contraseñas deben ser idénticas
     </div>
+    <div *ngIf="error_imagen" style="margin-top:15px;color:red">
+      Debe seleccionar una imágen
+    </div>
     <div *ngIf="error_info_incompleta" style="margin-top:15px;color:red">
       Por favor completar todos los campos
     </div>
-    <div style="margin-top:20px;display:flex;align-items:center;justify-content:center">
-      <button (click)="crearEmpresa()" class="btn btn-primary">Crear cuenta</button>
+    <div *ngIf="error_telefono_existe" style="margin-top:15px;color:red">
+      Este teléfono ya está registrado
     </div>
+
+    <div style="margin-top:20px;"></div>
+
+    <button (click)="crearEmpresa()" type="button" class="btn btn-outline-primary btn-block">
+      Crear cuenta
+    </button>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="isLoading"
+  style="z-index:999;background:rgb(50,50,50,0.5);position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
   </div>
 </div>

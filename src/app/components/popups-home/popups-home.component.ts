@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ControlService } from 'src/app/services/control.service';
 import { DataService } from 'src/app/services/data.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-popups-home',
@@ -27,7 +28,7 @@ export class PopupsHomeComponent implements OnInit {
     }
   };
 
-  horario = {    
+  horario = {
     horaCambioNoche: 24,
     horaCambioDia: 24
   };
@@ -44,7 +45,7 @@ export class PopupsHomeComponent implements OnInit {
     relacion: {
       field: 'relacion',
       value: 'contrato'
-    }    
+    }
   }
 
   filtro_temp = {
@@ -59,27 +60,38 @@ export class PopupsHomeComponent implements OnInit {
     relacion: {
       field: 'relacion',
       value: 'contrato'
-    }    
+    }
   }
+
+  tarifaTipo = 'noche';
+  maxLimiteMoto = 20;
+  maxLimiteBici = 2.5;
 
 
   constructor(
     public _control: ControlService,
     private _data: DataService,
-    private _global: GlobalService
-    ) { 
-      console.log(_global.tarifas)
-      if (_control.map_tarifas_noche) {
-        this.tarifas = _global.tarifas.noche;
-      } else {
-        this.tarifas = _global.tarifas.dia;
-      }
+    private _global: GlobalService,
+    private toastr: ToastrService
+  ) {    
+    if (_control.map_tarifas_noche) {
+      this.tarifas = _global.tarifas.noche;
+      console.log(this.tarifas)
 
-      if (_control.map_horario) {
-        this.horario.horaCambioNoche = _global.tarifas.horaCambioNoche;
-        this.horario.horaCambioDia = _global.tarifas.horaCambioDia;
-      }
+    } else {
+      this.tarifas = _global.tarifas.dia;
+      console.log(this.tarifas)
     }
+
+    if (_control.map_horario) {
+      this.horario.horaCambioNoche = _global.tarifas.horaCambioNoche;
+      this.horario.horaCambioDia = _global.tarifas.horaCambioDia;
+      console.log(this.horario)
+
+    }
+
+    console.log('pasoo')
+  }
 
   ngOnInit() {
   }
@@ -109,26 +121,50 @@ export class PopupsHomeComponent implements OnInit {
   }
 
   actualizarTarifas() {
+    this.close('tarifa');
+
     let data: any = {};
+
     if (this._control.map_tarifas_noche) {
-      data.noche = this.tarifas;  
-      this._global.updateTarifas(data).then(() => {
-        this.close('tarifa noche');
-        this._global.getTarifas();
-      });
+      data.noche = this.tarifas;
     } else {
       data.dia = this.tarifas;
-      this._global.updateTarifas(data).then(() => {
-        this.close('tarifa dia');
-        this._global.getTarifas();
-      });
     }
+
+    this._global.updateTarifas(data).then(() => {
+      this._global.getTarifas();
+      this.toastr.success('Se han actualizado las tarifas con éxito', 'Tarifas actualizadas');
+    });
+
   }
 
   actualizarHorario() {
     this._global.updateTarifasHorario(this.horario).then(() => {
       this.close('horario')
     });
+  }
+
+  changeLimiteTarifaMinima(tipo, vehiculo) {
+
+    if (tipo == '+' && vehiculo == 'moto') {
+      this.tarifas.moto.limite += 100;
+    }
+
+    if (tipo == '-' && vehiculo == 'moto') {
+      this.tarifas.moto.limite -= 100;
+    }
+
+    if (tipo == '+' && vehiculo == 'bici') {
+      this.tarifas.bici.limite += 100;
+    }
+
+    if (tipo == '-' && vehiculo == 'bici') {
+      this.tarifas.bici.limite -= 100;
+    }
+  }
+
+  changeHorarioTarifas() {
+    
   }
 
 

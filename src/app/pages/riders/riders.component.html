@@ -16,7 +16,7 @@
       style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
       <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
     </a>
-    <a (click)="showCrearRider = true"
+    <a (click)="showCrear = true"
       style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
       <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
     </a>
@@ -44,20 +44,34 @@
       <tr *ngFor="let rider of riders; let i = index">
         <th scope="row"> {{i + 1}} </th>
         <td> {{rider.nombre}} </td>
-        <td>
-          <i class="fas fa-star" style="color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" style="color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" style="color:gold;margin-right:3px"></i>
-          <i class="fas fa-star-half" style="color:gold;margin-right:3px"></i>
+        <td *ngIf="rider.stats">
+          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 1"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 1.5"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 2"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 2.5"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 3"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 3.5"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 4"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 4.5"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star" *ngIf="rider?.stats.startsAvg >= 5"
+            style="font-size:20px;color:gold;margin-right:3px"></i>
           {{rider.stats.startsAvg}}
         </td>
         <td> {{rider.vehiculo}} </td>
         <td> {{rider.telefono}} </td>
         <td> {{rider.relacion}} </td>
         <td>
-          <i (click)="toggleAccount(rider._id)" *ngIf="!rider.isActive" class="fas fa-toggle-off"
+          <i (click)="toggleAccount(rider)" *ngIf="!rider.isActive" class="fas fa-toggle-off"
             style="color:#bbb;font-size:24px"></i>
-          <i (click)="toggleAccount(rider._id)" *ngIf="rider.isActive" class="fas fa-toggle-on"
+          <i (click)="toggleAccount(rider)" *ngIf="rider.isActive" class="fas fa-toggle-on"
             style="color:dodgerblue;font-size:24px"></i>
         </td>
       </tr>
@@ -107,7 +121,7 @@
 
 
 <div *ngIf="showFiltros"
-  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
   <div
     style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
     <div (click)="close_filtros()" style="position:absolute;top:-5px;right:-5px;color:#555">
@@ -134,7 +148,6 @@
         <input type="radio" name="options" id="option3" autocomplete="off"> Todo
       </label>
     </div>
-
 
     <div style="margin-top:20px">
       Tipo de relación
@@ -188,7 +201,7 @@
 
 
 <div *ngIf="showBusqueda"
-  style="z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
   <div
     style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
     <div (click)="close_busqueda()" style="position:absolute;top:-5px;right:-5px;color:#555">
@@ -202,7 +215,7 @@
       Teléfono
     </div>
     <div
-      style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:250px">
+      style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:400px">
       <div style="background:#eee;color:#555;padding:3px">
         +56 9
       </div>
@@ -243,11 +256,11 @@
 
 
 
-<div *ngIf="showCrearRider"
-  style="overflow-y:scroll;z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
+<div *ngIf="showCrear"
+  style="overflow-y:scroll;z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
   <div
     style="margin-top:25px;margin-bottom:30px;position:relative;padding:40px;padding-left:60px;padding-right:60px;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
-    <div (click)="close_crear_rider()" style="position:absolute;top:-5px;right:-5px;color:#555">
+    <div (click)="close_crear()" style="position:absolute;top:-5px;right:-5px;color:#555">
       <i class="fas fa-times-circle" style="font-size:32px"></i>
     </div>
     <div style="display:flex;align-items:center;font-weight:550">
@@ -259,12 +272,18 @@
       Agregar imagen:
     </div>
 
+    <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
+
     <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
-      <div
+
+      <div *ngIf="!isUploadedImg" (click)="fileInput.click()"
         style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
         <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
         <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
       </div>
+
+      <img *ngIf="isUploadedImg" [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+
     </div>
 
     <div style="margin-top:25px;display:flex;align-items:center">
@@ -300,7 +319,6 @@
       </div>
     </div>
 
-
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
       <input type="text" placeholder="Nombre" [(ngModel)]="nombre" />
     </div>
@@ -314,8 +332,11 @@
       </div>
       <input type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
     </div>
-    <div *ngIf="error_telefono" style="margin-top:5px;color:red">
+    <div *ngIf="error_8_digitos_telefono" style="margin-top:5px;color:red">
       Deben ser 8 digitos
+    </div>
+    <div *ngIf="error_num_telefono" style="margin-top:5px;color:red">
+      Deben ser solo números
     </div>
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
       <input type="password" placeholder="Crear una contraseña" [(ngModel)]="password_1" />
@@ -329,8 +350,17 @@
     <div *ngIf="error_vehiculo" style="margin-top:15px;color:red">
       Debe seleccionar un vehículo
     </div>
+    <div *ngIf="error_relacion" style="margin-top:15px;color:red">
+      Debe seleccionar un tipo de relación
+    </div>
+    <div *ngIf="error_imagen" style="margin-top:15px;color:red">
+      Debe seleccionar una imágen
+    </div>
     <div *ngIf="error_info_incompleta" style="margin-top:15px;color:red">
       Por favor completar todos los campos
+    </div>
+    <div *ngIf="error_telefono_existe" style="margin-top:15px;color:red">
+      Este teléfono ya está registrado
     </div>
 
     <div style="margin-top:20px;"></div>
@@ -338,5 +368,17 @@
     <button (click)="crearRider()" type="button" class="btn btn-outline-primary btn-block">
       Crear cuenta
     </button>
+
+  </div>
+</div>
+
+
+
+<div *ngIf="isLoading"
+  style="z-index:999;background:rgb(50,50,50,0.5);position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
   </div>
 </div>
