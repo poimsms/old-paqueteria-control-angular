@@ -274,15 +274,17 @@
 
     <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
 
-    <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
+    <div  style="margin-top:5px;width:100%;display:flex;justify-content:center">
 
-      <div *ngIf="!isUploadedImg" (click)="fileInput.click()"
+      <div *ngIf="!isUploadedImg && !isLoadingImage" (click)="fileInput.click()"
         style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
         <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
         <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
       </div>
 
-      <img *ngIf="isUploadedImg" [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+      <div *ngIf="isUploadedImg == true">
+          <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+      </div>
 
     </div>
 

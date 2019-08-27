@@ -18,6 +18,28 @@ export class ControlService {
   map_tarifas_noche = false;
   map_tarifas_dia = false;
   map_horario = false;
+  isTracking = false;
+
+  lat = -33.444600;
+  lng = -70.655585;
+  zoom = 14;
+  origen: any;
+  destino: any;
+
+  map_filtroData = {
+    vehiculo: {
+      field: 'todo',
+      value: 'todo'
+    },
+    actividad: {
+      field: 'actividad',
+      value: 'ocupado'
+    },
+    relacion: {
+      field: 'relacion',
+      value: 'contrato'
+    }
+  };
 
   constructor(private router: Router) { }
 

@@ -12,24 +12,21 @@ import { GlobalService } from './services/global.service';
 })
 export class AppComponent {
 
-  title = 'control';
-  telefono: number;
+  pedidoID: string;
   isAuth = false;
-  riderNotFound = false;
   vehiculo = '';
   showPopups = false;
-  
+
   constructor(
     public _control: ControlService,
     private _data: DataService,
     private _auth: AuthService,
     private router: Router,
-    private _global: GlobalService
+    public _global: GlobalService
   ) {
     this._auth.authState.subscribe(data => {
       this.isAuth = data.isAuth;
-    });
-    // this.getRiders('riders-activos');
+    }); 
   }
 
   getRiders(tipo) {
@@ -43,24 +40,34 @@ export class AppComponent {
 
   trackRider() {
 
-    if (!this.telefono) {
+    if (!this.pedidoID) {
       return;
     }
 
-    this._data.getRiderByPhone(this.telefono).then((res: any) => {
-
-      if (res.ok) {
-        this._data.id = res.rider._id;
-        this._data.queryRidersFirebase('rastreo');
-      } else {
-        // rider no encontrado
-        this.riderNotFound = true;
-        setTimeout(() => {
-          this.riderNotFound = false;
-        }, 3000);
-      }
+    this._data.getPedido(this.pedidoID).then((pedido: any) => {
+      this._control.origen = { lat: pedido.origen.lat, lng: pedido.origen.lng };
+      this._control.destino = { lat: pedido.destino.lat, lng: pedido.destino.lng };
+      this._data.queryRidersFirebase({ tipo: 'track', pedido: this.pedidoID });
+      this._control.isTracking = true;
     });
 
+  }
+
+  refreshMap() {
+
+    this._control.origen = null;
+    this._control.destino = null;
+    this.pedidoID = undefined;
+
+    this._control.lat = Number((-33.44 - Math.random() / 1000).toFixed(5));
+    this._control.lng = Number((-70.64 - Math.random() / 1000).toFixed(5));
+
+    this._control.zoom = 13;
+    setTimeout(() => {
+      this._control.zoom = 14;
+    }, 100);
+
+    this._control.isTracking = false;
   }
 
   openPage(page) {
@@ -73,13 +80,11 @@ export class AppComponent {
     this.showPopups = true;
 
     if (tipo == 'tarifa noche') {
-      this._control.map_tarifas = true;
-      this._control.map_tarifas_noche = true;
+      this._global.show_tarifas_noche = true;
     }
 
     if (tipo == 'tarifa dia') {
-      this._control.map_tarifas = true;
-      this._control.map_tarifas_dia = true;
+      this._global.show_tarifas_dia = true;
     }
 
     if (tipo == 'horario') {

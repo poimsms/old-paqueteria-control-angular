@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ridersSubscription$: Subscription;
 
-  iconBicicleta = {
+  iconoBicicleta = {
     url: 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565228910/tools/pin.png',
     scaledSize: {
       width: 40,
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  iconMoto = {
+  iconoMoto = {
     url: 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565230426/tools/pin_2.png',
     scaledSize: {
       width: 40,
@@ -46,9 +46,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {
     this._control.activar('home');
     this.ridersSubscription$ = this._data.riders$.subscribe(riders => {
-      this.riders = riders;
-      console.log(riders)
+      this.riders = this.setIcons(riders);
+      console.log(riders);
+
+
     });
+
+  
+    this._data.queryRidersFirebase({tipo: 'filtro', filtro: _control.map_filtroData });
+
+  }
+
+  setIcons(riders) {
+    let riders_edited = [];
+    riders.forEach(rider => {
+      const data: any = rider;
+      if (rider.vehiculo == 'moto') {
+        data.icono = this.iconoMoto
+      } else {
+        data.icono = this.iconoBicicleta
+      }
+      riders_edited.push(data);      
+    });
+    return riders_edited;
   }
 
 

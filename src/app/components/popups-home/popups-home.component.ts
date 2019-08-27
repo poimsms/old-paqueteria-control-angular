@@ -35,8 +35,8 @@ export class PopupsHomeComponent implements OnInit {
 
   filtro = {
     vehiculo: {
-      field: 'vehiculo',
-      value: 'moto'
+      field: 'todo',
+      value: 'todo'
     },
     actividad: {
       field: 'actividad',
@@ -50,8 +50,8 @@ export class PopupsHomeComponent implements OnInit {
 
   filtro_temp = {
     vehiculo: {
-      field: 'vehiculo',
-      value: 'moto'
+      field: 'todo',
+      value: 'todo'
     },
     actividad: {
       field: 'actividad',
@@ -71,7 +71,7 @@ export class PopupsHomeComponent implements OnInit {
   constructor(
     public _control: ControlService,
     private _data: DataService,
-    private _global: GlobalService,
+    public _global: GlobalService,
     private toastr: ToastrService
   ) {    
     if (_control.map_tarifas_noche) {
@@ -89,8 +89,6 @@ export class PopupsHomeComponent implements OnInit {
       console.log(this.horario)
 
     }
-
-    console.log('pasoo')
   }
 
   ngOnInit() {
@@ -100,8 +98,6 @@ export class PopupsHomeComponent implements OnInit {
 
     if (tipo == 'tarifa') {
       this._control.map_tarifas = false;
-      this._control.map_tarifas_dia = false;
-      this._control.map_tarifas_noche = false;
     }
 
     if (tipo == 'horario') {
@@ -116,7 +112,8 @@ export class PopupsHomeComponent implements OnInit {
 
   filtrar() {
     this.filtro_temp = JSON.parse(JSON.stringify(this.filtro));
-    this._data.queryRidersFirebase(this.filtro);
+    this._control.map_filtroData = this.filtro_temp;
+    this._data.queryRidersFirebase({tipo: 'filtro', filtro: this.filtro});
     this._control.map_filtros = false;
   }
 
@@ -144,23 +141,44 @@ export class PopupsHomeComponent implements OnInit {
     });
   }
 
-  changeLimiteTarifaMinima(tipo, vehiculo) {
+  changeLimiteTarifaMinima(tipo, vehiculo, diaNoche) {
 
-    if (tipo == '+' && vehiculo == 'moto') {
-      this.tarifas.moto.limite += 100;
+    if (diaNoche == 'noche') {
+      if (tipo == '+' && vehiculo == 'moto') {
+        this._global.tarifas_temp.noche.moto.limite += 100;
+      }
+  
+      if (tipo == '-' && vehiculo == 'moto') {
+        this._global.tarifas_temp.noche.moto.limite -= 100;
+      }
+  
+      if (tipo == '+' && vehiculo == 'bici') {
+        this._global.tarifas_temp.noche.limite += 100;
+      }
+  
+      if (tipo == '-' && vehiculo == 'bici') {
+        this._global.tarifas_temp.noche.limite -= 100;
+      }
     }
 
-    if (tipo == '-' && vehiculo == 'moto') {
-      this.tarifas.moto.limite -= 100;
+    if (diaNoche == 'dia') {
+      if (tipo == '+' && vehiculo == 'moto') {
+        this._global.tarifas_temp.dia.moto.limite += 100;
+      }
+  
+      if (tipo == '-' && vehiculo == 'moto') {
+        this._global.tarifas_temp.dia.moto.limite -= 100;
+      }
+  
+      if (tipo == '+' && vehiculo == 'bici') {
+        this._global.tarifas_temp.dia.limite += 100;
+      }
+  
+      if (tipo == '-' && vehiculo == 'bici') {
+        this._global.tarifas_temp.dia.limite -= 100;
+      }
     }
-
-    if (tipo == '+' && vehiculo == 'bici') {
-      this.tarifas.bici.limite += 100;
-    }
-
-    if (tipo == '-' && vehiculo == 'bici') {
-      this.tarifas.bici.limite -= 100;
-    }
+   
   }
 
   changeHorarioTarifas() {

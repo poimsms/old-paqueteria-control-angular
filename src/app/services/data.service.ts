@@ -30,58 +30,29 @@ export class DataService {
     this.apiURL = this._config.apiURL;
 
     this.riders$ = this.rider_query$.pipe(
-      switchMap((filtro: any) => {
-        console.log(filtro, 'FILTROO')
+      switchMap((data: any) => {
 
-        return this.db.collection('riders_coors', ref =>
-          ref.where(filtro.vehiculo.field, '==', filtro.vehiculo.value)
-            .where(filtro.actividad.field, '==', filtro.actividad.value)
-            .where(filtro.relacion.field, '==', filtro.relacion.value)
-            .where('isActive', '==', true))
-          .valueChanges()
+        if (data.tipo == 'filtro') {
+          const filtro = data.filtro;
+          console.log(filtro)
+          return this.db.collection('riders_coors', ref =>
+            ref.where(filtro.vehiculo.field, '==', filtro.vehiculo.value)
+              .where(filtro.actividad.field, '==', filtro.actividad.value)
+              .where(filtro.relacion.field, '==', filtro.relacion.value)
+              .where('isOnline', '==', true)
+              .where('isActive', '==', true))
+            .valueChanges();
+        }
+
+        if (data.tipo == 'track') {
+          return this.db.collection('riders_coors', ref =>
+            ref.where('pedido', '==', data.pedido)
+              .where('isOnline', '==', true)
+              .where('isActive', '==', true))
+            .valueChanges();
+        }
       })
     );
-
-
-    // this.riders$ = this.rider_query$.pipe(
-    //   switchMap(tipo => {
-
-    //     if (this.vehiculo == 'todo') {
-
-    //       if (tipo == 'riders-inactivos') {
-    //         return this.db.collection('riders', ref => ref.where('actividad', '==', 'inactivo').where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //       if (tipo == 'riders-activos') {
-    //         return this.db.collection('riders', ref => ref.where('actividad', '==', 'activo').where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //       if (tipo == 'riders-todos') {
-    //         return this.db.collection('riders', ref => ref.where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //     } else {
-
-    //       if (tipo == 'riders-inactivos') {
-    //         return this.db.collection('riders', ref => ref.where('actividad', '==', 'inactivo').where('vehiculo', '==', this.vehiculo).where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //       if (tipo == 'riders-activos') {
-    //         return this.db.collection('riders', ref => ref.where('actividad', '==', 'activo').where('vehiculo', '==', this.vehiculo).where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //       if (tipo == 'riders-todos') {
-    //         return this.db.collection('riders', ref => ref.where('vehiculo', '==', this.vehiculo).where('isAccountActive', '==', true)).valueChanges()
-    //       }
-
-    //     }
-
-    //     if (tipo == 'rastreo') {
-    //       return this.db.collection('riders', ref => ref.where('rider', '==', this.id)).valueChanges()
-    //     }
-
-    //   })
-    // );
 
   }
 
@@ -115,22 +86,23 @@ export class DataService {
 
   createRiderCoorsFirebase(rider) {
 
-    const data = {
-      nuevoPedido: false,
+    const data: any = {
+      pagoPendiente: false,
       rider: rider._id,
       pedido: '',
       cliente: '',
       isActive: true,
       isOnline: true,
-      lat: 0,
-      lng: 0,
+      lat: Number((-33.444600 - Math.random() / 100).toFixed(4)),
+      lng: Number((-70.655585 - Math.random() / 50).toFixed(3)),
       nombre: rider.nombre,
-      vehiculo: rider.vehiculo,
-      relacion: rider.relacion,
       telefono: rider.telefono,
       todo: 'todo',
       actividad: 'disponible'
     }
+
+    rider.vehiculo == 'Moto' ? data.vehiculo = 'moto' : data.vehiculo = 'bici';
+    rider.relacion == 'Contrato' ? data.vehiculo = 'contrato' : data.vehiculo = 'servicio';
 
     this.db.collection("riders_coors").doc(rider._id).set(data);
   }
@@ -171,6 +143,11 @@ export class DataService {
   riderToggleAccount(body) {
     const url = `${this.apiURL}/dashboard/riders-activation`;
     return this.http.put(url, body).toPromise();
+  }
+
+  getPedido(id) {
+    const url = `${this.apiURL}/dashboard/pedidos-get-one?id=${id}`;
+    return this.http.get(url).toPromise();
   }
 
   // ---------------------------

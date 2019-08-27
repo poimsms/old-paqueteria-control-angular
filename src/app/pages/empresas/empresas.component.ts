@@ -25,6 +25,7 @@ export class EmpresasComponent implements OnInit {
   isEmpresas = true;
   isBusqueda = false;
   isUploadedImg = false;
+  isLoadingImage = false;
 
   error_info_incompleta = false;
   error_8_digitos_telefono = false;
@@ -32,6 +33,7 @@ export class EmpresasComponent implements OnInit {
   error_telefono_existe = false;
   error_imagen = false;
   error_password = false;
+  error_wrong_email = false;
 
   showFiltros = false;
   showBusqueda = false;
@@ -109,10 +111,12 @@ export class EmpresasComponent implements OnInit {
   onFileSelected(event) {
     const file = event.target.files[0];
     const fd = new FormData();
+    this.isLoadingImage = true;
     fd.append('image', file, file.name);
     this._data.uploadImage(fd).then(res => {
-      this.isUploadedImg = true;
       this.imagen = res;
+      this.isLoadingImage = false;
+      this.isUploadedImg = true;
     });
   }
 
@@ -130,6 +134,10 @@ export class EmpresasComponent implements OnInit {
 
     if (this.telefono.length != 8) {
       return this.error_8_digitos_telefono = true;
+    }
+
+    if (!this.validateEmail(this.email)) {
+      return this.error_wrong_email = true;
     }
 
     if (this.password_1 != this.password_2) {
@@ -161,6 +169,11 @@ export class EmpresasComponent implements OnInit {
     });
   }
 
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
   close_crear() {
     this.showCrear = false;
     this.telefono = undefined;
@@ -180,6 +193,7 @@ export class EmpresasComponent implements OnInit {
     this.error_8_digitos_telefono = false;
     this.error_imagen = false;
     this.error_password = false;
+    this.error_wrong_email = false;
   }
 
   close_busqueda() {

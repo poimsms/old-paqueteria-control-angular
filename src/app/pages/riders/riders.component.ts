@@ -24,7 +24,8 @@ export class RidersComponent implements OnInit {
 
   isRiders = true;
   isBusqueda = false;
-  isUploadedImg = false;
+  isUploadedImg = true;
+  isLoadingImage = false;
 
   error_info_incompleta = false;
   error_8_digitos_telefono = false;
@@ -71,6 +72,7 @@ export class RidersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isUploadedImg = false;
   }
 
   dateInit() {
@@ -117,9 +119,11 @@ export class RidersComponent implements OnInit {
     const file = event.target.files[0];
     const fd = new FormData();
     fd.append('image', file, file.name);
+    this.isLoadingImage = true;
     this._data.uploadImage(fd).then(res => {
-      this.isUploadedImg = true;
       this.imagen = res;
+      this.isLoadingImage = false;
+      this.isUploadedImg = true;
     });
   }
 
@@ -166,7 +170,12 @@ export class RidersComponent implements OnInit {
       vehiculo: this.vehiculo,
       relacion: this.relacion,
       img: this.imagen,
-      rol: 'rider'
+      rol: 'rider',
+      stats: {
+        startsCount: 1,
+        startsAvg: 2.0,
+        startsSum: 2
+      }
     }
 
     this._data.crearCuenta(body).then((data: any) => {
