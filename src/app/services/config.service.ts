@@ -4,8 +4,25 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  
-  apiURL = 'http://localhost:3000';
 
-  constructor() { }
+  apiURL: string;
+  version = '1.0.0'
+  ENTORNO = 'DEV';
+
+  constructor() {
+    this.setApi();
+   }
+
+  setApi() {
+
+    if (this.ENTORNO == 'DEV') {
+      this.apiURL = `http://localhost:3000/dashboard/v${this.version}`;
+    }
+
+    if (this.ENTORNO == 'PROD') {
+      this.apiURL = `https://joopiterweb.com/dashboard/v${this.version}`;
+    }
+    
+  }
+
 }

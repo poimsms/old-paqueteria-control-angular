@@ -30,7 +30,7 @@ export class GlobalService {
   }
 
   getTarifas() {
-    const url = `${this.apiURL}/global/tarifas-get-all`;
+    const url = `${this.apiURL}/tarifas/get-all`;
     this.http.get(url).toPromise().then(tarifas => {
       this.tarifas = tarifas;
       this.tarifas_temp = JSON.parse(JSON.stringify(this.tarifas));
@@ -38,12 +38,12 @@ export class GlobalService {
   }
 
   updateTarifas(body) {
-    const url = `${this.apiURL}/global/tarifas-update`;
+    const url = `${this.apiURL}/tarifas/update`;
     return this.http.put(url, body).toPromise();
   }
 
   updateTarifasHorario(body) {
-    const url = `${this.apiURL}/global/tarifas-horario-update`;
+    const url = `${this.apiURL}/tarifas/horario-update`;
     return this.http.put(url, body).toPromise();
   }
 

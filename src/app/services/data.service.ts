@@ -62,7 +62,7 @@ export class DataService {
   // ---------------------------
 
   crearCuenta(body) {
-    const url = `${this.apiURL}/dashboard/signup`;
+    const url = `${this.apiURL}/core/signup`;
     return this.http.post(url, body).toPromise();
   }
 
@@ -112,27 +112,27 @@ export class DataService {
   }
 
   getRiderByPhone(telefono) {
-    const url = `${this.apiURL}/dashboard/riders-get-one-by-phone?telefono=${telefono}`;
+    const url = `${this.apiURL}/core/riders-get-one-by-phone?telefono=${telefono}`;
     return this.http.get(url).toPromise();
   }
 
   findRiderByPhone_using_options(telefono, options) {
-    const url = `${this.apiURL}/dashboard/riders-get-one-by-phone-using-options?telefono=${telefono}`;
+    const url = `${this.apiURL}/core/riders-get-one-by-phone-using-options?telefono=${telefono}`;
     return this.http.post(url, options).toPromise();
   }
 
   findPedidosByPhoneRider(filter) {
-    const url = `${this.apiURL}/dashboard/pedidos-get-by-phone-rider`;
+    const url = `${this.apiURL}/core/pedidos-get-by-phone-rider`;
     return this.http.post(url, filter).toPromise();
   }
 
   getRidersByFilter(filter) {
-    const url = `${this.apiURL}/dashboard/riders-get-by-filter`;
+    const url = `${this.apiURL}/core/riders-get-by-filter`;
     return this.http.post(url, filter).toPromise();
   }
 
   findRiders_using_options(options) {
-    const url = `${this.apiURL}/dashboard/riders-get-all-using-options`;
+    const url = `${this.apiURL}/core/riders-get-all-using-options`;
     return this.http.post(url, options).toPromise();
   }
 
@@ -141,12 +141,12 @@ export class DataService {
   }
 
   riderToggleAccount(body) {
-    const url = `${this.apiURL}/dashboard/riders-activation`;
+    const url = `${this.apiURL}/core/riders-activation`;
     return this.http.put(url, body).toPromise();
   }
 
   getPedido(id) {
-    const url = `${this.apiURL}/dashboard/pedidos-get-one?id=${id}`;
+    const url = `${this.apiURL}/core/pedidos-get-one?id=${id}`;
     return this.http.get(url).toPromise();
   }
 
@@ -156,17 +156,17 @@ export class DataService {
 
 
   crearEmpresa(body) {
-    const url = `${this.apiURL}/dashboard/empresa-create-account`;
+    const url = `${this.apiURL}/core/empresa-create-account`;
     return this.http.post(url, body).toPromise();
   }
 
   getEmpresasByFilter(filter) {
-    const url = `${this.apiURL}/dashboard/empresas-get-by-filter`;
+    const url = `${this.apiURL}/core/empresas-get-by-filter`;
     return this.http.post(url, filter).toPromise();
   }
 
   findPedidosByPhoneEmpresa(filter) {
-    const url = `${this.apiURL}/dashboard/pedidos-get-by-phone-empresa`;
+    const url = `${this.apiURL}/core/pedidos-get-by-phone-empresa`;
     return this.http.post(url, filter).toPromise();
   }
 
@@ -198,7 +198,7 @@ export class DataService {
   }
 
   crearBalance() {
-    const url = `${this.apiURL}/dashboard/riders-create-balance`;
+    const url = `${this.apiURL}/core/riders-create-balance`;
 
     const body = {
       rider: '5d3f2e0255266a733cd4242b',
