@@ -96,7 +96,14 @@
       <tr *ngFor="let pedido of pedidos; let i = index">
         <th scope="row"> {{i + 1}} </th>
         <td> {{pedido.cliente.nombre}} </td>
-        <td style="text-transform: capitalize"> {{pedido.cliente.rol}} </td>
+        <td>
+          <div *ngIf="pedido.cliente.role == 'EMPRESA_ROLE'">
+            Empresa
+          </div>
+          <div *ngIf="pedido.cliente.role == 'USER_ROLE'">
+            Usuario
+          </div>        
+        </td>
         <td> {{pedido.fecha}} </td>
         <td> {{pedido.metodoPago}} </td>
         <td> {{pedido.costo}} </td>

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { ControlService } from 'src/app/services/control.service';
 import { Subscription } from 'rxjs';
@@ -41,20 +40,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _data: DataService,
-    private _auth: AuthService,
     public _control: ControlService
   ) {
     this._control.activar('home');
     this.ridersSubscription$ = this._data.riders$.subscribe(riders => {
       this.riders = this.setIcons(riders);
-      console.log(riders);
-
-
     });
 
-  
-    this._data.queryRidersFirebase({tipo: 'filtro', filtro: _control.map_filtroData });
-
+    this._data.queryRidersFirebase({ tipo: 'filtro', filtro: _control.map_filtroData });
   }
 
   setIcons(riders) {
@@ -66,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         data.icono = this.iconoBicicleta
       }
-      riders_edited.push(data);      
+      riders_edited.push(data);
     });
     return riders_edited;
   }

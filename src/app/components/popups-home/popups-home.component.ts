@@ -74,20 +74,16 @@ export class PopupsHomeComponent implements OnInit {
     public _global: GlobalService,
     private toastr: ToastrService
   ) {    
+
     if (_control.map_tarifas_noche) {
       this.tarifas = _global.tarifas.noche;
-      console.log(this.tarifas)
-
     } else {
       this.tarifas = _global.tarifas.dia;
-      console.log(this.tarifas)
     }
 
     if (_control.map_horario) {
       this.horario.horaCambioNoche = _global.tarifas.horaCambioNoche;
       this.horario.horaCambioDia = _global.tarifas.horaCambioDia;
-      console.log(this.horario)
-
     }
   }
 
@@ -184,7 +180,5 @@ export class PopupsHomeComponent implements OnInit {
   changeHorarioTarifas() {
     
   }
-
-
 
 }

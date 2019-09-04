@@ -155,7 +155,7 @@ export class EmpresasComponent implements OnInit {
       email: this.email,
       telefono: Number(this.telefono),
       password: this.password_1,
-      rol: 'empresa',
+      role: 'EMPRESA_ROLE',
       img: this.imagen
     }
     this._data.crearCuenta(body).then((data: any) => {

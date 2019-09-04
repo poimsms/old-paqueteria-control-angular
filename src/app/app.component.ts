@@ -26,6 +26,10 @@ export class AppComponent {
   ) {
     this._auth.authState.subscribe(data => {
       this.isAuth = data.isAuth;
+      if (data.isAuth) {
+        console.log('pasoo')
+        this._global.getTarifas();
+      }
     }); 
   }
 

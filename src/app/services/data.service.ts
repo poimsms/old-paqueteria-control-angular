@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ConfigService } from './config.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subscription, Subject, BehaviorSubject, Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class DataService {
   constructor(
     private http: HttpClient,
     private _config: ConfigService,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private _auth: AuthService
   ) {
     this.apiURL = this._config.apiURL;
 
@@ -33,8 +35,9 @@ export class DataService {
       switchMap((data: any) => {
 
         if (data.tipo == 'filtro') {
+          
           const filtro = data.filtro;
-          console.log(filtro)
+
           return this.db.collection('riders_coors', ref =>
             ref.where(filtro.vehiculo.field, '==', filtro.vehiculo.value)
               .where(filtro.actividad.field, '==', filtro.actividad.value)
@@ -62,7 +65,7 @@ export class DataService {
   // ---------------------------
 
   crearCuenta(body) {
-    const url = `${this.apiURL}/core/signup`;
+    const url = `${this.apiURL}/core/create-account`;
     return this.http.post(url, body).toPromise();
   }
 
@@ -113,27 +116,32 @@ export class DataService {
 
   getRiderByPhone(telefono) {
     const url = `${this.apiURL}/core/riders-get-one-by-phone?telefono=${telefono}`;
-    return this.http.get(url).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.get(url, { headers }).toPromise();
   }
 
-  findRiderByPhone_using_options(telefono, options) {
+  findRiderByPhone_using_options(telefono, body) {
     const url = `${this.apiURL}/core/riders-get-one-by-phone-using-options?telefono=${telefono}`;
-    return this.http.post(url, options).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
   findPedidosByPhoneRider(filter) {
     const url = `${this.apiURL}/core/pedidos-get-by-phone-rider`;
-    return this.http.post(url, filter).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, filter, { headers }).toPromise();
   }
 
-  getRidersByFilter(filter) {
+  getRidersByFilter(body) {
     const url = `${this.apiURL}/core/riders-get-by-filter`;
-    return this.http.post(url, filter).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
-  findRiders_using_options(options) {
+  findRiders_using_options(body) {
     const url = `${this.apiURL}/core/riders-get-all-using-options`;
-    return this.http.post(url, options).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
   queryRidersFirebase(query) {
@@ -142,12 +150,14 @@ export class DataService {
 
   riderToggleAccount(body) {
     const url = `${this.apiURL}/core/riders-activation`;
-    return this.http.put(url, body).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.put(url, body, { headers }).toPromise();
   }
 
   getPedido(id) {
     const url = `${this.apiURL}/core/pedidos-get-one?id=${id}`;
-    return this.http.get(url).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.get(url, { headers }).toPromise();
   }
 
   // ---------------------------
@@ -157,17 +167,20 @@ export class DataService {
 
   crearEmpresa(body) {
     const url = `${this.apiURL}/core/empresa-create-account`;
-    return this.http.post(url, body).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
-  getEmpresasByFilter(filter) {
+  getEmpresasByFilter(body) {
     const url = `${this.apiURL}/core/empresas-get-by-filter`;
-    return this.http.post(url, filter).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
-  findPedidosByPhoneEmpresa(filter) {
+  findPedidosByPhoneEmpresa(body) {
     const url = `${this.apiURL}/core/pedidos-get-by-phone-empresa`;
-    return this.http.post(url, filter).toPromise();
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
   // ---------------------------

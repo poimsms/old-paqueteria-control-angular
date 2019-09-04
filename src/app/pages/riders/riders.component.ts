@@ -170,7 +170,7 @@ export class RidersComponent implements OnInit {
       vehiculo: this.vehiculo,
       relacion: this.relacion,
       img: this.imagen,
-      rol: 'rider',
+      role: 'RIDER_ROLE',
       stats: {
         startsCount: 1,
         startsAvg: 2.0,

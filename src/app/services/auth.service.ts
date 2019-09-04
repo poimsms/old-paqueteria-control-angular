@@ -89,12 +89,8 @@ export class AuthService {
 
   getUser(token, id) {
     const url = `${this.apiURL}/usuarios/get-one?id=${id}`;
-    const headers = new HttpHeaders({
-      Authorization: `JWT ${token}`
-    });
+    const headers = new HttpHeaders({ token, version: this._config.version });
     return this.http.get(url, { headers }).toPromise();
   }
-
-
 
 }
