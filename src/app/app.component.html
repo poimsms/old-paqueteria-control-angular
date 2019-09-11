@@ -1,18 +1,30 @@
-<div *ngIf="isAuth" style="z-index:980;position:fixed;top:0px;left:0px;width:20%;height:100%">
+<div *ngIf="isAuth" style="z-index:980;position:fixed;top:0px;left:0px;height:100%"
+  [ngStyle]="{'width': _control.stretched ? '90px':'250px'}">
 
-  <div style="background:#262A34;height:100%;box-shadow:7px 0 60px rgba(0, 0, 0, 0.05)">
+  <div style="background:#333547;height:100%;box-shadow:7px 0 60px rgba(0, 0, 0, 0.05)">
 
 
-    <div style="width:100%;display:flex;justify-content:center;background:#1E2129">
+    <div style="width:100%;display:flex;justify-content:center;background:#333547">
       <div style="margin-top:20px;margin-bottom:10px;display:flex;align-items:Center">
-        <div style="margin-top:20px;margin-bottom:50px;color:white;font-weight:600">
+        <div *ngIf="!_control.stretched" style="margin-top:20px;margin-bottom:50px;color:white;font-weight:600">
           PANEL DE CONTROL
+        </div>
+        <div *ngIf="_control.stretched" style="margin-top:20px;margin-bottom:50px;color:white;font-weight:600">
+          CONTROL
         </div>
       </div>
     </div>
 
-    <div style="padding:20px;color:rgba(255,255,255,.5)!important;font-size:14px;width:100%">
+    <hr style="border-top:1px solid rgba(255,255,255,.15)">
+
+
+    <div *ngIf="!_control.stretched"
+      style="padding:20px;color:rgba(255,255,255,.5)!important;font-size:14px;width:100%">
       APLICACIONES
+    </div>
+
+    <div *ngIf="_control.stretched" style="padding:20px;color:rgba(255,255,255,.5)!important;font-size:14px;width:100%">
+      APPS
     </div>
 
 
@@ -23,14 +35,21 @@
 
       <a (click)="openPage('mapa')" class="box" [ngClass]="{'box-active': _control.isMapa}">
         <i class="fas fa-map-marked-alt icon-left" [ngClass]="{'active': _control.isMapa}"></i>
-        <div class="text" [ngClass]="{'active': _control.isMapa}">
+        <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isMapa}">
           Mapa
+        </div>
+      </a>
+
+      <a (click)="openPage('taximetro')" class="box" [ngClass]="{'box-active': _control.isTaximetro}">
+        <i class="fas fa-map-marker-alt icon-left" [ngClass]="{'active': _control.isTaximetro}"></i>
+        <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isTaximetro}">
+          Taximetro
         </div>
       </a>
 
       <a (click)="openPage('riders')" class="box" [ngClass]="{'box-active': _control.isRiders}">
         <i class="fas fa-motorcycle icon-left" [ngClass]="{'active': _control.isRiders}"></i>
-        <div class="text" [ngClass]="{'active': _control.isRiders}">
+        <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isRiders}">
           Riders
         </div>
       </a>
@@ -38,7 +57,7 @@
 
       <a (click)="openPage('empresas')" class="box" [ngClass]="{'box-active': _control.isEmpresas}">
         <i class="fas fa-building icon-left" [ngClass]="{'active': _control.isEmpresas}"></i>
-        <div class="text" [ngClass]="{'active': _control.isEmpresas}">
+        <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isEmpresas}">
           Empresas
         </div>
       </a>
@@ -57,14 +76,117 @@
 
 
 
+<div *ngIf="_control.isTaximetro"
+  style="z-index:999;border-top:1px solid #eee;position:fixed;left:90px;top:60px;width:290px;background:rgb(250, 251, 252);height:100%;padding:20px">
+
+  <div style="font-size:14px;color:#555;font-weight:500">
+    LOCALIZACIÓN
+  </div>
+
+  <input #origin [(ngModel)]="origin_address" (ngModelChange)="updateSearchResults('origin')"
+    placeholder="Dirección de inicio" style="border:1px solid #eee;width:250px;font-size:14px;margin-top:10px" />
+
+  <div [hidden]="origin_items.length == 0"
+    style="background:white;border:1px solid #eee;border-top:0px;border-radius:2px">
+    <a *ngFor="let item of origin_items"
+      style="padding:5px;width:100%;display:flex;align-items:flex-start;font-size:14px;">
+      <div (click)="selectSearchResult(item, 'origin')">
+        {{ item.description }}
+      </div>
+    </a>
+  </div>
+
+  <input #destination [(ngModel)]="destination_address" (ngModelChange)="updateSearchResults('destination')"
+    placeholder="Dirección de destino" style="border:1px solid #eee;width:250px;font-size:14px;margin-top:10px" />
+
+  <div [hidden]="destination_items.length == 0"
+    style="background:white;border:1px solid #eee;border-top:0px;border-radius:2px">
+    <a *ngFor="let item of destination_items"
+      style="padding:5px;width:100%;display:flex;align-items:flex-start;font-size:14px;">
+      <div (click)="selectSearchResult(item, 'destination')">
+        {{ item.description }}
+      </div>
+    </a>
+  </div>
+
+  <div *ngIf="showCosto">
+
+    <div style="margin-top:20px;font-size:14px;color:#555;font-weight:500">
+      COSTO
+    </div>
+
+    <div *ngIf="!isLoading">
+
+
+      <div style="display:flex;align-items:flex-start;margin-top:10px;font-size:14px">
+        <i class="fas fa-map-marker-alt" style="margin-top:5px;color:#f783ac;margin-right:10px"></i>
+        {{direccion_origen}}
+      </div>
+
+      <div style="display:flex;align-items:flex-start;margin-top:10px;font-size:14px">
+        <i class="fas fa-map-marker-alt" style="margin-top:5px;color:#f783ac;margin-right:10px"></i>
+        {{direccion_destino}}
+      </div>
+
+      <div style="color:#555;font-size:15px;margin-top:20px;display:flex">
+        <div style="margin-right:100px;width:70px">
+          Distancia:
+        </div>
+        <div>
+          {{costoData.distancia / 1000}} km
+        </div>
+      </div>
+
+      <div style="color:#555;font-size:15px;margin-top:10px;display:flex">
+        <div style="margin-right:100px;width:70px">
+          Bicicleta:
+        </div>
+        <div>
+          ${{costoData.precioBici}}
+        </div>
+      </div>
+
+      <div style="color:#555;font-size:15px;margin-top:10px;display:flex">
+        <div style="margin-right:100px;width:70px">
+          Moto:
+        </div>
+        <div>
+          ${{costoData.precioMoto}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="isLoading" style="margin-top:20px;width:100%;display:flex;justify-content:center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div (click)="calcular()" style="margin-top:20px;margin-bottom:10px">
+    <button type="button" class="btn btn-outline-secondary btn-block">
+      Calcular
+    </button>
+  </div>
+
+</div>
+
+
+
+
 
 
 <div *ngIf="isAuth" style="z-index:15;position:fixed;top:0px;left:0px;width:100%;">
-  <div
-    style="padding:15px;padding-left:22%;box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);width:100%;background:#FAFBFC;height:60px;display:flex;align-items:center;justify-content:space-between">
+  <div [ngStyle]="{'padding-left': _control.stretched ? '110px':'280px'}"
+    style="padding:15px;box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);width:100%;background:#FAFBFC;height:60px;display:flex;align-items:center;justify-content:space-between">
 
-    <i class="fas fa-bars" style="font-size:20px;color:#555"></i>
-
+    <a (click)="_control.stretched = ! _control.stretched" style="padding:5px">
+      <i class="fas fa-bars" style="font-size:20px;color:#555"></i>
+    </a>
 
     <div *ngIf="_control.isMapa" class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -164,11 +286,11 @@
       <div style="margin-right:20px">
         Oscar Garcia
       </div>
-      <a (click)="logout()"
+      <!-- <a (click)="logout()"
         style="margin-right:20px;border:1px solid #eee;border-radius:6px;padding:4px;padding-left:10px;padding-right:10px">
         <i class="fas fa-sign-in-alt" style="color:#bbb;margin-right:10px"></i>
         Salir
-      </a>
+      </a> -->
     </div>
 
   </div>
@@ -178,8 +300,9 @@
 
 
 
-<div *ngIf="isAuth" [ngStyle]="{'margin-top': _control.isMapa ? '70px': '100px'}" style="margin-left:20%;">
-  <div [ngStyle]="{'margin': _control.isMapa ? '5px': '25px'}" style="background:#F9FAFB">
+<div *ngIf="isAuth"
+  [ngStyle]="{'margin-top': _control.isMapa || _control.isTaximetro ? '70px': '100px', 'margin-left': _control.isTaximetro ? '290px':'0px', 'padding-left': _control.stretched ? '90px':'250px' }">
+  <div [ngStyle]="{'margin': _control.isMapa || _control.isTaximetro ? '5px': '25px'}" style="background:#F9FAFB">
     <router-outlet></router-outlet>
   </div>
 </div>

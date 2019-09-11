@@ -27,10 +27,12 @@ export class AuthService {
     });
   }
 
-  loginIn(email, password) {
+  loginIn(body) {
     return new Promise((resolve, reject) => {
-      this.signIn(email, password).then((res: any) => {
+      this.signIn(body).then((res: any) => {
         if (res.ok) {
+          this.usuario = res.usuario;
+          this.token = res.token;
           this.saveStorage(res.usuario, res.token, res.usuario._id);
           resolve(true);
         } else {
@@ -76,9 +78,8 @@ export class AuthService {
     }
   }
 
-  signIn(email, password) {
+  signIn(body) {
     const url = `${this.apiURL}/usuarios/signin-email`;
-    const body = { email, password };
     return this.http.post(url, body).toPromise();
   }
 

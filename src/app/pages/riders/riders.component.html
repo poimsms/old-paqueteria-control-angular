@@ -1,9 +1,9 @@
 <div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
 
-  <div
+  <!-- <div
     style="border-radius:6px 6px 0px 0px;color:white;background:dodgerblue;padding:20px;font-weight:550;font-size:20px">
     Riders
-  </div>
+  </div> -->
 
 
   <div style="padding:15px;display:flex;">
@@ -43,26 +43,17 @@
     <tbody>
       <tr *ngFor="let rider of riders; let i = index">
         <th scope="row"> {{i + 1}} </th>
-        <td> {{rider.nombre}} </td>
+        <td style="text-transform:capitalize"> {{rider.nombre}} </td>
         <td *ngIf="rider.stats">
-          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 1"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 1.5"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 2"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 2.5"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 3"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 3.5"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" *ngIf="rider.stats.startsAvg >= 4"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star-half" *ngIf="rider.stats.startsAvg == 4.5"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
-          <i class="fas fa-star" *ngIf="rider?.stats.startsAvg >= 5"
-            style="font-size:20px;color:gold;margin-right:3px"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 1"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 1.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 2"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 2.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 3"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 3.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 4"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 4.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider?.stats.startsAvg >= 5"></i>
           {{rider.stats.startsAvg}}
         </td>
         <td> {{rider.vehiculo}} </td>
@@ -77,6 +68,50 @@
       </tr>
     </tbody>
   </table>
+
+
+
+  <table class="table" *ngIf="isBusqueda">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Valoración</th>
+        <th scope="col">Vehículo</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Relación</th>
+        <th scope="col">Activo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"> 1 </th>
+        <td style="text-transform:capitalize"> {{rider.nombre}} </td>
+        <td *ngIf="rider.stats">
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 1"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 1.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 2"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 2.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 3"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 3.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider.stats.startsAvg >= 4"></i>
+          <i class="fas fa-star-half estrella" *ngIf="rider.stats.startsAvg == 4.5"></i>
+          <i class="fas fa-star estrella" *ngIf="rider?.stats.startsAvg >= 5"></i>
+          {{rider.stats.startsAvg}}
+        </td>
+        <td> {{rider.vehiculo}} </td>
+        <td> {{rider.telefono}} </td>
+        <td> {{rider.relacion}} </td>
+        <td>
+          <i (click)="toggleAccountFromBusqueda(rider)" *ngIf="!rider.isActive" class="fas fa-toggle-off"
+            style="color:#bbb;font-size:24px"></i>
+          <i (click)="toggleAccountFromBusqueda(rider)" *ngIf="rider.isActive" class="fas fa-toggle-on"
+            style="color:dodgerblue;font-size:24px"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
 
 
   <table class="table" *ngIf="isBusqueda">
@@ -95,14 +130,14 @@
     <tbody>
       <tr *ngFor="let pedido of pedidos; let i = index">
         <th scope="row"> {{i + 1}} </th>
-        <td> {{pedido.cliente.nombre}} </td>
+        <td style="text-transform:capitalize"> {{pedido.cliente.nombre}} </td>
         <td>
           <div *ngIf="pedido.cliente.role == 'EMPRESA_ROLE'">
             Empresa
           </div>
-          <div *ngIf="pedido.cliente.role == 'USER_ROLE'">
+          <div *ngIf="pedido.cliente.role == 'USUARIO_ROLE'">
             Usuario
-          </div>        
+          </div>
         </td>
         <td> {{pedido.fecha}} </td>
         <td> {{pedido.metodoPago}} </td>
@@ -281,7 +316,7 @@
 
     <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
 
-    <div  style="margin-top:5px;width:100%;display:flex;justify-content:center">
+    <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
 
       <div *ngIf="!isUploadedImg && !isLoadingImage" (click)="fileInput.click()"
         style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
@@ -290,7 +325,7 @@
       </div>
 
       <div *ngIf="isUploadedImg == true">
-          <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+        <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
       </div>
 
     </div>
@@ -307,7 +342,6 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" (click)="vehiculo = 'Bicicleta'">Bicicleta</a>
           <a class="dropdown-item" (click)="vehiculo = 'Moto'">Moto</a>
-          <a class="dropdown-item" (click)="vehiculo = 'Camioneta'">Camioneta</a>
         </div>
       </div>
     </div>
@@ -329,7 +363,7 @@
     </div>
 
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="text" placeholder="Nombre" [(ngModel)]="nombre" />
+      <input type="text" placeholder="Nombre" [(ngModel)]="nombre" style="text-transform:capitalize" />
     </div>
 
     <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
@@ -358,6 +392,9 @@
     </div>
     <div *ngIf="error_vehiculo" style="margin-top:15px;color:red">
       Debe seleccionar un vehículo
+    </div>
+    <div *ngIf="error_email_no_valido" style="margin-top:15px;color:red">
+      Email no válido
     </div>
     <div *ngIf="error_relacion" style="margin-top:15px;color:red">
       Debe seleccionar un tipo de relación

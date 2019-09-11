@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 export class ConfigService {
 
   apiURL: string;
-  version = '1.0.0'
-  ENTORNO = 'DEV';
+  version = '1.0.1'
+  ENTORNO = 'PROD';
 
   constructor() {
     this.setApi();
@@ -16,11 +16,11 @@ export class ConfigService {
   setApi() {
 
     if (this.ENTORNO == 'DEV') {
-      this.apiURL = `http://localhost:3000/dashboard/v${this.version}`;
+      this.apiURL = `http://localhost:3000/v${this.version}`;
     }
 
     if (this.ENTORNO == 'PROD') {
-      this.apiURL = `https://joopiterweb.com/dashboard/v${this.version}`;
+      this.apiURL = `https://joopiterweb.com/v${this.version}`;
     }
     
   }

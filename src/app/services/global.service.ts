@@ -46,7 +46,7 @@ export class GlobalService {
   }
 
   getTarifas() {
-    const url = `${this._config.apiURL}/tarifas/get-all`;
+    const url = `${this._config.apiURL}/dash/tarifas-get-all`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     this.http.get(url, { headers }).toPromise().then(tarifas => {
       this.tarifas = tarifas;
@@ -55,13 +55,13 @@ export class GlobalService {
   }
 
   updateTarifas(body) {
-    const url = `${this.apiURL}/tarifas/update`;
+    const url = `${this._config.apiURL}/dash/tarifas-update`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.put(url, body, { headers }).toPromise();
   }
 
   updateTarifasHorario(body) {
-    const url = `${this.apiURL}/tarifas/horario-update`;
+    const url = `${this._config.apiURL}/dash/horario-update`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.put(url, body, { headers }).toPromise();
   }

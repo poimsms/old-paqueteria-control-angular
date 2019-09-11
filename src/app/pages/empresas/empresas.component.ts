@@ -21,6 +21,7 @@ export class EmpresasComponent implements OnInit {
   empresas = [];
   pedidos = [];
   imagen: any;
+  empresa: any;
 
   isEmpresas = true;
   isBusqueda = false;
@@ -33,7 +34,7 @@ export class EmpresasComponent implements OnInit {
   error_telefono_existe = false;
   error_imagen = false;
   error_password = false;
-  error_wrong_email = false;
+  error_email_no_valido = false;
 
   showFiltros = false;
   showBusqueda = false;
@@ -96,16 +97,31 @@ export class EmpresasComponent implements OnInit {
     });
   }
 
-  toggleAccount(empresa) {
-    this._data.riderToggleAccount(empresa).then((res: any) => {
-      if (res.activation) {
-        this._data.updateRiderFirebase(empresa._id, { isActive: false })
-        this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
-      } else {
-        this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
-      }
-      this.getEmpresas();
-    });
+  async toggleAccount(usuario) {
+
+    await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
+
+    if (usuario.isActive) {
+      this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
+    } else {
+      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+    }
+
+    this.getEmpresas();
+  }
+
+  async toggleAccountFromBusqueda(usuario) {
+
+    const data: any = await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
+
+    if (usuario.isActive) {
+      this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
+    } else {
+      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+    }
+    this.empresa = null;
+    this.empresa = data.usuario;
+    this.getEmpresas();
   }
 
   onFileSelected(event) {
@@ -113,10 +129,14 @@ export class EmpresasComponent implements OnInit {
     const fd = new FormData();
     this.isLoadingImage = true;
     fd.append('image', file, file.name);
-    this._data.uploadImage(fd).then(res => {
-      this.imagen = res;
+    this._data.uploadImage(fd).then((res: any) => {
+
+      if (res.ok) {
+        this.imagen = res.image;
+        this.isUploadedImg = true;
+      }
+
       this.isLoadingImage = false;
-      this.isUploadedImg = true;
     });
   }
 
@@ -137,7 +157,7 @@ export class EmpresasComponent implements OnInit {
     }
 
     if (!this.validateEmail(this.email)) {
-      return this.error_wrong_email = true;
+      return this.error_email_no_valido = true;
     }
 
     if (this.password_1 != this.password_2) {
@@ -152,15 +172,15 @@ export class EmpresasComponent implements OnInit {
 
     const body = {
       nombre: this.nombre,
-      email: this.email,
+      email: this.email.toLowerCase(),
       telefono: Number(this.telefono),
       password: this.password_1,
       role: 'EMPRESA_ROLE',
       img: this.imagen
     }
-    this._data.crearCuenta(body).then((data: any) => {
+    this._data.createAccount(body).then((data: any) => {
       if (data.ok) {
-        this.toastr.success('Cuenta creada con exito', 'Nuevo empresa');
+        this.toastr.success('Cuenta creada con exito', 'Nueva empresa');
         this.close_crear();
       } else {
         this.error_telefono_existe = true;
@@ -169,13 +189,10 @@ export class EmpresasComponent implements OnInit {
     });
   }
 
-  validateEmail(email) {
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  }
-
   close_crear() {
     this.showCrear = false;
+    this.isUploadedImg = false;
+    this.imagen = {};
     this.telefono = undefined;
     this.nombre = undefined;
     this.direccion = undefined;
@@ -193,7 +210,7 @@ export class EmpresasComponent implements OnInit {
     this.error_8_digitos_telefono = false;
     this.error_imagen = false;
     this.error_password = false;
-    this.error_wrong_email = false;
+    this.error_email_no_valido = false;
   }
 
   close_busqueda() {
@@ -212,13 +229,23 @@ export class EmpresasComponent implements OnInit {
   }
 
   buscar() {
+
+    this.empresas = [];
+    this.empresa = null;
+
     this._data.findPedidosByPhoneEmpresa(this.filtro_telefono)
       .then((data: any) => {
         this.pedidos = data.pedidos;
         this.isBusqueda = true;
         this.isEmpresas = false;
         this.showBusqueda = false;
+        this.empresa = data.empresa;
       });
+  }
+
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
   }
 
 }

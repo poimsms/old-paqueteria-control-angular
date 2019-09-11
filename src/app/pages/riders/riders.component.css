@@ -19,6 +19,12 @@ input[type=date]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
+.estrella {
+  font-size:15px;
+  color:#666;
+  margin-right:3px;
+}
+
 
 
 

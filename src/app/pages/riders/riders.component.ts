@@ -17,10 +17,13 @@ export class RidersComponent implements OnInit {
   password_2: string;
   vehiculo = 'Seleccionar';
   relacion = "Seleccionar";
+  vehiculo_long = 'Seleccionar';
+  relacion_long = 'Seleccionar';
 
   riders = [];
   pedidos = [];
   imagen: any;
+  rider: any;
 
   isRiders = true;
   isBusqueda = false;
@@ -35,6 +38,7 @@ export class RidersComponent implements OnInit {
   error_vehiculo = false;
   error_relacion = false;
   error_imagen = false;
+  error_email_no_valido = false;
 
   showFiltros = false;
   showBusqueda = false;
@@ -103,16 +107,35 @@ export class RidersComponent implements OnInit {
     });
   }
 
-  toggleAccount(rider) {
-    this._data.riderToggleAccount(rider).then((res: any) => {
-      if (res.activation) {
-        this._data.updateRiderFirebase(rider._id, { isActive: false })
-        this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
-      } else {
-        this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
-      }
-      this.getRiders();
-    });
+  async toggleAccount(usuario) {
+
+    await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
+    await this._data.updateRiderFirebase(usuario._id, 'rider', { isActive: !usuario.isActive })
+    await this._data.updateRiderFirebase(usuario._id, 'coors', { isActive: !usuario.isActive })
+
+    if (usuario.isActive) {
+      this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
+    } else {
+      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+    }
+
+    this.getRiders();
+  }
+
+  async toggleAccountFromBusqueda(usuario) {
+
+    const data: any = await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
+    await this._data.updateRiderFirebase(usuario._id, 'rider', { isActive: !usuario.isActive })
+    await this._data.updateRiderFirebase(usuario._id, 'coors', { isActive: !usuario.isActive })
+
+    if (usuario.isActive) {
+      this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
+    } else {
+      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+    }
+    this.rider = null;
+    this.rider = data.usuario;
+    this.getRiders();
   }
 
   onFileSelected(event) {
@@ -120,10 +143,14 @@ export class RidersComponent implements OnInit {
     const fd = new FormData();
     fd.append('image', file, file.name);
     this.isLoadingImage = true;
-    this._data.uploadImage(fd).then(res => {
-      this.imagen = res;
+    this._data.uploadImage(fd).then((res: any) => {
+
+      if (res.ok) {
+        this.imagen = res.image;
+        this.isUploadedImg = true;
+      }
+
       this.isLoadingImage = false;
-      this.isUploadedImg = true;
     });
   }
 
@@ -137,6 +164,10 @@ export class RidersComponent implements OnInit {
 
     if (!Number(this.telefono)) {
       return this.error_num_telefono = true;
+    }
+
+    if (!this.validateEmail(this.email)) {
+      return this.error_email_no_valido = true;
     }
 
     if (this.telefono.length != 8) {
@@ -164,7 +195,7 @@ export class RidersComponent implements OnInit {
 
     const body = {
       nombre: this.nombre,
-      email: this.email,
+      email: this.email.toLowerCase(),
       telefono: this.telefono,
       password: this.password_1,
       vehiculo: this.vehiculo,
@@ -176,9 +207,9 @@ export class RidersComponent implements OnInit {
         startsAvg: 2.0,
         startsSum: 2
       }
-    }
+    };
 
-    this._data.crearCuenta(body).then((data: any) => {
+    this._data.createAccount(body).then((data: any) => {
       if (data.ok) {
         this.toastr.success('Cuenta creada con exito', 'Nuevo rider');
         this._data.createRiderCoorsFirebase(data.usuario);
@@ -193,6 +224,8 @@ export class RidersComponent implements OnInit {
 
   close_crear() {
     this.showCrear = false;
+    this.isUploadedImg = false;
+    this.imagen = {};
     this.telefono = undefined;
     this.nombre = undefined;
     this.email = undefined;
@@ -214,6 +247,7 @@ export class RidersComponent implements OnInit {
     this.error_vehiculo = false;
     this.error_relacion = false;
     this.error_imagen = false;
+    this.error_email_no_valido = false;
   }
 
   close_busqueda() {
@@ -232,13 +266,23 @@ export class RidersComponent implements OnInit {
   }
 
   buscar() {
+
+    this.riders = [];
+    this.rider = null;
+
     this._data.findPedidosByPhoneRider(this.filtro_telefono)
       .then((data: any) => {
         this.pedidos = data.pedidos;
         this.isBusqueda = true;
         this.isRiders = false;
         this.showBusqueda = false;
+        this.rider = data.rider;
       });
+  }
+
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
   }
 }
 

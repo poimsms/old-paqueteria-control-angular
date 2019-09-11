@@ -7,6 +7,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { PedidosComponent } from './pages/pedidos/pedidos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { RidersComponent } from './pages/riders/riders.component';
+import { TaximetroComponent } from './pages/taximetro/taximetro.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'empresas', pathMatch: 'full' },
@@ -16,6 +17,8 @@ const routes: Routes = [
   { path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard] },
   { path: 'usuario', component: UsuarioComponent, canActivate: [AuthGuard] },
   { path: 'riders', component: RidersComponent, canActivate: [AuthGuard] },
+  { path: 'taximetro', component: TaximetroComponent, canActivate: [AuthGuard] },
+
 
   { path: '**', component: LoginComponent },
 

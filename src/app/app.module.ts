@@ -6,6 +6,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
 import { AngularFireModule } from '@angular/fire';
@@ -35,6 +36,7 @@ import { PedidosComponent } from './pages/pedidos/pedidos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { RidersComponent } from './pages/riders/riders.component';
 import { PopupsHomeComponent } from './components/popups-home/popups-home.component';
+import { TaximetroComponent } from './pages/taximetro/taximetro.component';
 
 @NgModule({
   declarations: [
@@ -46,13 +48,15 @@ import { PopupsHomeComponent } from './components/popups-home/popups-home.compon
     PedidosComponent,
     UsuarioComponent,
     RidersComponent,
-    PopupsHomeComponent
+    PopupsHomeComponent,
+    TaximetroComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    GooglePlaceModule,
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,

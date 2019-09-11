@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ridersSubscription$: Subscription;
 
-  iconoBicicleta = {
+  iconoMoto = {
     url: 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565228910/tools/pin.png',
     scaledSize: {
       width: 40,
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  iconoMoto = {
+  iconoBicicleta = {
     url: 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565230426/tools/pin_2.png',
     scaledSize: {
       width: 40,

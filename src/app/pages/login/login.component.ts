@@ -64,7 +64,14 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.email && this.password) {
       this.isLoading = true;
-      this._auth.loginIn(this.email, this.password).then(isAuth => {
+      
+      const authData = {
+        email: this.email,
+        password: this.password,
+        from: 'dashborad-app'
+      };
+      
+      this._auth.loginIn(authData).then(isAuth => {
         if (isAuth) {
           this.isLoading = false;
           this.router.navigateByUrl('home');
