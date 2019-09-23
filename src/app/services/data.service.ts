@@ -166,6 +166,12 @@ export class DataService {
     return this.http.get(url, { headers }).toPromise();
   }
 
+  getRidersEnPlataforma(body) {
+    const url = `${this.apiURL}/dash/riders-activos`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
   // ---------------------------
   //        EMPRESA
   // ---------------------------

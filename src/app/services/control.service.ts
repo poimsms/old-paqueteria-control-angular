@@ -11,6 +11,7 @@ export class ControlService {
   isMapaActivos = true;
   isMapaTodo = false;
   isTaximetro = false;
+  isGraficas = false;
   isRiders = false;
   isEmpresas = false;
   isPedidos = false;
@@ -65,6 +66,16 @@ export class ControlService {
   activar(tipo) {
     if (tipo == 'mapa') {
       this.isMapa = true;
+      this.isGraficas = false;
+      this.isTaximetro = false;
+      this.isRiders = false;
+      this.isEmpresas = false;
+      this.isPedidos = false;
+      this.stretched = false;
+    }
+    if (tipo == 'graficas') {
+      this.isMapa = false;
+      this.isGraficas = true;
       this.isTaximetro = false;
       this.isRiders = false;
       this.isEmpresas = false;
@@ -73,39 +84,39 @@ export class ControlService {
     }
     if (tipo == 'taximetro') {
       this.isMapa = false;
+      this.isGraficas = false;
       this.isTaximetro = true;
       this.isRiders = false;
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = true;
-
     }
     if (tipo == 'riders') {
       this.isMapa = false;
+      this.isGraficas = false;
       this.isTaximetro = false;
       this.isRiders = true;
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = false;
-
     }
     if (tipo == 'empresas') {
       this.isMapa = false;
+      this.isGraficas = false;
       this.isTaximetro = false;
       this.isRiders = false;
       this.isEmpresas = true;
       this.isPedidos = false;
       this.stretched = false;
-
     }
     if (tipo == 'pedidos') {
       this.isMapa = false;
+      this.isGraficas = false;
       this.isTaximetro = false;
       this.isRiders = false;
       this.isEmpresas = false;
       this.isPedidos = true;
       this.stretched = false;
-
     }
   }
 

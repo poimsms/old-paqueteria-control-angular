@@ -32,7 +32,7 @@
         <th scope="col">Empresa</th>
         <th scope="col">Teléfono</th>
         <th scope="col">Email</th>
-        <th scope="col">Activo</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -42,10 +42,13 @@
         <td> {{empresa.telefono}} </td>
         <td> {{empresa.email}} </td>
         <td>
-          <i (click)="toggleAccount(empresa)" *ngIf="!empresa.isActive" class="fas fa-toggle-off"
-            style="color:#bbb;font-size:24px"></i>
-          <i (click)="toggleAccount(empresa)" *ngIf="empresa.isActive" class="fas fa-toggle-on"
-            style="color:dodgerblue;font-size:24px"></i>
+          <button *ngIf="empresa.isActive" (click)="toggleAccount(empresa)" class="btn btn-primary btn-sm">
+            Desactivar
+          </button>
+
+          <button *ngIf="!empresa.isActive" (click)="toggleAccount(empresa)" class="btn btn-outline-primary btn-sm">
+            Activar
+          </button>
         </td>
       </tr>
     </tbody>
@@ -59,7 +62,7 @@
         <th scope="col">Empresa</th>
         <th scope="col">Teléfono</th>
         <th scope="col">Email</th>
-        <th scope="col">Activo</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -69,10 +72,14 @@
         <td> {{empresa.telefono}} </td>
         <td> {{empresa.email}} </td>
         <td>
-          <i (click)="toggleAccountFromBusqueda(empresa)" *ngIf="!empresa.isActive" class="fas fa-toggle-off"
-            style="color:#bbb;font-size:24px"></i>
-          <i (click)="toggleAccountFromBusqueda(empresa)" *ngIf="empresa.isActive" class="fas fa-toggle-on"
-            style="color:dodgerblue;font-size:24px"></i>
+          <button *ngIf="empresa.isActive" (click)="toggleAccountFromBusqueda(empresa)" class="btn btn-primary btn-sm">
+            Desactivar
+          </button>
+
+          <button *ngIf="!empresa.isActive" (click)="toggleAccountFromBusqueda(empresa)"
+            class="btn btn-outline-primary btn-sm">
+            Activar
+          </button>
         </td>
       </tr>
     </tbody>

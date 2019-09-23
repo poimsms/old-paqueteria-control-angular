@@ -1,0 +1,156 @@
+<div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
+
+  <div style="padding:15px;padding-right:20px;display:flex;justify-content:flex-end">
+    <a (click)="showBusqueda = true"
+      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
+    </a>
+  </div>
+
+
+
+  <div class="flex">
+    <div class="flex-item">
+      <div style="display: block;">
+        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels"
+          [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+          [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<div *ngIf="showBusqueda"
+  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
+  <div
+    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
+    <div (click)="close_busqueda()" style="position:absolute;top:-5px;right:-5px;color:#555">
+      <i class="fas fa-times-circle" style="font-size:32px"></i>
+    </div>
+    <div style="display:flex;align-items:center;font-weight:550">
+      <i class="fas fa-search" style="font-size:30px;color:#bbb;margin-right:10px"></i>
+      Búsqueda
+    </div>
+    <div style="margin-top:20px">
+      Franja horaria
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-around">
+
+
+      <div style="display:flex;align-items:center;">
+        <div>
+          Inicio:
+        </div>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{filtro.horaInput.start}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" (click)="updateFiltro(1, '01:00', 'hora_start')">01:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(2, '02:00', 'hora_start')">02:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(3, '03:00', 'hora_start')">03:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(4, '04:00', 'hora_start')">04:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(5, '05:00', 'hora_start')">05:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(6, '06:00', 'hora_start')">06:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(7, '07:00', 'hora_start')">07:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(8, '08:00', 'hora_start')">08:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(9, '09:00', 'hora_start')">09:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(10, '10:00', 'hora_start')">10:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(11, '11:00', 'hora_start')">11:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(12, '12:00', 'hora_start')">12:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(13, '13:00', 'hora_start')">13:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(14, '14:00', 'hora_start')">14:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(15, '15:00', 'hora_start')">15:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(16, '16:00', 'hora_start')">16:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(17, '17:00', 'hora_start')">17:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(18, '18:00', 'hora_start')">18:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(19, '19:00', 'hora_start')">19:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(20, '20:00', 'hora_start')">20:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(21, '21:00', 'hora_start')">21:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(22, '22:00', 'hora_start')">22:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(23, '23:00', 'hora_start')">23:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(24, '24:00', 'hora_start')">24:00</a>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div style="display:flex;align-items:center;">
+        <div>
+          Término:
+        </div>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{filtro.horaInput.end}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" (click)="updateFiltro(1, '01:00', 'hora_end')">01:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(2, '02:00', 'hora_end')">02:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(3, '03:00', 'hora_end')">03:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(4, '04:00', 'hora_end')">04:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(5, '05:00', 'hora_end')">05:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(6, '06:00', 'hora_end')">06:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(7, '07:00', 'hora_end')">07:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(8, '08:00', 'hora_end')">08:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(9, '09:00', 'hora_end')">09:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(10, '10:00', 'hora_end')">10:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(11, '11:00', 'hora_end')">11:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(12, '12:00', 'hora_end')">12:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(13, '13:00', 'hora_end')">13:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(14, '14:00', 'hora_end')">14:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(15, '15:00', 'hora_end')">15:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(16, '16:00', 'hora_end')">16:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(17, '17:00', 'hora_end')">17:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(18, '18:00', 'hora_end')">18:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(19, '19:00', 'hora_end')">19:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(20, '20:00', 'hora_end')">20:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(21, '21:00', 'hora_end')">21:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(22, '22:00', 'hora_end')">22:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(23, '23:00', 'hora_end')">23:00</a>
+            <a class="dropdown-item" (click)="updateFiltro(24, '24:00', 'hora_end')">24:00</a>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <div style="margin-top:20px">
+      Periodo
+    </div>
+    <div style="display:flex;border:1px solid #eee;padding:5px">
+      <div style="border-right:1px solid #eee;padding:7px;padding-top:0px;padding-bottom:0px">
+        <div style="font-size:14px;margin-bottom:-5px;">
+          Inicio
+        </div>
+        <div>
+          <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+          <input id="date" type="date" [(ngModel)]="filtro.diaInput.start" />
+        </div>
+      </div>
+      <div style="padding:7px;padding-top:0px;padding-bottom:0px">
+        <div style="font-size:14px;margin-bottom:-5px;">
+          Término
+        </div>
+        <div>
+          <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
+          <input id="date" type="date" [(ngModel)]="filtro.diaInput.end" />
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:30px"></div>
+
+    <button (click)="buscar()" type="button" class="btn btn-outline-primary btn-block">
+      Buscar periodo
+    </button>
+  </div>
+</div>

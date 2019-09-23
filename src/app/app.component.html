@@ -40,6 +40,13 @@
         </div>
       </a>
 
+      <a (click)="openPage('graficas')" class="box" [ngClass]="{'box-active': _control.isGraficas}">
+        <i class="fas fa-chart-line icon-left" [ngClass]="{'active': _control.isGraficas}"></i>
+        <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isGraficas}">
+          Gráficas
+        </div>
+      </a>
+
       <a (click)="openPage('taximetro')" class="box" [ngClass]="{'box-active': _control.isTaximetro}">
         <i class="fas fa-map-marker-alt icon-left" [ngClass]="{'active': _control.isTaximetro}"></i>
         <div *ngIf="!_control.stretched" class="text" [ngClass]="{'active': _control.isTaximetro}">
@@ -263,9 +270,9 @@
             <img src="https://i.redd.it/vtpfvbqe54a21.png"
               style="width:50px;height:50px;border-radius:50%;object-fit:cover;">
             <div style="margin-left:20px">
-              Oscar Garcia Fuentes
+              {{usuario?.nombre}}
               <div>
-                poimsm@gmail.com
+                {{usuario?.email}}
               </div>
             </div>
           </div>
@@ -283,8 +290,8 @@
           </a>
         </div>
       </div>
-      <div style="margin-right:20px">
-        Oscar Garcia
+      <div style="margin-right:20px;width:100px;height:25px;overflow:hidden">
+        {{usuario?.nombre}}
       </div>
       <!-- <a (click)="logout()"
         style="margin-right:20px;border:1px solid #eee;border-radius:6px;padding:4px;padding-left:10px;padding-right:10px">

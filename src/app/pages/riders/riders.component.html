@@ -37,7 +37,7 @@
         <th scope="col">Vehículo</th>
         <th scope="col">Teléfono</th>
         <th scope="col">Relación</th>
-        <th scope="col">Activo</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -60,10 +60,13 @@
         <td> {{rider.telefono}} </td>
         <td> {{rider.relacion}} </td>
         <td>
-          <i (click)="toggleAccount(rider)" *ngIf="!rider.isActive" class="fas fa-toggle-off"
-            style="color:#bbb;font-size:24px"></i>
-          <i (click)="toggleAccount(rider)" *ngIf="rider.isActive" class="fas fa-toggle-on"
-            style="color:dodgerblue;font-size:24px"></i>
+          <button *ngIf="rider.isActive" (click)="toggleAccount(rider)" class="btn btn-primary btn-sm">
+            Desactivar
+          </button>
+
+          <button *ngIf="!rider.isActive" (click)="toggleAccount(rider)" class="btn btn-outline-primary btn-sm">
+            Activar
+          </button>
         </td>
       </tr>
     </tbody>
@@ -80,7 +83,7 @@
         <th scope="col">Vehículo</th>
         <th scope="col">Teléfono</th>
         <th scope="col">Relación</th>
-        <th scope="col">Activo</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -103,10 +106,14 @@
         <td> {{rider.telefono}} </td>
         <td> {{rider.relacion}} </td>
         <td>
-          <i (click)="toggleAccountFromBusqueda(rider)" *ngIf="!rider.isActive" class="fas fa-toggle-off"
-            style="color:#bbb;font-size:24px"></i>
-          <i (click)="toggleAccountFromBusqueda(rider)" *ngIf="rider.isActive" class="fas fa-toggle-on"
-            style="color:dodgerblue;font-size:24px"></i>
+          <button *ngIf="rider.isActive" (click)="toggleAccountFromBusqueda(rider)" class="btn btn-primary btn-sm">
+            Desactivar
+          </button>
+
+          <button *ngIf="!rider.isActive" (click)="toggleAccountFromBusqueda(rider)"
+            class="btn btn-outline-primary btn-sm">
+            Activar
+          </button>
         </td>
       </tr>
     </tbody>

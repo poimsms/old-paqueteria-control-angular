@@ -49,6 +49,8 @@ export class AppComponent {
   showCosto = false;
   isLoading = false;
 
+  usuario: any;
+
   constructor(
     public _control: ControlService,
     private _data: DataService,
@@ -61,6 +63,7 @@ export class AppComponent {
       this.isAuth = data.isAuth;
       if (data.isAuth) {
         this._global.getTarifas();
+        this.usuario = data.usuario;
       }
     });
 

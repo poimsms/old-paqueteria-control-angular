@@ -14,6 +14,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { ChartsModule } from 'ng2-charts';
 
 
 export const firebaseConfig = {
@@ -32,11 +33,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { EmpresasComponent } from './pages/empresas/empresas.component';
 import { HeaderComponent } from './pages/header/header.component';
-import { PedidosComponent } from './pages/pedidos/pedidos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { RidersComponent } from './pages/riders/riders.component';
 import { PopupsHomeComponent } from './components/popups-home/popups-home.component';
 import { TaximetroComponent } from './pages/taximetro/taximetro.component';
+import { GraficasComponent } from './pages/graficas/graficas.component';
 
 @NgModule({
   declarations: [
@@ -45,11 +46,11 @@ import { TaximetroComponent } from './pages/taximetro/taximetro.component';
     LoginComponent,
     EmpresasComponent,
     HeaderComponent,
-    PedidosComponent,
     UsuarioComponent,
     RidersComponent,
     PopupsHomeComponent,
-    TaximetroComponent
+    TaximetroComponent,
+    GraficasComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +62,7 @@ import { TaximetroComponent } from './pages/taximetro/taximetro.component';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AppRoutingModule,
+    ChartsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDrc_AM9eMidi_yXt0h7q-orH0vt9D13vk'
     }),

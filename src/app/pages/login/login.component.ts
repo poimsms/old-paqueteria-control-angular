@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
       
       const authData = {
-        email: this.email,
+        email: this.email.toLowerCase(),
         password: this.password,
         from: 'dashborad-app'
       };
