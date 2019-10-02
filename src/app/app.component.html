@@ -194,27 +194,27 @@
     <a (click)="_control.stretched = ! _control.stretched" style="padding:5px">
       <i class="fas fa-bars" style="font-size:20px;color:#555"></i>
     </a>
-
+    <!-- <i class="fas fa-cog"></i> -->
     <div *ngIf="_control.isMapa" class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <i class="far fa-clock" style="font-size:20px;color:#777"></i>
-        <span style="color:gray;margin-left:5px">Tarifas</span>
+        <i class="fas fa-cog" style="font-size:20px;color:#777"></i>
+        <span style="color:gray;margin-left:5px">Ajustes</span>
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" (click)="openPopup('tarifa noche')" style="color:gray">
           <div style="margin-top:5px;margin-bottom:5px">
-            Tarifa nocturna
+            Tarifas nocturnas
           </div>
         </a>
         <a class="dropdown-item" (click)="openPopup('tarifa dia')" style="color:gray">
           <div style="margin-top:5px;margin-bottom:5px">
-            Tarifa diurna
+            Tarifas diurnas
           </div>
         </a>
-        <a class="dropdown-item" (click)="openPopup('horario')" style="color:gray">
+        <a class="dropdown-item" (click)="openPopup('reiniciar rider')" style="color:gray">
           <div style="margin-top:5px;margin-bottom:5px">
-            Horario de cambio
+            Reiniciar rider
           </div>
         </a>
       </div>
@@ -337,6 +337,16 @@
 
 <div *ngIf="_global.isLoading"
   style="z-index:999;background:rgb(50,50,50,0.5);position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+</div>
+
+
+<div *ngIf="_control.isLoading"
+  style="z-index:999;background:rgb(10,10,10,0.5);position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center">
   <div class="spinner">
     <div class="bounce1"></div>
     <div class="bounce2"></div>

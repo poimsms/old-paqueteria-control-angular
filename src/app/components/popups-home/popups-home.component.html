@@ -93,13 +93,10 @@
 
     <div
       style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#626ed4">
-      <!-- <div style="color:white;font-size:20px">
-        Tarfias nocturnas
-      </div> -->
       <div style="display:flex;align-items:center">
         <i class="fas fa-moon" style="font-size:20px;margin-right:10px;color:white"></i>
         <div style="color:white;font-size:20px">
-          Tarfias nocturnas
+          Tarfias Nocturnas
         </div>
       </div>
       <div (click)="_global.closeTarifas()"
@@ -245,13 +242,10 @@
 
     <div
       style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#626ed4">
-      <!-- <div style="color:white;font-size:20px">
-        Tarfias diurna
-      </div> -->
       <div style="display:flex;align-items:center">
         <i class="fas fa-sun" style="font-size:20px;margin-right:10px;color:white"></i>
         <div style="color:white;font-size:20px">
-          Tarfias diurna
+          Tarfias Diurnas
         </div>
       </div>
       <div (click)="_global.closeTarifas()"
@@ -398,69 +392,111 @@
 
 
 
-<div *ngIf="_control.map_horario"
-  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
-  <div style="width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
-
-    <!-- Establesca la franja horaria para aplicar la tarifa nocturna -->
-
+<div *ngIf="_control.reiniciar_rider"
+  style="margin-top:0px;overflow-y:scroll;z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
+  <div
+    style="margin-top:25px;margin-bottom:30px;position:relative;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
 
     <div
-      style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#039BE5">
-      <div style="display:flex;align-items:center;font-weight:550;color:white;font-size:20px">
-        Horario de cambio
+      style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#626ed4">
+      <div style="display:flex;align-items:center">
+        <i class="fas fa-pencil-alt" style="font-size:20px;margin-right:10px;color:white"></i>
+        <div style="color:white;font-size:20px">
+          Reinicar Rider
+        </div>
       </div>
-      <div (click)="close('horario')"
-        style="width:40px;height:40px;border-radius:50%;background:#0389CA;display:flex;align-items:center;justify-content:center">
-        <i class="fas fa-times" style="font-size:22px;color:whitesmoke"></i>
+      <div (click)="_control.reiniciar_rider = false"
+        style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-times" style="font-size:22px;color:rgba(255,255,255,.5)!important"></i>
       </div>
     </div>
 
     <div style="padding:30px">
 
       <div>
-        Establesca la franja horaria para aplicar la tarifa nocturna
-
+        Teléfono
       </div>
 
-      <div style="margin-top:30px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:18px;width:130px">Cambio noche:</div>
-        <div
-          style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:150px">
-          <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:10px"></i>
-          <div style="padding:10px">
-            22:00
-          </div>
-          <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:10px"></i>
+      <div
+        style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:400px">
+        <div style="background:#eee;color:#555;padding:3px;width:60px">
+          +56 9
         </div>
-        <div></div>
-        <!-- <div style="color:dodgerblue;font-size:14px;font-weight:550">
-        Editar
-        <i class="fas fa-pen" style="margin:5px;font-size:18px;color:#bbb"></i>
-      </div> -->
+        <input type="tel" placeholder="" [(ngModel)]="telefono" />
       </div>
 
-      <div style="margin-top:30px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:18px;width:130px">Cambio día:</div>
-        <div
-          style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:150px">
-          <i class="fas fa-angle-left" style="color:#bbb;font-size:25px;margin-right:10px"></i>
-          <div style="padding:10px">
-            9:00
-          </div>
-          <i class="fas fa-angle-right" style="color:#bbb;font-size:25px;margin-left:10px"></i>
-        </div>
-        <div></div>
-        <!-- <div style="color:dodgerblue;font-size:14px;font-weight:550">
-        Editar
-        <i class="fas fa-pen" style="margin:5px;font-size:18px;color:#bbb"></i>
-      </div> -->
+      <div style="font-size:16px;margin-top:20px">
+        Seleccione un caso:
       </div>
+
+      <div style="margin-top:10px;display:flex;justify-content:flex-start;align-items:flex-start">
+        <i *ngIf="caso == 'Entrego con éxito'" class="far fa-dot-circle"
+          style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
+        <i *ngIf="caso != 'Entrego con éxito'" class="far fa-circle"
+          style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
+
+        <div>
+          <a (click)="caso = 'Entrego con éxito'" style="font-size:16px;font-weight:600">
+            Entrego con éxito el pedido
+          </a>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightslategrey">Situación:</span>
+            El rider entrego el pedido pero no informó al sistema debido a alguna falla (su teléfono quedo sin baterias,
+            etc.).
+          </div>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightcoral">Acción:</span>
+            El pedido se marcará como entregado y el rider será reiniciado para recibir nuevos pedidos.
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:30px;display:flex;justify-content:flex-start;align-items:flex-start">
+        <i *ngIf="caso == 'No completo el pedido'" class="far fa-dot-circle"
+          style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
+        <i *ngIf="caso != 'No completo el pedido'" class="far fa-circle"
+          style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
+        <div>
+          <a (click)="caso = 'No completo el pedido'" style="font-size:16px;font-weight:600">
+            No completo el pedido
+          </a>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightslategrey">Situación:</span>
+            El rider por algun motivo (accidente, robo, etc.) no logro completar el pedido.
+          </div>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightcoral">Acción:</span>
+            El pedido quedará anulado y el rider será reiniciado para recibir nuevos pedidos.
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:30px;display:flex;justify-content:flex-start;align-items:flex-start">
+        <i *ngIf="caso == 'No confirmó el pedido'" class="far fa-dot-circle"
+          style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
+        <i *ngIf="caso != 'No confirmó el pedido'" class="far fa-circle"
+          style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
+        <div>
+          <a (click)="caso = 'No confirmó el pedido'" style="font-size:16px;font-weight:600">
+            El cliente no confirmó el pedido
+          </a>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightslategrey">Situación:</span>
+            El cliente ha demorado mucho (5 min o más) en confirmar el pedido.
+          </div>
+          <div style="margin-top:5px;font-size:14.5px;color:#888">
+            <span style="font-weight:500;color:lightcoral">Acción:</span>
+            El rider será reiniciado para recibir nuevos
+            pedidos.
+          </div>
+        </div>
+      </div>
+
 
       <div style="margin-top:30px"></div>
 
-      <button (click)="actualizarHorario()" type="button" class="btn btn-outline-primary btn-block">
-        Actualizar horario
+      <button (click)="aplicarReset()" type="button" class="btn btn-outline-primary btn-block">
+        Aplicar
       </button>
     </div>
 

@@ -23,7 +23,10 @@ export class ControlService {
   map_tarifas_noche = false;
   map_tarifas_dia = false;
   map_horario = false;
+  reiniciar_rider = false;
   isTracking = false;
+
+  isLoading = false;
 
   lat = -33.444600;
   lng = -70.655585;

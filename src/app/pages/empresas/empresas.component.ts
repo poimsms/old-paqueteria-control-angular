@@ -40,8 +40,6 @@ export class EmpresasComponent implements OnInit {
   showBusqueda = false;
   showCrear = false;
 
-  isLoading = false;
-
   filtro = {
     cuenta: 'activada'
   }
@@ -94,17 +92,20 @@ export class EmpresasComponent implements OnInit {
     this._data.getEmpresasByFilter(this.filtro).then((data: any) => {
       this.empresas = [];
       this.empresas = data.empresas;
+      this._control.isLoading = false;
     });
   }
 
   async toggleAccount(usuario) {
+
+    this._control.isLoading = true;
 
     await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
 
     if (usuario.isActive) {
       this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
     } else {
-      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+      this.toastr.success('El usuario tiene acceso a la plataforma', 'Cuenta activada');
     }
 
     this.getEmpresas();
@@ -112,12 +113,14 @@ export class EmpresasComponent implements OnInit {
 
   async toggleAccountFromBusqueda(usuario) {
 
+    this._control.isLoading = true;
+
     const data: any = await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
 
     if (usuario.isActive) {
       this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
     } else {
-      this.toastr.success('El usuario ahora puede acceder a la plataforma', 'Cuanta activada');
+      this.toastr.success('El usuario tiene acceso a la plataforma', 'Cuenta activada');
     }
     this.empresa = null;
     this.empresa = data.usuario;
@@ -168,7 +171,7 @@ export class EmpresasComponent implements OnInit {
       return this.error_info_incompleta = true;
     }
 
-    this.isLoading = true;
+    this._control.isLoading = true;
 
     const body = {
       nombre: this.nombre,
@@ -185,7 +188,7 @@ export class EmpresasComponent implements OnInit {
       } else {
         this.error_telefono_existe = true;
       }
-      this.isLoading = false;
+      this._control.isLoading = false;
     });
   }
 

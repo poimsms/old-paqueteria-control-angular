@@ -11,6 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PopupsHomeComponent implements OnInit {
 
+  caso = '';
+  telefono: string;
+
   tarifas = {
     moto: {
       base: 0,
@@ -67,13 +70,12 @@ export class PopupsHomeComponent implements OnInit {
   maxLimiteMoto = 20;
   maxLimiteBici = 2.5;
 
-
   constructor(
     public _control: ControlService,
     private _data: DataService,
     public _global: GlobalService,
     private toastr: ToastrService
-  ) {    
+  ) {
 
     if (_control.map_tarifas_noche) {
       this.tarifas = _global.tarifas.noche;
@@ -109,7 +111,7 @@ export class PopupsHomeComponent implements OnInit {
   filtrar() {
     this.filtro_temp = JSON.parse(JSON.stringify(this.filtro));
     this._control.map_filtroData = this.filtro_temp;
-    this._data.queryRidersFirebase({tipo: 'filtro', filtro: this.filtro});
+    this._data.queryRidersFirebase({ tipo: 'filtro', filtro: this.filtro });
     this._control.map_filtros = false;
   }
 
@@ -143,15 +145,15 @@ export class PopupsHomeComponent implements OnInit {
       if (tipo == '+' && vehiculo == 'moto') {
         this._global.tarifas_temp.noche.moto.limite += 100;
       }
-  
+
       if (tipo == '-' && vehiculo == 'moto') {
         this._global.tarifas_temp.noche.moto.limite -= 100;
       }
-  
+
       if (tipo == '+' && vehiculo == 'bici') {
         this._global.tarifas_temp.noche.limite += 100;
       }
-  
+
       if (tipo == '-' && vehiculo == 'bici') {
         this._global.tarifas_temp.noche.limite -= 100;
       }
@@ -161,24 +163,95 @@ export class PopupsHomeComponent implements OnInit {
       if (tipo == '+' && vehiculo == 'moto') {
         this._global.tarifas_temp.dia.moto.limite += 100;
       }
-  
+
       if (tipo == '-' && vehiculo == 'moto') {
         this._global.tarifas_temp.dia.moto.limite -= 100;
       }
-  
+
       if (tipo == '+' && vehiculo == 'bici') {
         this._global.tarifas_temp.dia.limite += 100;
       }
-  
+
       if (tipo == '-' && vehiculo == 'bici') {
         this._global.tarifas_temp.dia.limite -= 100;
       }
     }
-   
+
   }
 
-  changeHorarioTarifas() {
-    
+  async aplicarReset() {
+
+    if (this.caso == '' || this.telefono.length != 8 || !Number(this.telefono)) {
+      return;
+    }
+
+    this._control.isLoading = true;
+
+    const data: any = await this._data.getRiderByPhone(this.telefono);
+
+    if (!data.ok) {
+      return this.toastr.error(data.message, 'Algo salio mal');
+    }
+
+    if (this.caso == 'Entrego con éxito') {
+
+      const res: any = await this._data.updatePedido(data.rider._id, { entregado: true });
+
+      if (!res.ok) {
+        return this.toastr.error(data.message, 'Algo salio mal');
+      }
+
+      this._data.updateRiderFirebase(data.rider._id, 'riders', {
+        actividad: 'disponible',
+        aceptadoId: '',
+        fase: ''
+      });
+
+      this._data.updateRiderFirebase(data.rider._id, 'coors', {
+        actividad: 'disponible',
+        pedido: '',
+        cliente: ''
+      });
+    }
+
+    if (this.caso == 'No completo el pedido') {
+
+      const res: any = await this._data.updatePedido(data.rider._id, { cancelado: true });
+
+      if (!res.ok) {
+        return this.toastr.error(data.message, 'Algo salio mal');
+      }
+
+      this._data.updateRiderFirebase(data.rider._id, 'riders', {
+        actividad: 'disponible',
+        aceptadoId: '',
+        fase: ''
+      });
+
+      this._data.updateRiderFirebase(data.rider._id, 'coors', {
+        actividad: 'disponible',
+        pedido: '',
+        cliente: ''
+      });
+    }
+
+    if (this.caso == 'No confirmó el pedido') {
+
+      this._data.updateRiderFirebase(data.rider._id, 'riders', {
+        pagoPendiente: false
+      });
+
+      this._data.updateRiderFirebase(data.rider._id, 'coors', {
+        pagoPendiente: false
+      });
+
+    }
+
+    this.toastr.success('Rider reiniciado con exito');
+
+    this.caso = '';
+    this._control.reiniciar_rider = false;
+    this._control.isLoading = false;
   }
 
 }

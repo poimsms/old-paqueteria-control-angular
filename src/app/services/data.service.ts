@@ -61,7 +61,7 @@ export class DataService {
 
 
   // ---------------------------
-  //        RIDERS
+  //        FIREBASE
   // ---------------------------
 
   createRiderFirebase(rider) {
@@ -112,6 +112,14 @@ export class DataService {
       this.db.doc('riders/' + id).update(data);
     }
   }
+  
+  queryRidersFirebase(query) {
+    this.rider_query$.next(query);
+  }
+
+  // ---------------------------
+  //        RIDERS
+  // ---------------------------
 
   createAccount(body) {
     const url = `${this.apiURL}/dash/create-account`;
@@ -155,22 +163,24 @@ export class DataService {
     return this.http.post(url, body, { headers }).toPromise();
   }
 
-  queryRidersFirebase(query) {
-    this.rider_query$.next(query);
-  }
-
-
   getPedido(id) {
     const url = `${this.apiURL}/dash/pedidos-get-one?id=${id}`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.get(url, { headers }).toPromise();
   }
 
-  getRidersEnPlataforma(body) {
-    const url = `${this.apiURL}/dash/riders-activos`;
+  deletePedido(id) {
+    const url = `${this.apiURL}/dash/pedidos-delete-one?id=${id}`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
+    return this.http.get(url, { headers }).toPromise();
   }
+
+  updatePedido(id, body) {
+    const url = `${this.apiURL}/dash/pedidos-update-one?id=${id}`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.put(url, body, { headers }).toPromise();
+  }
+
 
   // ---------------------------
   //        EMPRESA
@@ -205,6 +215,23 @@ export class DataService {
     return this.http.post(url, body).toPromise();
   }
 
+  // ---------------------------
+  //        OTROS
+  // ---------------------------
 
+
+  updateRegistro(body) {
+    const url = `${this.apiURL}/dash/registros-update`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+
+    return this.http.put(url, body, { headers }).toPromise();
+  }
+
+  getRegistros(body) {
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+
+    const url = `${this.apiURL}/dash/registros-get-all`;
+    return this.http.post(url, body, { headers }).toPromise();
+  }
 
 }

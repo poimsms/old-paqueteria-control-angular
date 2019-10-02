@@ -138,8 +138,8 @@ export class AppComponent {
       this._global.show_tarifas_dia = true;
     }
 
-    if (tipo == 'horario') {
-      this._control.map_horario = true;
+    if (tipo == 'reiniciar rider') {
+      this._control.reiniciar_rider = true;
     }
 
     if (tipo == 'filtros') {
@@ -202,9 +202,11 @@ export class AppComponent {
       this.origin.nativeElement.focus();
       this.destination.nativeElement.focus();
       this.origin.nativeElement.focus();
+      this.destination.nativeElement.focus();
+
       this.origin.nativeElement.blur();
       this.destination.nativeElement.blur();
-    }, 200);
+    }, 100);
   }
 
 

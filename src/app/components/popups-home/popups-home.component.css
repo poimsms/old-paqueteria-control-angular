@@ -13,3 +13,8 @@ input {
     color: #333;
     opacity: 1; /* Firefox */
   }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+}

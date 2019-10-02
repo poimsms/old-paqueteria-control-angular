@@ -44,8 +44,6 @@ export class RidersComponent implements OnInit {
   showBusqueda = false;
   showCrear = false;
 
-  isLoading = false;
-
   filtro = {
     cuenta: 'activada',
     relacion: 'todo',
@@ -109,9 +107,14 @@ export class RidersComponent implements OnInit {
 
   async toggleAccount(usuario) {
 
+    this._control.isLoading = true;
+
     await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
     await this._data.updateRiderFirebase(usuario._id, 'rider', { isActive: !usuario.isActive })
     await this._data.updateRiderFirebase(usuario._id, 'coors', { isActive: !usuario.isActive })
+    await this._data.updateRegistro({ isActive: !usuario.isActive });
+
+    this._control.isLoading = false;
 
     if (usuario.isActive) {
       this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
@@ -124,9 +127,14 @@ export class RidersComponent implements OnInit {
 
   async toggleAccountFromBusqueda(usuario) {
 
+    this._control.isLoading = true;
+
     const data: any = await this._data.updateAccount(usuario._id, { isActive: !usuario.isActive });
     await this._data.updateRiderFirebase(usuario._id, 'rider', { isActive: !usuario.isActive })
     await this._data.updateRiderFirebase(usuario._id, 'coors', { isActive: !usuario.isActive })
+    await this._data.updateRegistro({ isActive: !usuario.isActive });
+   
+    this._control.isLoading = false;
 
     if (usuario.isActive) {
       this.toastr.warning('El usuario no tiene acceso a la plataforma', 'Cuenta bloqueada');
@@ -135,6 +143,7 @@ export class RidersComponent implements OnInit {
     }
     this.rider = null;
     this.rider = data.usuario;
+
     this.getRiders();
   }
 
@@ -191,7 +200,7 @@ export class RidersComponent implements OnInit {
       this.error_info_incompleta = true;
     }
 
-    this.isLoading = true;
+    this._control.isLoading = true;
 
     const body = {
       nombre: this.nombre,
@@ -218,7 +227,7 @@ export class RidersComponent implements OnInit {
       } else {
         this.error_telefono_existe = true;
       }
-      this.isLoading = false;
+      this._control.isLoading = false;
     });
   }
 
