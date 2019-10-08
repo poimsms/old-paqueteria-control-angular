@@ -279,7 +279,7 @@ export class RidersComponent implements OnInit {
     this.riders = [];
     this.rider = null;
 
-    this._data.findPedidosByPhoneRider(this.filtro_telefono)
+    this._data.findPedidosByPhone_rider(this.filtro_telefono)
       .then((data: any) => {
         this.pedidos = data.pedidos;
         this.isBusqueda = true;

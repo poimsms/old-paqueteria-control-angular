@@ -236,7 +236,7 @@ export class EmpresasComponent implements OnInit {
     this.empresas = [];
     this.empresa = null;
 
-    this._data.findPedidosByPhoneEmpresa(this.filtro_telefono)
+    this._data.findPedidosByPhone_empresa(this.filtro_telefono)
       .then((data: any) => {
         this.pedidos = data.pedidos;
         this.isBusqueda = true;

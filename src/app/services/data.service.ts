@@ -117,51 +117,10 @@ export class DataService {
     this.rider_query$.next(query);
   }
 
+  
   // ---------------------------
-  //        RIDERS
+  //        PEDIDOS
   // ---------------------------
-
-  createAccount(body) {
-    const url = `${this.apiURL}/dash/create-account`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
-  }
-
-  updateAccount(id, body) {
-    const url = `${this.apiURL}/dash/update-account?id=${id}`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.put(url, body, { headers }).toPromise();
-  }
-
-  getRiderByPhone(telefono) {
-    const url = `${this.apiURL}/dash/riders-get-one-by-phone?telefono=${telefono}`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.get(url, { headers }).toPromise();
-  }
-
-  findRiderByPhone_using_options(telefono, body) {
-    const url = `${this.apiURL}/dash/riders-get-one-by-phone-using-options?telefono=${telefono}`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
-  }
-
-  findPedidosByPhoneRider(filter) {
-    const url = `${this.apiURL}/dash/pedidos-get-by-phone-rider`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, filter, { headers }).toPromise();
-  }
-
-  getRidersByFilter(body) {
-    const url = `${this.apiURL}/dash/riders-get-by-filter`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
-  }
-
-  findRiders_using_options(body) {
-    const url = `${this.apiURL}/dash/riders-get-all-using-options`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
-  }
 
   getPedido(id) {
     const url = `${this.apiURL}/dash/pedidos-get-one?id=${id}`;
@@ -181,17 +140,31 @@ export class DataService {
     return this.http.put(url, body, { headers }).toPromise();
   }
 
+  // ---------------------------
+  //        RIDERS
+  // ---------------------------
+
+  findPedidosByPhone_rider(filter) {
+    const url = `${this.apiURL}/dash/pedidos-get-by-phone-rider`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, filter, { headers }).toPromise();
+  }
+
+  getRidersByFilter(body) {
+    const url = `${this.apiURL}/dash/riders-get-by-filter`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
+  getRiderByPhone(telefono) {
+    const url = `${this.apiURL}/dash/riders-get-one-by-phone?telefono=${telefono}`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.get(url, { headers }).toPromise();
+  }
 
   // ---------------------------
   //        EMPRESA
   // ---------------------------
-
-
-  crearEmpresa(body) {
-    const url = `${this.apiURL}/dash/empresa-create-account`;
-    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.post(url, body, { headers }).toPromise();
-  }
 
   getEmpresasByFilter(body) {
     const url = `${this.apiURL}/dash/empresas-get-by-filter`;
@@ -199,29 +172,35 @@ export class DataService {
     return this.http.post(url, body, { headers }).toPromise();
   }
 
-  findPedidosByPhoneEmpresa(body) {
+  findPedidosByPhone_empresa(body) {
     const url = `${this.apiURL}/dash/pedidos-get-by-phone-empresa`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.post(url, body, { headers }).toPromise();
   }
 
   // ---------------------------
-  //        IMAGENES
+  //        OTROS
   // ---------------------------
-
 
   uploadImage(body) {
     const url = `${this.apiURL}/imgs/upload`;
     return this.http.post(url, body).toPromise();
   }
 
-  // ---------------------------
-  //        OTROS
-  // ---------------------------
+  createAccount(body) {
+    const url = `${this.apiURL}/dash/create-account`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
 
+  updateAccount(id, body) {
+    const url = `${this.apiURL}/dash/update-account?id=${id}`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.put(url, body, { headers }).toPromise();
+  }
 
   updateRegistro(body) {
-    const url = `${this.apiURL}/dash/registros-update`;
+    const url = `${this.apiURL}/dash/registros-de-actividad-riders-update`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
 
     return this.http.put(url, body, { headers }).toPromise();
@@ -230,7 +209,7 @@ export class DataService {
   getRegistros(body) {
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
 
-    const url = `${this.apiURL}/dash/registros-get-all`;
+    const url = `${this.apiURL}/dash/registros-de-actividad-riders-get-all`;
     return this.http.post(url, body, { headers }).toPromise();
   }
 
