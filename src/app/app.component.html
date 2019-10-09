@@ -242,7 +242,7 @@
           style="border-radius:4px 0px 0px 4px;width:50px;background:#eee;color:#555;padding:3px;display:flex;align-items:center;justify-content:center">
           ID
         </div>
-        <input type="text" placeholder="Escriba ID pedido" [(ngModel)]="pedidoID" />
+        <input type="text" placeholder="Escriba ID pedido" [(ngModel)]="_control.pedidoID" />
       </div>
 
       <button (click)="trackRider()" type="button" class="btn btn-outline-secondary">
@@ -325,12 +325,12 @@
 
 
 
-<div *ngIf="_control.isMapa && _control.isTracking" style="z-index:999;position:fixed;bottom:40px;right:60px;">
-  <div (click)="refreshMap()"
+<!-- <div *ngIf="_control.isMapa && _control.isTracking" style="z-index:999;position:fixed;bottom:40px;right:60px;">
+  <div (click)="limpiarRuta()"
     style="height:60px;width:60px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center">
     <i class="fas fa-times" style="color:white;font-size:20px"></i>
   </div>
-</div>
+</div> -->
 
 
 

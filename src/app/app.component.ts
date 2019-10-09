@@ -4,9 +4,8 @@ import { ControlService } from './services/control.service';
 import { AuthService } from './services/auth.service';
 import { DataService } from './services/data.service';
 import { GlobalService } from './services/global.service';
-import { GooglePlaceDirective } from "node_modules/ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive";
+import { MapaService } from './services/mapa.service';
 declare let google: any;
-
 
 @Component({
   selector: 'app-root',
@@ -15,7 +14,6 @@ declare let google: any;
 })
 export class AppComponent {
 
-  @ViewChild("placesRef") placesRef: GooglePlaceDirective;
   @ViewChild('origin') origin: ElementRef;
   @ViewChild('destination') destination: ElementRef;
 
@@ -54,6 +52,7 @@ export class AppComponent {
   constructor(
     public _control: ControlService,
     private _data: DataService,
+    private _mapa: MapaService,
     private _auth: AuthService,
     private router: Router,
     public _global: GlobalService,
@@ -71,17 +70,6 @@ export class AppComponent {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.geocoder = new google.maps.Geocoder();
     this.service = new google.maps.DistanceMatrixService();
-
-    // this.destination_address = 'La Moneda, Santiago, Chile';
-    // setTimeout(() => {
-    //   this.selectSearchResult2('destination');
-
-    // }, 1000);
-  }
-
-
-  getRiders(tipo) {
-    this._data.queryRidersFirebase(tipo);
   }
 
   changeVehicle(vehiculo) {
@@ -91,34 +79,20 @@ export class AppComponent {
 
   trackRider() {
 
-    if (!this.pedidoID) {
+    if (!this._control.pedidoID) {
       return;
     }
 
-    this._data.getPedido(this.pedidoID).then((pedido: any) => {
+    this._data.getPedido(this._control.pedidoID).then((pedido: any) => {
+      this._control.pedido = pedido;
+      this._control.rider = pedido.rider;
       this._control.origen = { lat: pedido.origen.lat, lng: pedido.origen.lng };
       this._control.destino = { lat: pedido.destino.lat, lng: pedido.destino.lng };
-      this._data.queryRidersFirebase({ tipo: 'track', pedido: this.pedidoID });
+      this._mapa.mapAction$.next({ accion: 'rastrear_rider', pedidoID: pedido._id });
+      this._mapa.mapAction$.next({ accion: 'graficar_ruta' });
       this._control.isTracking = true;
     });
 
-  }
-
-  refreshMap() {
-
-    this._control.origen = null;
-    this._control.destino = null;
-    this.pedidoID = undefined;
-
-    this._control.lat = Number((-33.44 - Math.random() / 1000).toFixed(5));
-    this._control.lng = Number((-70.64 - Math.random() / 1000).toFixed(5));
-
-    this._control.zoom = 13;
-    setTimeout(() => {
-      this._control.zoom = 14;
-    }, 100);
-
-    this._control.isTracking = false;
   }
 
   openPage(page) {
@@ -164,7 +138,7 @@ export class AppComponent {
 
       type == 'origin' ? input = this.origin_address : input = this.destination_address;
 
-      this.GoogleAutocomplete.getPlacePredictions({ input },
+      this.GoogleAutocomplete.getPlacePredictions({ input, componentRestrictions: { country: 'cl' } },
         (predictions, status) => {
           type == 'origin' ? this.origin_items = [] : this.destination_items = [];
           this.zone.run(() => {
@@ -193,20 +167,11 @@ export class AppComponent {
         };
 
         type == 'origin' ? this.origen = center : this.destino = center;
-        this._control.handleCenter(type, center);
+        this._mapa.mapTaximetroAction$.next({ accion: 'remover_ruta' });
+        this._mapa.mapTaximetroAction$.next({ accion: 'graficar_marcador', coors: center })
       }
 
     });
-
-    setTimeout(() => {
-      this.origin.nativeElement.focus();
-      this.destination.nativeElement.focus();
-      this.origin.nativeElement.focus();
-      this.destination.nativeElement.focus();
-
-      this.origin.nativeElement.blur();
-      this.destination.nativeElement.blur();
-    }, 100);
   }
 
 
@@ -216,7 +181,7 @@ export class AppComponent {
       return;
     }
 
-    if (!(this._control.taxOrigin && this._control.taxDestination)) {
+    if (!(this.origen && this.destino)) {
       return;
     }
 
@@ -233,30 +198,14 @@ export class AppComponent {
       }, function (response, status) {
         let distancia = response.rows[0].elements[0].distance.value;
         self.costoData = self._control.calcularPrecio(distancia);
-        self._control.graficarRuta(self.origen, self.destino);
+        self._mapa.mapTaximetroAction$.next({
+          accion: 'graficar_ruta',
+          origen: self.origen,
+          destino: self.destino
+        });
         self.showCosto = true;
         self.isLoading = false;
       });
-
-    setTimeout(() => {
-      this.origin.nativeElement.focus();
-      this.destination.nativeElement.focus();
-      this.origin.nativeElement.focus();
-      this.origin.nativeElement.blur();
-      this.destination.nativeElement.blur();
-    }, 200);
   }
 
-  clearTaximetro() {
-    this._control.taxCenter = { lat: -33.444600, lng: -70.655585 };
-    this._control.taxOrigin = null;
-    this._control.taxDestination = null;
-    this._control.showOrigin = false;
-    this._control.showDestination = false;
-    this._control.showRoute = false;
-    this.origin_address = undefined;
-    this.destination_address = undefined;
-    this.origin_items = [];
-    this.destination_items = [];
-  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlService } from 'src/app/services/control.service';
+import { MapaService } from 'src/app/services/mapa.service';
 declare let google: any;
 
 @Component({
@@ -14,34 +15,75 @@ export class TaximetroComponent implements OnInit {
   markerReady = false;
   marker: any;
 
-  constructor(public _control: ControlService) { }
+  directionsDisplay: any;
+  directionsService: any;
 
-  ngOnInit() { }
+  constructor(
+    public _control: ControlService,
+    private _mapa: MapaService
+  ) {
+    this.directionsDisplay = new google.maps.DirectionsRenderer();
+    this.directionsService = new google.maps.DirectionsService();
+  }
+
+  ngOnInit() {
+    this.cargarMapa();
+
+    this._mapa.mapTaximetroAction$.subscribe((data: any) => {
+      switch (data.accion) {
+        case 'graficar_marcador':
+          this.graficarMarcador(data.coors);
+          break;
+        case 'graficar_ruta':
+          this.graficarRuta(data.origen, data.destino);
+          break;
+        case 'remover_ruta':
+          this.directionsDisplay.setMap(null);
+          break;
+      }
+    })
+  }
 
   cargarMapa() {
-
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: -33.444600, lng: -70.655585 },
       zoom: 15,
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      zoomControl: true
     });
-    setTimeout(() => {
-      this.graficarMarcador({ lat: -33.444600, lng: -70.655585 });
-
-    }, 100);
   }
 
   graficarMarcador(coors) {
-    if (!this.markerReady) {
-      this.marker = new google.maps.Marker({
-        position: coors,
-        map: this.map,
-        // icon: this.image
-      });
-      this.markerReady = true;
-    } else {
-      this.marker.setPosition(coors);
+
+    if (this.marker) {
+      this.marker.setMap(null);
     }
+
+    this.map.setCenter(coors);
+
+    this.marker = new google.maps.Marker({
+      position: coors,
+      map: this.map
+    });
+  }
+
+  graficarRuta(origen, destino) {
+    this.marker.setMap(null);
+    this.marker = null;
+
+    var self = this;
+
+    this.directionsDisplay.setMap(this.map);
+    const origenLatLng = new google.maps.LatLng(origen.lat, origen.lng);
+    const destinoLatLng = new google.maps.LatLng(destino.lat, destino.lng);
+
+    this.directionsService.route({
+      origin: origenLatLng,
+      destination: destinoLatLng,
+      travelMode: 'DRIVING',
+    }, function (response, status) {
+      self.directionsDisplay.setDirections(response);
+    });
   }
 
 }

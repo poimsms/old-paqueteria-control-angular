@@ -1,20 +1,52 @@
-<agm-map [zoom]="_control.zoom" [latitude]="_control.lat" [longitude]="_control.lng" [streetViewControl]="false">
+<div style="position:relative">
+  <div id='map'></div>
 
-  <agm-marker *ngFor="let rider of riders" [latitude]="rider.lat" [longitude]="rider.lng" [iconUrl]="rider.icono">
-    <agm-info-window>
-      <div>
-        {{rider.nombre}}
-      </div>
-      <div>
-        +56 9 {{rider.telefono}}
-      </div>
-      <div *ngIf="rider.actividad == 'ocupado'">
-        ID: {{rider.pedido}}
-      </div>
-    </agm-info-window>
-  </agm-marker>
+  <div *ngIf="_control.isMapa && _control.isTracking" style="z-index:999;position:absolute;bottom:20px;left:47%">
+    <div (click)="limpiarRuta()"
+      style="height:60px;width:60px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-times" style="color:white;font-size:20px"></i>
+    </div>
+  </div>
 
-  <agm-direction *ngIf="_control.isTracking" [origin]="_control.origen" [destination]="_control.destino">
-  </agm-direction>
 
-</agm-map>
+  <div *ngIf="_control.isMapa && _control.isTracking" style="position:absolute;top:10px;right:10px;z-index:991">
+    <div
+      style="width:300px;padding:10px;padding-left:15px;padding-right:15px;background:white;border-radius:5px;box-shadow: 0 0 20px #ccc;">
+      <div style="display:flex;align-items:center">
+        <img src="https://timedotcom.files.wordpress.com/2014/07/301386_full1.jpg?w=800&quality=85"
+          style="height:45px;width:45px;border-radius:50%;border:1px solid #eee;object-fit:cover">
+        <div style="flex:1;margin-left:10px;font-size:14px">
+          <div>
+            {{_control.rider.nombre}}
+          </div>
+          <div>
+            +56 9 {{_control.rider.telefono}}
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <div>Vehículo: {{_control.rider.vehiculo}}</div>
+            <div>
+              <i class="fas fa-star" style="color:#777"></i>
+              {{_control.rider.stats.startsAvg}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;font-size:13.5px;margin-top:10px;margin-left:50px">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <i class="far fa-dot-circle" style="color:orange"></i>
+          <div style="border-left:2px dashed #ccc;height:10px;margin-top:3px;margin-bottom:3px"></div>
+          <i class="fas fa-map-marker-alt" style="color:#F52C56"></i>
+        </div>
+        <div style="margin-left:10px">
+          <div style="height:20px;overflow:hidden">
+            {{_control.pedido.origen.direccion}}
+          </div>
+          <div style="margin-top:5px;height:20px;overflow:hidden">
+            {{_control.pedido.destino.direccion}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

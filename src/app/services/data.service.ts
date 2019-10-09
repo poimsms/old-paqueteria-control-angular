@@ -14,10 +14,6 @@ export class DataService {
 
   apiURL: string;
 
-  rider_query$ = new Subject();
-
-  riders$: Observable<any>;
-
   id: string;
 
   vehiculo: string;
@@ -30,33 +26,6 @@ export class DataService {
     private _auth: AuthService
   ) {
     this.apiURL = this._config.apiURL;
-
-    this.riders$ = this.rider_query$.pipe(
-      switchMap((data: any) => {
-
-        if (data.tipo == 'filtro') {
-
-          const filtro = data.filtro;
-
-          return this.db.collection('riders_coors', ref =>
-            ref.where(filtro.vehiculo.field, '==', filtro.vehiculo.value)
-              .where(filtro.actividad.field, '==', filtro.actividad.value)
-              .where(filtro.relacion.field, '==', filtro.relacion.value)
-              .where('isOnline', '==', true)
-              .where('isActive', '==', true))
-            .valueChanges();
-        }
-
-        if (data.tipo == 'track') {
-          return this.db.collection('riders_coors', ref =>
-            ref.where('pedido', '==', data.pedido)
-              .where('isOnline', '==', true)
-              .where('isActive', '==', true))
-            .valueChanges();
-        }
-      })
-    );
-
   }
 
 
@@ -112,11 +81,6 @@ export class DataService {
       this.db.doc('riders/' + id).update(data);
     }
   }
-  
-  queryRidersFirebase(query) {
-    this.rider_query$.next(query);
-  }
-
   
   // ---------------------------
   //        PEDIDOS

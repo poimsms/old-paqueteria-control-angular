@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -34,18 +33,12 @@ export class ControlService {
   origen: any;
   destino: any;
 
-  taxOrigin: any;
-  taxDestination: any;
-  showOrigin = false;
-  showDestination = false;
-  showRoute = false;
-  isTaxRoute = false;
-  origen_tax: any;
-  destino_tax: any;
-  taxCenter = {
-    lat: -33.444600,
-    lng: -70.655585
-  };
+  origen_taximetro: any;
+  destino_taximetro: any;
+
+  pedidoID: string;
+  rider: any;
+  pedido: string;
 
   mostrar = false;
 
@@ -121,33 +114,6 @@ export class ControlService {
       this.isPedidos = true;
       this.stretched = false;
     }
-  }
-
-  handleCenter(type, center) {
-    if (type == 'origin') {
-      this.taxOrigin = center;
-      this.taxCenter = center;
-      this.showOrigin = true;
-      this.showDestination = false;
-      this.showRoute = false;
-    } else {
-      this.taxDestination = center;
-      this.taxCenter = center;
-      this.showOrigin = false;
-      this.showDestination = true;
-      this.showRoute = false;
-    }
-  }
-
-
-  graficarRuta(origen, destino) {
-
-    this.origen_tax = origen;
-    this.destino_tax = destino;
-
-    this.showOrigin = false;
-    this.showDestination = false;
-    this.showRoute = true;
   }
 
 

@@ -4,10 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -57,16 +53,11 @@ import { GraficasComponent } from './pages/graficas/graficas.component';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    GooglePlaceModule,
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AppRoutingModule,
-    ChartsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDrc_AM9eMidi_yXt0h7q-orH0vt9D13vk'
-    }),
-    AgmDirectionModule
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

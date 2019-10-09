@@ -1,16 +1,2 @@
-<agm-map [zoom]="zoom" [latitude]="_control.taxCenter.lat" [longitude]="_control.taxCenter.lng"
-  [streetViewControl]="false">
 
-  <agm-marker *ngIf="_control.showOrigin" [latitude]="_control.taxOrigin.lat" [longitude]="_control.taxOrigin.lng">
-  </agm-marker>
-
-  <agm-marker *ngIf="_control.showDestination" [latitude]="_control.taxDestination.lat"
-    [longitude]="_control.taxDestination.lng">
-  </agm-marker>
-
-  <agm-direction *ngIf="_control.showRoute" [origin]="_control.origen_tax" [destination]="_control.destino_tax">
-  </agm-direction>
-
-</agm-map>
-
-<!-- <div id='map'></div> -->
+<div id='map'></div>

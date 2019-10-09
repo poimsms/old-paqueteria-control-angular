@@ -3,6 +3,7 @@ import { ControlService } from 'src/app/services/control.service';
 import { DataService } from 'src/app/services/data.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { ToastrService } from 'ngx-toastr';
+import { MapaService } from 'src/app/services/mapa.service';
 
 @Component({
   selector: 'app-popups-home',
@@ -73,6 +74,7 @@ export class PopupsHomeComponent implements OnInit {
   constructor(
     public _control: ControlService,
     private _data: DataService,
+    private _mapa: MapaService,
     public _global: GlobalService,
     private toastr: ToastrService
   ) {
@@ -111,7 +113,7 @@ export class PopupsHomeComponent implements OnInit {
   filtrar() {
     this.filtro_temp = JSON.parse(JSON.stringify(this.filtro));
     this._control.map_filtroData = this.filtro_temp;
-    this._data.queryRidersFirebase({ tipo: 'filtro', filtro: this.filtro });
+    this._mapa.mapAction$.next({ accion: 'traer_riders', filtro: this.filtro })
     this._control.map_filtros = false;
   }
 
