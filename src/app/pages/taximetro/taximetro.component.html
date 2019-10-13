@@ -1,2 +1,108 @@
+<div style="position:relative">
+    <div id='map'></div>
 
-<div id='map'></div>
+    <div
+        style="position:absolute;top:20px;left:20px;background:white;border-radius:5px;padding:15px;width:350px;box-shadow: 0 0 20px #ccc;">
+
+
+        <div style="font-size:14px;color:#555;font-weight:500">
+            LOCALIZACIÓN
+        </div>
+
+        <input #origin [(ngModel)]="origin_address" (ngModelChange)="updateSearchResults('origin')"
+            placeholder="Dirección de inicio"
+            style="border:1px solid #eee;width:300px;font-size:14px;margin-top:10px" />
+
+        <div [hidden]="origin_items.length == 0"
+            style="background:white;border:1px solid #eee;border-top:0px;border-radius:2px">
+            <a *ngFor="let item of origin_items"
+                style="padding:5px;width:100%;display:flex;align-items:flex-start;font-size:14px;">
+                <div (click)="selectSearchResult(item, 'origin')">
+                    {{ item.description }}
+                </div>
+            </a>
+        </div>
+
+        <input #destination [(ngModel)]="destination_address" (ngModelChange)="updateSearchResults('destination')"
+            placeholder="Dirección de destino"
+            style="border:1px solid #eee;width:300px;font-size:14px;margin-top:10px" />
+
+        <div [hidden]="destination_items.length == 0"
+            style="background:white;border:1px solid #eee;border-top:0px;border-radius:2px">
+            <a *ngFor="let item of destination_items"
+                style="padding:5px;width:100%;display:flex;align-items:flex-start;font-size:14px;">
+                <div (click)="selectSearchResult(item, 'destination')">
+                    {{ item.description }}
+                </div>
+            </a>
+        </div>
+
+        <div *ngIf="showCosto">
+
+            <div style="margin-top:20px;font-size:14px;color:#555;font-weight:500">
+                COSTO
+            </div>
+
+            <div *ngIf="!isLoading">
+
+
+                <div style="display:flex;align-items:flex-start;margin-top:10px;font-size:14px">
+                    <i class="fas fa-map-marker-alt" style="margin-top:5px;color:#f783ac;margin-right:10px"></i>
+                    {{direccion_origen}}
+                </div>
+
+                <div style="display:flex;align-items:flex-start;margin-top:10px;font-size:14px">
+                    <i class="fas fa-map-marker-alt" style="margin-top:5px;color:#f783ac;margin-right:10px"></i>
+                    {{direccion_destino}}
+                </div>
+
+                <div style="color:#555;font-size:15px;margin-top:20px;display:flex">
+                    <div style="margin-right:100px;width:70px">
+                        Distancia:
+                    </div>
+                    <div>
+                        {{costoData.distancia / 1000}} km
+                    </div>
+                </div>
+
+                <div style="color:#555;font-size:15px;margin-top:10px;display:flex">
+                    <div style="margin-right:100px;width:70px">
+                        Bicicleta:
+                    </div>
+                    <div>
+                        ${{costoData.precioBici}}
+                    </div>
+                </div>
+
+                <div style="color:#555;font-size:15px;margin-top:10px;display:flex">
+                    <div style="margin-right:100px;width:70px">
+                        Moto:
+                    </div>
+                    <div>
+                        ${{costoData.precioMoto}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="isLoading" style="margin-top:20px;width:100%;display:flex;justify-content:center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <div (click)="calcular()" style="margin-top:20px;margin-bottom:10px">
+            <button type="button" class="btn btn-primary btn-block">
+                Calcular costo
+            </button>
+        </div>
+
+
+    </div>
+
+</div>

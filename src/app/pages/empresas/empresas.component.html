@@ -32,6 +32,7 @@
         <th scope="col">Empresa</th>
         <th scope="col">Teléfono</th>
         <th scope="col">Email</th>
+        <th scope="col">Registrado</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
@@ -39,8 +40,10 @@
       <tr *ngFor="let empresa of empresas; let i = index">
         <th scope="row"> {{i + 1}} </th>
         <td style="text-transform:capitalize"> {{empresa.nombre}} </td>
-        <td> {{empresa.telefono}} </td>
+        <td> {{empresa.telefono}} </td>        
         <td> {{empresa.email}} </td>
+        <td> 12-08-2019 </td>
+
         <td>
           <button *ngIf="empresa.isActive" (click)="toggleAccount(empresa)" class="btn btn-primary btn-sm">
             Desactivar

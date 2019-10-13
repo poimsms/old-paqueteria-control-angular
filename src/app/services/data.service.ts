@@ -81,7 +81,7 @@ export class DataService {
       this.db.doc('riders/' + id).update(data);
     }
   }
-  
+
   // ---------------------------
   //        PEDIDOS
   // ---------------------------
@@ -138,6 +138,22 @@ export class DataService {
 
   findPedidosByPhone_empresa(body) {
     const url = `${this.apiURL}/dash/pedidos-get-by-phone-empresa`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
+  // ---------------------------
+  //        CUPONES
+  // ---------------------------
+
+  getCupones() {
+    const url = `${this.apiURL}/dash/cupones-get-all`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.get(url, { headers }).toPromise();
+  }
+
+  createCupon(body) {
+    const url = `${this.apiURL}/dash/cupones-create`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.post(url, body, { headers }).toPromise();
   }

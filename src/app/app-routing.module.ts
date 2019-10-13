@@ -8,6 +8,7 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { RidersComponent } from './pages/riders/riders.component';
 import { TaximetroComponent } from './pages/taximetro/taximetro.component';
 import { GraficasComponent } from './pages/graficas/graficas.component';
+import { CuponesComponent } from './pages/cupones/cupones.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'empresas', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'riders', component: RidersComponent, canActivate: [AuthGuard] },
   { path: 'taximetro', component: TaximetroComponent, canActivate: [AuthGuard] },
   { path: 'graficas', component: GraficasComponent, canActivate: [AuthGuard] },
+  { path: 'cupones', component: CuponesComponent, canActivate: [AuthGuard] },
 
 
   { path: '**', component: LoginComponent },

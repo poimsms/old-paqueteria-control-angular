@@ -34,6 +34,7 @@ import { RidersComponent } from './pages/riders/riders.component';
 import { PopupsHomeComponent } from './components/popups-home/popups-home.component';
 import { TaximetroComponent } from './pages/taximetro/taximetro.component';
 import { GraficasComponent } from './pages/graficas/graficas.component';
+import { CuponesComponent } from './pages/cupones/cupones.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { GraficasComponent } from './pages/graficas/graficas.component';
     RidersComponent,
     PopupsHomeComponent,
     TaximetroComponent,
-    GraficasComponent
+    GraficasComponent,
+    CuponesComponent
   ],
   imports: [
     BrowserModule,

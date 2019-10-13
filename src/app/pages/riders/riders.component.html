@@ -1,12 +1,16 @@
-<div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
+<div style="margin-top:15px;">
 
   <!-- <div
     style="border-radius:6px 6px 0px 0px;color:white;background:dodgerblue;padding:20px;font-weight:550;font-size:20px">
     Riders
   </div> -->
 
+  <div style="font-size:25px;color:#444">
+    Riders <span style="font-size:16px;color:#999"> - Información general</span>
+  </div>
 
-  <div style="padding:15px;display:flex;">
+
+  <div style="padding:15px;padding-top:0px;display:flex;justify-content:flex-end">
 
     <a (click)="showFiltros = true"
       style="background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
@@ -28,7 +32,7 @@
     {{periodo.inicio}} al {{periodo.termino}}
   </div> -->
 
-  <table class="table" *ngIf="isRiders">
+  <table class="table table-striped" *ngIf="isRiders" style="border:1px solid #eee">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -36,6 +40,7 @@
         <th scope="col">Valoración</th>
         <th scope="col">Vehículo</th>
         <th scope="col">Teléfono</th>
+        <th scope="col">Registrado</th>
         <th scope="col">Relación</th>
         <th scope="col">Acción</th>
       </tr>
@@ -58,7 +63,16 @@
         </td>
         <td> {{rider.vehiculo}} </td>
         <td> {{rider.telefono}} </td>
-        <td> {{rider.relacion}} </td>
+        <td> 12-08-2019 </td>
+
+        <td>
+          <div *ngIf="rider.relacion == 'Prestación de servicio'">
+            P. de servicio
+          </div>
+          <div *ngIf="rider.relacion == 'Contrato'">
+            Contrato
+          </div>
+        </td>
         <td>
           <button *ngIf="rider.isActive" (click)="toggleAccount(rider)" class="btn btn-primary btn-sm">
             Desactivar
@@ -424,4 +438,3 @@
 
   </div>
 </div>
-

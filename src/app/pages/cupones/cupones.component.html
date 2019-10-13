@@ -1,0 +1,195 @@
+<div *ngIf="showCrear" style="height:50%;width:100%;padding:20px;padding-left:0px">
+  <div style="font-size:25px;color:#444">
+    Cupones <span style="font-size:16px;color:#999"> - Crear un cupón</span>
+  </div>
+
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Título:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="Ej: Delivery express" [(ngModel)]="titulo" style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Descripción:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <textarea rows="4" cols="50" style="width:350px;background:white" [(ngModel)]="descripcion"
+        placeholder="Todas ✌ las mejores ofertas, promociones y cupones de descuento ⭐ 10% código... Tope de $3.000 cupón de descuento MoviApp para Nuevos Usuarios."></textarea>
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Descuento:
+    </div>
+
+    <div class="nav-item dropdown">
+
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"
+        [ngStyle]="{'color': descuento == '% descuento próximo pedido' ? '#888': '#333'}"
+        style="border-radius:1px;margin-top:20px;padding:8px;border:1px solid #eee;background:white;width:360px;display:flex;justify-content:space-between;align-items:center">
+        {{descuento}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+        <a (click)="descuento = 20" class="dropdown-item">
+          <div style="color:gray">20%</div>
+        </a>
+        <a (click)="descuento = 30" class="dropdown-item">
+          <div style="color:gray">30%</div>
+        </a>
+        <a (click)="descuento = 35" class="dropdown-item">
+          <div style="color:gray">35%</div>
+        </a>
+        <a (click)="descuento = 40" class="dropdown-item">
+          <div style="color:gray">40%</div>
+        </a>
+        <a (click)="descuento = 45" class="dropdown-item">
+          <div style="color:gray">45%</div>
+        </a>
+        <a (click)="descuento = 50" class="dropdown-item">
+          <div style="color:gray">50%</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Tope:
+    </div>
+
+    <div class="nav-item dropdown">
+
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" [ngStyle]="{'color': tope == '$3.000' ? '#888': '#333'}"
+        style="border-radius:1px;margin-top:20px;padding:8px;border:1px solid #eee;background:white;width:360px;display:flex;justify-content:space-between;align-items:center">
+        {{tope}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+        <a (click)="tope = 2000" class="dropdown-item">
+          <div style="color:gray">$2.000</div>
+        </a>
+        <a (click)="tope = 2500" class="dropdown-item">
+          <div style="color:gray">$2.500</div>
+        </a>
+        <a (click)="tope = 3000" class="dropdown-item">
+          <div style="color:gray">$3.000</div>
+        </a>
+        <a (click)="tope = 3500" class="dropdown-item">
+          <div style="color:gray">$3.500</div>
+        </a>
+        <a (click)="tope = 4000" class="dropdown-item">
+          <div style="color:gray">$4.000</div>
+        </a>
+        <a (click)="tope = 4500" class="dropdown-item">
+          <div style="color:gray">$4.500</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Límite de usos:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="100" [(ngModel)]="limite" style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Válido hasta:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:9px;padding-right:4px;border:1px solid #eee;background:white">
+      <input id="date" type="date" [(ngModel)]="termino" style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <div *ngIf="error_limite" style="margin-left:50px;margin-top:10px;color:red">
+    El campo "Límite de usos" debe ser un número.
+  </div>
+  <div *ngIf="error_info_incompleta" style="margin-left:50px;margin-top:10px;color:red">
+    Se deben completar todos los campos.
+  </div>
+
+  <div style="margin-top:30px;margin-left:100px">
+
+    <!-- <button (click)="crearEmpresa()" type="button" class="btn btn-outline-primary">
+          Cancelar
+        </button> -->
+    <button (click)="crearCupon()" type="button" class="btn btn-primary">
+      Crear cupón
+    </button>
+  </div>
+
+
+</div>
+
+
+
+
+<div *ngIf="showTabla" style="margin-top:15px">
+
+  <div style="font-size:25px;color:#444">
+    Cupones <span style="font-size:16px;color:#999"> - Información general</span>
+  </div>
+
+
+  <div style="padding:15px;padding-top:0px;display:flex;justify-content:flex-end">
+
+    <a (click)="showCrear = true; showTabla = false"
+      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+      <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
+    </a>
+
+  </div>
+
+
+  <table class="table table-striped" *ngIf="showCupones" style="border:1px solid #eee">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Código</th>
+        <th scope="col">Título</th>
+        <th scope="col">Usos</th>
+        <th scope="col">Descuento</th>
+        <th scope="col">Vigencia</th>
+        <th scope="col">Estatus</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cupon of cupones; let i = index">
+        <th scope="row"> {{i + 1}} </th>
+        <td> {{cupon.codigo}} </td>
+        <td> {{cupon.titulo}} </td>
+        <td> {{cupon.veces_usado}}/{{cupon.limite_de_usos}} </td>
+        <td> {{cupon.descuento}}% </td>
+        <td> {{cupon.valido_hasta}} </td>
+        <td>
+          <div *ngIf="!cupon.agotado && !cupon.vencido && cupon.isActive" style="color:limegreen">Activo</div>
+          <div *ngIf="!cupon.isActive">Desactivado</div>
+          <div *ngIf="cupon.vencido">Vencido</div>
+          <div *ngIf="cupon.agotado">Agotado</div>
+        </td>
+        <td>
+          <button (click)="toggleAccount(cupon)" class="btn btn-primary btn-sm">
+            Detalles
+          </button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>

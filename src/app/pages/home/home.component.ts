@@ -62,25 +62,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cargarMapa();
+    // this.cargarMapa();
     this.mapaSubscription$ = this._mapa.mapAction$.subscribe((data: any) => {
-      switch (data.accion) {
-        case 'traer_riders':
-          clearTimeout(this.timer);
-          this.traerTodoLosRiders(data.filtro);
-          break;
-        case 'rastrear_rider':
-          clearTimeout(this.timer);
-          this.marcadores_accion = 'inicializar_marcador_rastreo';
-          this.rastrearRider(data.pedidoID);
-          break;
-        case 'graficar_ruta':
-          this.graficarRuta();
-          break;
-        case 'remover_ruta':
-          this.removerRuta();
-          break;
-      }
+      // switch (data.accion) {
+      //   case 'traer_riders':
+      //     clearTimeout(this.timer);
+      //     this.traerTodoLosRiders(data.filtro);
+      //     break;
+      //   case 'rastrear_rider':
+      //     clearTimeout(this.timer);
+      //     this.marcadores_accion = 'inicializar_marcador_rastreo';
+      //     this.rastrearRider(data.pedidoID);
+      //     break;
+      //   case 'graficar_ruta':
+      //     this.graficarRuta();
+      //     break;
+      //   case 'remover_ruta':
+      //     this.removerRuta();
+      //     break;
+      // }
     });
   }
 

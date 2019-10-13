@@ -14,7 +14,7 @@ export class ControlService {
   isRiders = false;
   isEmpresas = false;
   isPedidos = false;
-
+  isCupones = false;
   stretched = false;
 
   map_filtros = false;
@@ -68,6 +68,7 @@ export class ControlService {
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = false;
+      this.isCupones = false;
     }
     if (tipo == 'graficas') {
       this.isMapa = false;
@@ -77,6 +78,8 @@ export class ControlService {
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = false;
+      this.isCupones = false;
+
     }
     if (tipo == 'taximetro') {
       this.isMapa = false;
@@ -86,6 +89,8 @@ export class ControlService {
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = true;
+      this.isCupones = false;
+
     }
     if (tipo == 'riders') {
       this.isMapa = false;
@@ -95,6 +100,8 @@ export class ControlService {
       this.isEmpresas = false;
       this.isPedidos = false;
       this.stretched = false;
+      this.isCupones = false;
+
     }
     if (tipo == 'empresas') {
       this.isMapa = false;
@@ -104,6 +111,8 @@ export class ControlService {
       this.isEmpresas = true;
       this.isPedidos = false;
       this.stretched = false;
+      this.isCupones = false;
+
     }
     if (tipo == 'pedidos') {
       this.isMapa = false;
@@ -113,6 +122,17 @@ export class ControlService {
       this.isEmpresas = false;
       this.isPedidos = true;
       this.stretched = false;
+      this.isCupones = false;
+    }
+    if (tipo == 'cupones') {
+      this.isMapa = false;
+      this.isGraficas = false;
+      this.isTaximetro = false;
+      this.isRiders = false;
+      this.isEmpresas = false;
+      this.isPedidos = false;
+      this.stretched = false;
+      this.isCupones = true;
     }
   }
 
