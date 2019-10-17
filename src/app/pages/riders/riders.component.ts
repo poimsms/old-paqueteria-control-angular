@@ -203,7 +203,7 @@ export class RidersComponent implements OnInit {
     this._control.isLoading = true;
 
     const body = {
-      nombre: this.nombre,
+      nombre: this.nombre.toLowerCase(),
       email: this.email.toLowerCase(),
       telefono: this.telefono,
       password: this.password_1,

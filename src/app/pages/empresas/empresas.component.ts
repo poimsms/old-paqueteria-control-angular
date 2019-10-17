@@ -174,7 +174,7 @@ export class EmpresasComponent implements OnInit {
     this._control.isLoading = true;
 
     const body = {
-      nombre: this.nombre,
+      nombre: this.nombre.toLowerCase(),
       email: this.email.toLowerCase(),
       telefono: Number(this.telefono),
       password: this.password_1,

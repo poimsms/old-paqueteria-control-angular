@@ -15,8 +15,8 @@
     </div>
 
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label (click)="filtro.vehiculo.field = 'vehiculo'; filtro.vehiculo.value = 'bici'" class="btn btn-light"
-        [ngClass]="{'active': filtro.vehiculo.value == 'bici'}">
+      <label (click)="filtro.vehiculo.field = 'vehiculo'; filtro.vehiculo.value = 'bicicleta'" class="btn btn-light"
+        [ngClass]="{'active': filtro.vehiculo.value == 'bicicleta'}">
         <input type="radio" name="options" id="option1" autocomplete="off" checked> Bicicleta
       </label>
       <label (click)="filtro.vehiculo.field = 'vehiculo'; filtro.vehiculo.value = 'moto'" class="btn btn-light"
@@ -210,12 +210,12 @@
 
       <div
         style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:200px">
-        <i (click)="changeLimiteTarifaMinima('-', 'bici', 'noche')" class="fas fa-angle-left"
+        <i (click)="changeLimiteTarifaMinima('-', 'bicicleta', 'noche')" class="fas fa-angle-left"
           style="color:#bbb;font-size:25px;margin-right:15px"></i>
         <div style="padding:10px">
           {{_global.tarifas_temp.noche.bici.limite / 1000}} km
         </div>
-        <i (click)="changeLimiteTarifaMinima('+', 'bici', 'noche')" class="fas fa-angle-right"
+        <i (click)="changeLimiteTarifaMinima('+', 'bicicleta', 'noche')" class="fas fa-angle-right"
           style="color:#bbb;font-size:25px;margin-left:15px"></i>
       </div>
 
@@ -359,12 +359,12 @@
 
       <div
         style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;width:200px">
-        <i (click)="changeLimiteTarifaMinima('-', 'bici', 'dia')" class="fas fa-angle-left"
+        <i (click)="changeLimiteTarifaMinima('-', 'bicicleta', 'dia')" class="fas fa-angle-left"
           style="color:#bbb;font-size:25px;margin-right:15px"></i>
         <div style="padding:10px">
           {{_global.tarifas_temp.dia.bici.limite / 1000}} km
         </div>
-        <i (click)="changeLimiteTarifaMinima('+', 'bici', 'dia')" class="fas fa-angle-right"
+        <i (click)="changeLimiteTarifaMinima('+', 'bicicleta', 'dia')" class="fas fa-angle-right"
           style="color:#bbb;font-size:25px;margin-left:15px"></i>
       </div>
 
@@ -400,7 +400,7 @@
     <div
       style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#626ed4">
       <div style="display:flex;align-items:center">
-        <i class="fas fa-pencil-alt" style="font-size:20px;margin-right:10px;color:white"></i>
+        <i class="fas fa-power-off" style="font-size:20px;margin-right:10px;color:white"></i>
         <div style="color:white;font-size:20px">
           Reinicar Rider
         </div>
@@ -430,64 +430,65 @@
       </div>
 
       <div style="margin-top:10px;display:flex;justify-content:flex-start;align-items:flex-start">
-        <i *ngIf="caso == 'Entrego con éxito'" class="far fa-dot-circle"
+        <i *ngIf="caso == 'rider_no_informo_la_entrega'" class="far fa-dot-circle"
           style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
-        <i *ngIf="caso != 'Entrego con éxito'" class="far fa-circle"
+        <i *ngIf="caso != 'rider_no_informo_la_entrega'" class="far fa-circle"
           style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
 
         <div>
-          <a (click)="caso = 'Entrego con éxito'" style="font-size:16px;font-weight:600">
+          <a (click)="caso = 'rider_no_informo_la_entrega'" style="font-size:16px;font-weight:600">
             Entrego el pedido
           </a>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Situación:</span>
+            <span style="font-weight:500;color:red">Situación:</span>
             El rider entrego el pedido pero no informó al sistema debido a una falla (su teléfono quedo sin baterias,
-            se le terminó el plan de datos, etc.).
+            se terminó su plan de datos, etc.)
           </div>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Acción:</span>
-            El pedido se marcará como entregado y el rider será reiniciado para recibir nuevos pedidos.
+            <span style="font-weight:500;color:red">Acción:</span>
+            El pedido se marcará como entregado y el rider será reiniciado para recibir nuevos pedidos (el rider deberá
+            cambiar su estado a En Línea)
           </div>
         </div>
       </div>
 
       <div style="margin-top:30px;display:flex;justify-content:flex-start;align-items:flex-start">
-        <i *ngIf="caso == 'No completo el pedido'" class="far fa-dot-circle"
+        <i *ngIf="caso == 'rider_no_completo_el_pedido'" class="far fa-dot-circle"
           style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
-        <i *ngIf="caso != 'No completo el pedido'" class="far fa-circle"
+        <i *ngIf="caso != 'rider_no_completo_el_pedido'" class="far fa-circle"
           style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
         <div>
-          <a (click)="caso = 'No completo el pedido'" style="font-size:16px;font-weight:600">
+          <a (click)="caso = 'rider_no_completo_el_pedido'" style="font-size:16px;font-weight:600">
             No completo el pedido
           </a>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Situación:</span>
-            El rider por algun motivo (accidente, robo, etc.) no logró completar el pedido.
+            <span style="font-weight:500;color:red">Situación:</span>
+            El rider por alguna razón (accidente, robo, etc.) no logró completar la entrega del pedido
           </div>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Acción:</span>
-            El pedido quedará anulado y el rider será reiniciado para recibir nuevos pedidos.
+            <span style="font-weight:500;color:red">Acción:</span>
+            El pedido quedará anulado y el rider será reiniciado para recibir nuevos pedidos (el rider deberá cambiar su
+            estado a En Línea)
           </div>
         </div>
       </div>
 
       <div style="margin-top:30px;display:flex;justify-content:flex-start;align-items:flex-start">
-        <i *ngIf="caso == 'No confirmó el pedido'" class="far fa-dot-circle"
+        <i *ngIf="caso == 'cliente_no_confirmó_el_pedido'" class="far fa-dot-circle"
           style="margin-top:5px;color:dodgerblue;font-size:18px;margin-right:20px"></i>
-        <i *ngIf="caso != 'No confirmó el pedido'" class="far fa-circle"
+        <i *ngIf="caso != 'cliente_no_confirmó_el_pedido'" class="far fa-circle"
           style="margin-top:5px;color:#bbb;font-size:18px;margin-right:20px"></i>
         <div>
-          <a (click)="caso = 'No confirmó el pedido'" style="font-size:16px;font-weight:600">
+          <a (click)="caso = 'cliente_no_confirmó_el_pedido'" style="font-size:16px;font-weight:600">
             El cliente no confirmó el pedido
           </a>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Situación:</span>
-            El cliente ha demorado mucho (5 min o más) en confirmar el pedido.
+            <span style="font-weight:500;color:red">Situación:</span>
+            El cliente ha tardado mucho (5 min o más) en confirmar el pedido
           </div>
           <div style="margin-top:5px;font-size:14.5px;color:#888">
-            <span style="font-weight:500;color:lightcoral">Acción:</span>
-            El rider será reiniciado para recibir nuevos
-            pedidos.
+            <span style="font-weight:500;color:red">Acción:</span>
+            El rider será reiniciado para recibir nuevos pedidos(el rider deberá cambiar su estado a En Línea)
           </div>
         </div>
       </div>

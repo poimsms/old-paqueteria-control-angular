@@ -15,8 +15,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   riderSubscription$: Subscription;
   mapaSubscription$: Subscription;
 
-  motoURL = 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565228910/tools/pin.png';
-  biciURL = 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565230426/tools/pin_2.png';
+  motoURL = 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565228910/tools/pin_motocicleta.png';
+  biciURL = 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1565230426/tools/pin_bicicleta.png';
 
   iconoMoto = {
     url: this.motoURL,
@@ -62,32 +62,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.cargarMapa();
+    this.cargarMapa();
     this.mapaSubscription$ = this._mapa.mapAction$.subscribe((data: any) => {
-      // switch (data.accion) {
-      //   case 'traer_riders':
-      //     clearTimeout(this.timer);
-      //     this.traerTodoLosRiders(data.filtro);
-      //     break;
-      //   case 'rastrear_rider':
-      //     clearTimeout(this.timer);
-      //     this.marcadores_accion = 'inicializar_marcador_rastreo';
-      //     this.rastrearRider(data.pedidoID);
-      //     break;
-      //   case 'graficar_ruta':
-      //     this.graficarRuta();
-      //     break;
-      //   case 'remover_ruta':
-      //     this.removerRuta();
-      //     break;
-      // }
+      switch (data.accion) {
+        case 'traer_riders':
+          clearTimeout(this.timer);
+          this.traerTodoLosRiders(data.filtro);
+          break;
+        case 'rastrear_rider':
+          clearTimeout(this.timer);
+          this.marcadores_accion = 'inicializar_marcador_rastreo';
+          this.rastrearRider(data.pedidoID);
+          break;
+        case 'graficar_ruta':
+          this.graficarRuta();
+          break;
+        case 'remover_ruta':
+          this.removerRuta();
+          break;
+      }
     });
   }
 
   traerTodoLosRiders(filtro) {
-
+    console.log(filtro)
     this._mapa.getRidersByFilter(filtro).then(riders => {
-
+      console.log(riders, 'rds')
       this.riders = riders;
 
       if (this.marcadores_accion == 'inicializar_marcadores') {

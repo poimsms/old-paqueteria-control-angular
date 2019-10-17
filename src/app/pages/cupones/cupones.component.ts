@@ -67,7 +67,7 @@ export class CuponesComponent implements OnInit {
       descuento: Number(this.descuento),
       tope: Number(this.tope),
       limite_de_usos: Number(this.limite),
-      valido_hasta: this.termino
+      termino: this.termino
     }
 
     this._data.createCupon(body).then((data: any) => {

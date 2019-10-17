@@ -152,11 +152,11 @@ export class PopupsHomeComponent implements OnInit {
         this._global.tarifas_temp.noche.moto.limite -= 100;
       }
 
-      if (tipo == '+' && vehiculo == 'bici') {
+      if (tipo == '+' && vehiculo == 'bicicleta') {
         this._global.tarifas_temp.noche.limite += 100;
       }
 
-      if (tipo == '-' && vehiculo == 'bici') {
+      if (tipo == '-' && vehiculo == 'bicicleta') {
         this._global.tarifas_temp.noche.limite -= 100;
       }
     }
@@ -170,11 +170,11 @@ export class PopupsHomeComponent implements OnInit {
         this._global.tarifas_temp.dia.moto.limite -= 100;
       }
 
-      if (tipo == '+' && vehiculo == 'bici') {
+      if (tipo == '+' && vehiculo == 'bicicleta') {
         this._global.tarifas_temp.dia.limite += 100;
       }
 
-      if (tipo == '-' && vehiculo == 'bici') {
+      if (tipo == '-' && vehiculo == 'bicicleta') {
         this._global.tarifas_temp.dia.limite -= 100;
       }
     }
@@ -183,70 +183,52 @@ export class PopupsHomeComponent implements OnInit {
 
   async aplicarReset() {
 
-    if (this.caso == '' || this.telefono.length != 8 || !Number(this.telefono)) {
+    if (this.caso == '' || !Number(this.telefono)) {
       return;
     }
 
     this._control.isLoading = true;
+    const fireArray: any = await this._data.getRiderFire(this.telefono);
 
-    const data: any = await this._data.getRiderByPhone(this.telefono);
-
-    if (!data.ok) {
-      return this.toastr.error(data.message, 'Algo salio mal');
+    if (fireArray.length == 0) {
+      this._control.isLoading = false;
+      return this.toastr.error('Teléfono no encontrado', 'Algo salio mal');
     }
 
-    if (this.caso == 'Entrego con éxito') {
+    const fireData: any = fireArray[0];
 
-      const res: any = await this._data.updatePedido(data.rider._id, { entregado: true });
+    if (!fireData.isActive) {
+      this._control.isLoading = false;
+      return this.toastr.error('Cuenta de rider bloqueada', 'Algo salio mal');
+    }
+
+    if (this.caso == 'rider_no_informo_la_entrega') {
+
+      const res: any = await this._data.updatePedido(fireData.pedido, { entregado: true, mediado_por_admin: true });
 
       if (!res.ok) {
-        return this.toastr.error(data.message, 'Algo salio mal');
+        this._control.isLoading = false;
+        return this.toastr.error(res.message, 'Algo salio mal');
       }
 
-      this._data.updateRiderFirebase(data.rider._id, 'riders', {
-        actividad: 'disponible',
-        aceptadoId: '',
-        fase: ''
-      });
-
-      this._data.updateRiderFirebase(data.rider._id, 'coors', {
-        actividad: 'disponible',
-        pedido: '',
-        cliente: ''
-      });
+      this.reiniciarRider(fireData.rider, fireData.cliente);
     }
 
-    if (this.caso == 'No completo el pedido') {
+    if (this.caso == 'rider_no_completo_el_pedido') {
 
-      const res: any = await this._data.updatePedido(data.rider._id, { cancelado: true });
+      const res: any = await this._data.updatePedido(fireData.pedido, { cancelado: true, mediado_por_admin: true });
 
       if (!res.ok) {
-        return this.toastr.error(data.message, 'Algo salio mal');
+        this._control.isLoading = false;
+        return this.toastr.error(res.message, 'Algo salio mal');
       }
 
-      this._data.updateRiderFirebase(data.rider._id, 'riders', {
-        actividad: 'disponible',
-        aceptadoId: '',
-        fase: ''
-      });
-
-      this._data.updateRiderFirebase(data.rider._id, 'coors', {
-        actividad: 'disponible',
-        pedido: '',
-        cliente: ''
-      });
+      this.reiniciarRider(fireData.rider);
     }
 
-    if (this.caso == 'No confirmó el pedido') {
+    if (this.caso == 'cliente_no_confirmó_el_pedido') {
 
-      this._data.updateRiderFirebase(data.rider._id, 'riders', {
-        pagoPendiente: false
-      });
-
-      this._data.updateRiderFirebase(data.rider._id, 'coors', {
-        pagoPendiente: false
-      });
-
+      this.reiniciarRider(fireData.rider);
     }
 
     this.toastr.success('Rider reiniciado con exito');
@@ -254,6 +236,27 @@ export class PopupsHomeComponent implements OnInit {
     this.caso = '';
     this._control.reiniciar_rider = false;
     this._control.isLoading = false;
+  }
+
+  reiniciarRider(id, entregado_id?) {
+    this._data.updateRiderFirebase(id, 'riders', {
+      actividad: 'disponible',
+      aceptadoId: '',
+      entregadoId: entregado_id ? entregado_id : '',
+      fase: '',
+      pedido: '',
+      pagoPendiente: false,
+      nuevaSolicitud: false,
+      isOnline: false,
+    });
+
+    this._data.updateRiderFirebase(id, 'coors', {
+      actividad: 'disponible',
+      pedido: '',
+      cliente: '',
+      pagoPendiente: false,
+      isOnline: false
+    });
   }
 
 }

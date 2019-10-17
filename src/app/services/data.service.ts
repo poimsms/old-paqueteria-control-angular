@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ConfigService } from './config.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take} from 'rxjs/operators';
 import { AuthService } from './auth.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +70,7 @@ export class DataService {
       actividad: 'disponible'
     }
 
-    rider.vehiculo == 'Moto' ? data.vehiculo = 'moto' : data.vehiculo = 'bici';
+    rider.vehiculo == 'Moto' ? data.vehiculo = 'moto' : data.vehiculo = 'bicicleta';
     rider.relacion == 'Contrato' ? data.relacion = 'contrato' : data.relacion = 'servicio';
     this.db.collection("riders_coors").doc(rider._id).set(data);
   }
@@ -80,6 +81,12 @@ export class DataService {
     } else {
       this.db.doc('riders/' + id).update(data);
     }
+  }
+
+  getRiderFire(telefono) {
+    return this.db.collection('riders_coors', ref =>
+      ref.where('telefono', '==', telefono))
+      .valueChanges().pipe(take(1)).toPromise();
   }
 
   // ---------------------------
@@ -99,7 +106,7 @@ export class DataService {
   }
 
   updatePedido(id, body) {
-    const url = `${this.apiURL}/dash/pedidos-update-one?id=${id}`;
+    const url = `${this.apiURL}/dash/pedidos-update?id=${id}`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.put(url, body, { headers }).toPromise();
   }
