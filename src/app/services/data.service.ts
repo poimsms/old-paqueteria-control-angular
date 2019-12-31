@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ConfigService } from './config.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Observable } from 'rxjs';
-import { switchMap, take} from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 
@@ -37,20 +37,24 @@ export class DataService {
   createRiderFirebase(rider) {
 
     const data = {
-      entregadoId: '',
+      cliente_activo: '',
       rechazadoId: '',
       aceptadoId: '',
       pedido: '',
+      evento: 1,
       fase: '',
       actividad: 'disponible',
+      pedidos_perdidos: 0,
       isOnline: false,
       isActive: true,
+      bloqueado: false,
+      servicio_cancelado: false,
       nuevaSolicitud: false,
       pagoPendiente: false,
       rider: rider._id
-    }
+    };
 
-    this.db.collection("riders").doc(rider._id).set(data);
+    this.db.collection(this._config.coleccion_riders).doc(rider._id).set(data);
   }
 
   createRiderCoorsFirebase(rider) {
@@ -58,8 +62,10 @@ export class DataService {
     const data: any = {
       pagoPendiente: false,
       rider: rider._id,
+      ciudad: 'coquimbo_la_serena',
       pedido: '',
       cliente: '',
+      evento: 1,
       isActive: true,
       isOnline: false,
       lat: Number((-33.444600 - Math.random() / 100).toFixed(4)),
@@ -68,12 +74,38 @@ export class DataService {
       telefono: rider.telefono,
       todo: 'todo',
       actividad: 'disponible'
+    };
+
+    if (rider.vehiculo == 'Moto') {
+      data.vehiculo = 'moto';
     }
 
-    rider.vehiculo == 'Moto' ? data.vehiculo = 'moto' : data.vehiculo = 'bicicleta';
-    rider.relacion == 'Contrato' ? data.relacion = 'contrato' : data.relacion = 'servicio';
-    this.db.collection("riders_coors").doc(rider._id).set(data);
+    if (rider.vehiculo == 'Auto') {
+      data.vehiculo = 'auto';
+    }
+
+    if (rider.vehiculo == 'Bicicleta') {
+      data.vehiculo = 'bicicleta';
+    }
+
+    this.db.collection(this._config.coleccion_coors).doc(rider._id).set(data);
   }
+
+  createModalidadFirebase(rider) {
+
+    const data = {
+      cobro_activo: false,
+      cobro_libre: 0,
+      cobro_turno: 0,
+      horas_disponibles: true,
+      isTurno: false,
+      fee: rider.turnoSet ? 0.3 : 0.2,
+      rider: rider._id
+    };
+
+    this.db.collection(this._config.coleccion_modalidad).doc(rider._id).set(data);
+  }
+
 
   updateRiderFirebase(id, tipo, data) {
     if (tipo == 'coors') {
@@ -133,6 +165,30 @@ export class DataService {
     return this.http.get(url, { headers }).toPromise();
   }
 
+  getBalanceLibre(body) {
+    const url = `${this.apiURL}/dash/balance-libre-get`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
+  getBalanceTurno(body) {
+    const url = `${this.apiURL}/dash/balance-turno-get`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
+  updateBalanceLibre(id, body) {
+    const url = `${this.apiURL}/dash/balance-libre-update?id=${id}`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.put(url, body, { headers }).toPromise();
+  }
+
+  updateBalanceTurno(id, body) {
+    const url = `${this.apiURL}/dash/balance-turno-update?id=${id}`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
+    return this.http.put(url, body, { headers }).toPromise();
+  }
+
   // ---------------------------
   //        EMPRESA
   // ---------------------------
@@ -153,10 +209,10 @@ export class DataService {
   //        CUPONES
   // ---------------------------
 
-  getCupones() {
-    const url = `${this.apiURL}/dash/cupones-get-all`;
+  getCodigosByFilter(body) {
+    const url = `${this.apiURL}/dash/cupones-get-by-filter`;
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
-    return this.http.get(url, { headers }).toPromise();
+    return this.http.post(url, body, { headers }).toPromise();
   }
 
   createCupon(body) {
@@ -197,6 +253,12 @@ export class DataService {
     const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
 
     const url = `${this.apiURL}/dash/registros-de-actividad-riders-get-all`;
+    return this.http.post(url, body, { headers }).toPromise();
+  }
+
+  createBalances(body) {
+    const url = `${this.apiURL}/dash/balances-create`;
+    const headers = new HttpHeaders({ token: this._auth.token, version: this._config.version });
     return this.http.post(url, body, { headers }).toPromise();
   }
 

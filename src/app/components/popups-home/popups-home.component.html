@@ -392,7 +392,7 @@
 
 
 
-<div *ngIf="_control.reiniciar_rider"
+<!-- <div *ngIf="_control.reiniciar_rider"
   style="margin-top:0px;overflow-y:scroll;z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
   <div
     style="margin-top:25px;margin-bottom:30px;position:relative;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
@@ -492,6 +492,97 @@
           </div>
         </div>
       </div>
+
+
+      <div style="margin-top:30px"></div>
+
+      <button (click)="aplicarReset()" type="button" class="btn btn-outline-primary btn-block">
+        Aplicar
+      </button>
+    </div>
+
+
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="_control.reiniciar_rider"
+  style="margin-top:0px;overflow-y:scroll;z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
+  <div
+    style="margin-top:25px;margin-bottom:30px;position:relative;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
+
+    <div
+      style="padding:20px;width:100%;display:flex;justify-content:space-between;align-items:center;background:#626ed4">
+      <div style="display:flex;align-items:center">
+        <i class="fas fa-power-off" style="font-size:20px;margin-right:10px;color:white"></i>
+        <div style="color:white;font-size:20px">
+          Reinicar Rider
+        </div>
+      </div>
+      <div (click)="_control.reiniciar_rider = false"
+        style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-times" style="font-size:22px;color:rgba(255,255,255,.5)!important"></i>
+      </div>
+    </div>
+
+    <div style="padding:30px">
+
+      <div>
+        Teléfono
+      </div>
+
+      <div
+        style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:400px">
+        <div style="background:#eee;color:#555;padding:3px;width:60px">
+          +56 9
+        </div>
+        <input type="tel" placeholder="" [(ngModel)]="telefono" />
+      </div>
+
+      <div style="font-size:16px;margin-top:20px">
+        Seleccione un caso:
+      </div>
+      <div style="width:100%;display:flex;align-items:center;justify-content:flex-start">
+        <div style="width:35px;height:35px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-money-bill-wave" style="font-size:15px;color:#bbb"></i>
+        </div>
+        <div style="width:50px;border-top:2px solid #ccc">
+        </div>
+        <div style="width:35px;height:35px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-location-arrow" style="font-size:15px;color:#bbb"></i>
+        </div>
+        <div style="width:50px;border-top:2px solid #ccc">
+        </div>
+        <div style="width:35px;height:35px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-shopping-bag" style="font-size:15px;color:#bbb"></i>
+        </div>
+        <div style="width:50px;border-top:2px solid #ccc">
+        </div>
+        <div style="width:35px;height:35px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-location-arrow" style="font-size:15px;color:#bbb"></i>
+        </div>
+        <div style="width:50px;border-top:2px solid #ccc">
+        </div>
+        <div style="width:35px;height:35px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-pen" style="font-size:15px;color:#bbb"></i>
+        </div>
+      </div>
+
+     
+
+   
 
 
       <div style="margin-top:30px"></div>

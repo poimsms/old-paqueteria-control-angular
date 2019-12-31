@@ -52,6 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   arr = [];
   timer: any;
 
+  showReiniciar = false;
+
   constructor(
     private _mapa: MapaService,
     public _control: ControlService
@@ -62,32 +64,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cargarMapa();
+    // this.cargarMapa();
     this.mapaSubscription$ = this._mapa.mapAction$.subscribe((data: any) => {
-      switch (data.accion) {
-        case 'traer_riders':
-          clearTimeout(this.timer);
-          this.traerTodoLosRiders(data.filtro);
-          break;
-        case 'rastrear_rider':
-          clearTimeout(this.timer);
-          this.marcadores_accion = 'inicializar_marcador_rastreo';
-          this.rastrearRider(data.pedidoID);
-          break;
-        case 'graficar_ruta':
-          this.graficarRuta();
-          break;
-        case 'remover_ruta':
-          this.removerRuta();
-          break;
-      }
+      // switch (data.accion) {
+      //   case 'traer_riders':
+      //     clearTimeout(this.timer);
+      //     this.traerTodoLosRiders(data.filtro);
+      //     break;
+      //   case 'rastrear_rider':
+      //     clearTimeout(this.timer);
+      //     this.marcadores_accion = 'inicializar_marcador_rastreo';
+      //     this.rastrearRider(data.pedidoID);
+      //     break;
+      //   case 'graficar_ruta':
+      //     this.graficarRuta();
+      //     break;
+      //   case 'remover_ruta':
+      //     this.removerRuta();
+      //     break;
+      // }
     });
   }
 
   traerTodoLosRiders(filtro) {
-    console.log(filtro)
+
     this._mapa.getRidersByFilter(filtro).then(riders => {
-      console.log(riders, 'rds')
+
       this.riders = riders;
 
       if (this.marcadores_accion == 'inicializar_marcadores') {
@@ -257,6 +259,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.removerMarcadores();
     this.marcadores_accion = 'inicializar_marcadores';
     this._mapa.mapAction$.next({ accion: 'traer_riders', filtro: this._control.map_filtroData })
+  }
+
+  reiniciarRider() {
+    
   }
 
   limpiarRuta() {

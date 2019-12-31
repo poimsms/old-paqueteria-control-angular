@@ -16,6 +16,8 @@ export class ControlService {
   isPedidos = false;
   isCupones = false;
   stretched = false;
+  isPagos = false;
+  isCobros = false;
 
   map_filtros = false;
   map_tarifas = false;
@@ -24,6 +26,7 @@ export class ControlService {
   map_horario = false;
   reiniciar_rider = false;
   isTracking = false;
+  isFacturacion = false;
 
   isLoading = false;
 
@@ -38,7 +41,10 @@ export class ControlService {
 
   pedidoID: string;
   rider: any;
-  pedido: string;
+  pedido: any;
+  fase: string;
+  isPedido = false;
+  riderImg: string;
 
   mostrar = false;
 
@@ -69,6 +75,9 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = false;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
+
     }
     if (tipo == 'graficas') {
       this.isMapa = false;
@@ -79,6 +88,8 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = false;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
 
     }
     if (tipo == 'taximetro') {
@@ -90,6 +101,8 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = true;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
 
     }
     if (tipo == 'riders') {
@@ -101,6 +114,8 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = false;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
 
     }
     if (tipo == 'empresas') {
@@ -112,6 +127,8 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = false;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
 
     }
     if (tipo == 'pedidos') {
@@ -123,6 +140,9 @@ export class ControlService {
       this.isPedidos = true;
       this.stretched = false;
       this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = false;
+
     }
     if (tipo == 'cupones') {
       this.isMapa = false;
@@ -133,6 +153,34 @@ export class ControlService {
       this.isPedidos = false;
       this.stretched = false;
       this.isCupones = true;
+      this.isPagos = false;
+      this.isCobros = false;
+
+    }
+    if (tipo == 'pagos') {
+      this.isMapa = false;
+      this.isGraficas = false;
+      this.isTaximetro = false;
+      this.isRiders = false;
+      this.isEmpresas = false;
+      this.isPedidos = false;
+      this.stretched = false;
+      this.isCupones = false;
+      this.isPagos = true;
+      this.isCobros = false;
+    }
+    if (tipo == 'cobros') {
+      console.log('entroo?')
+      this.isMapa = false;
+      this.isGraficas = false;
+      this.isTaximetro = false;
+      this.isRiders = false;
+      this.isEmpresas = false;
+      this.isPedidos = false;
+      this.stretched = false;
+      this.isCupones = false;
+      this.isPagos = false;
+      this.isCobros = true;
     }
   }
 

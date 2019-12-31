@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { DataService } from 'src/app/services/data.service';
 // import * as pluginAnnotations from 'chartjs-plugin-annotation';
+// import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+
 @Component({
   selector: 'app-graficas',
   templateUrl: './graficas.component.html',
@@ -10,70 +12,43 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class GraficasComponent implements OnInit {
 
-  public lineChartData: ChartDataSets[] = [
-  ];
+  public lineChartData: ChartDataSets[] = [];
   public lineChartLabels: Label[] = [];
+
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
+    legend: {
+      display: false
+    },
     scales: {
       // We use this empty structure as a placeholder for dynamic theming.
-      xAxes: [{}],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Octubre de 2019'
+        }
+      }],
       yAxes: [
         {
           id: 'y-axis-0',
           position: 'left',
-        },
-        {
-          id: 'y-axis-1',
-          position: 'right',
+          offset: true,
           ticks: {
-            display: false,
-          },
-          gridLines: {
-            drawOnChartArea: false
+            min: 30,
+            // max: 100,
+            stepSize: 10
           }
-
         }
       ]
     },
     annotation: {
-      annotations: [
-        {
-          type: 'line',
-          mode: 'vertical',
-          scaleID: 'x-axis-0',
-          value: 'March',
-          borderColor: 'orange',
-          borderWidth: 2,
-          label: {
-            enabled: true,
-            fontColor: 'orange',
-            content: 'LineAnno'
-          }
-        },
-      ],
+      annotations: [],
     },
   };
   public lineChartColors: Color[] = [
     { // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // red
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'red',
       pointBackgroundColor: 'rgba(148,159,177,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
@@ -100,6 +75,38 @@ export class GraficasComponent implements OnInit {
   }
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
+
+
+
+
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        },
+      },
+    }
+  };
+  public pieChartLabels: Label[] = ['Activos', 'Pendientes', 'Completados'];
+  public pieChartData: number[] = [15, 60, 400];
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  // public pieChartPlugins = [pluginDataLabels];
+  public pieChartColors = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+    },
+  ];
+
+
+
 
   constructor(private _data: DataService) {
 
@@ -141,8 +148,10 @@ export class GraficasComponent implements OnInit {
   getRegistros(filtro) {
     this._data.getRegistros(filtro).then((data: any) => {
       if (data.ok) {
-        this.lineChartData = [{ data: data.riders, label: 'Riders activos' }];
-        this.lineChartLabels = data.dias;
+        // this.lineChartData = [{ data: data.riders, label: 'Riders activos' }];
+        // this.lineChartLabels = data.dias;
+        this.lineChartData = [{ data: [45, 51, 35, 34, 39, 48, 45], label: 'Riders conectados' }];
+        this.lineChartLabels = ['21', '22', '23', '24', '25', '26', '27'];
       }
     });
   }

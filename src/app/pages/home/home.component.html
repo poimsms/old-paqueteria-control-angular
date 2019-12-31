@@ -9,7 +9,7 @@
   </div>
 
 
-  <div *ngIf="_control.isMapa && _control.isTracking" style="position:absolute;top:10px;right:10px;z-index:991">
+  <!-- <div *ngIf="_control.isMapa && _control.isTracking" style="position:absolute;top:10px;right:10px;z-index:991">
     <div
       style="width:300px;padding:10px;padding-left:15px;padding-right:15px;background:white;border-radius:5px;box-shadow: 0 0 20px #ccc;">
       <div style="display:flex;align-items:center">
@@ -47,6 +47,147 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+
+
+  <div *ngIf="_control.isPedido" style="position:absolute;top:10px;right:10px;z-index:991">
+    <div
+      style="width:350px;position:relative;padding:10px;padding-left:15px;padding-right:15px;background:white;border-radius:5px;box-shadow: 0 0 20px #ccc;">
+      <div style="position:absolute;top:10px;right:10px">
+        <div (click)="showReiniciar"
+          style="padding:3px;padding-left:10px;padding-right:10px;border-radius:4px;border:1px solid #bbb;font-size:13px">
+          Reiniciar
+        </div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <img [src]="rider.img.url" style="height:45px;width:45px;border-radius:50%;border:1px solid #eee;object-fit:cover">
+        <div style="flex:1;margin-left:10px;font-size:14px">
+          <div style="text-transform:capitalize">
+            {{rider.nombre}}
+          </div>
+          <div>
+            +56 9 {{rider.telefono}}
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <div>Vehículo:
+              <span style="text-transform:capitalize">
+                {{rider.vehiculo}}
+              </span>
+            </div>
+            <div>
+              <i class="fas fa-star" style="color:#777"></i>
+              {{rider.stats.startsAvg}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="_control.isPedido" style="display:flex;font-size:13.5px;margin-top:10px;margin-left:50px">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <i class="far fa-dot-circle" style="color:orange"></i>
+          <div style="border-left:2px dashed #ccc;height:10px;margin-top:3px;margin-bottom:3px"></div>
+          <i class="fas fa-map-marker-alt" style="color:#F52C56"></i>
+        </div>
+        <div style="margin-left:10px">
+          <div style="height:20px;overflow:hidden">
+            {{pedido.origen.direccion}}
+          </div>
+          <div style="margin-top:5px;height:20px;overflow:hidden">
+              {{pedido.destino.direccion}}
+          </div>
+        </div>
+      </div>
+
+
+      <div
+        style="margin-top:10px;width:100%;display:flex;justify-content:center">
+        <div style="display:flex;align-items:center;justify-content:flex-start">
+          <div class="bubble bubble-active">
+            <i class="fas fa-check icono"[ngClass]="{'icono-active': _control.fase == 'esperando_confirmacion'}"></i>
+          </div>
+          <div style="width:30px;border-top:2px solid #ccc">
+          </div>
+          <div class="bubble">
+            <i class="fas fa-location-arrow icono" [ngClass]="{'icono-active': _control.fase == 'navegando_al_origen'}"></i>
+          </div>
+          <div style="width:30px;border-top:2px solid #ccc">
+          </div>
+          <div class="bubble">
+            <i class="fas fa-box-open icono" [ngClass]="{'icono-active': _control.fase == 'recogiendo_pedido'}"></i>
+          </div>
+          <div style="width:30px;border-top:2px solid #ccc">
+          </div>
+          <div class="bubble">
+            <i class="fas fa-location-arrow icono" [ngClass]="{'icono-active': _control.fase == 'navegando_al_destino'}"></i>
+          </div>
+          <div style="width:30px;border-top:2px solid #ccc">
+          </div>
+          <div class="bubble">
+            <i class="fas fa-pen icono" [ngClass]="{'icono-active': _control.fase == 'esperando_firma'}"></i>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="_control.fase == 'esperando_confirmacion'" style="margin-top:5px;font-size:13px;color:#777">
+        Confirmación
+      </div>
+
+      <div *ngIf="_control.fase == 'navegando_al_origen'"
+        style="margin-top:5px;margin-left:75px;font-size:13px;color:#777">
+        Delivering
+      </div>
+
+      <div *ngIf="_control.fase == 'recogiendo_pedido'"
+        style="margin-top:5px;margin-left:135px;font-size:13px;color:#777">
+        Recogido
+      </div>
+
+      <div *ngIf="_control.fase == 'navegando_al_destino'"
+        style="margin-top:5px;margin-left:190px;font-size:13px;color:#777">
+        Delivering
+      </div>
+
+      <div *ngIf="_control.fase == 'esperando_firma'"
+        style="margin-top:5px;margin-left:260px;font-size:13px;color:#777">
+        Entrega
+      </div>
+
+      <div style="height:10px;width:100%"></div>
+
+    </div>
   </div>
 
+</div>
+
+
+
+
+
+<div *ngIf="showReiniciar"
+  style="position:fixed;z-index:999;top:0px;left:0px;width:100%;height:100%;background:rgba(1, 10, 10, 0.5);display:flex;align-items:center;justify-content:center">
+  <div style="width:280px;background:white;border-radius:4px;padding:15px">
+    <div style="width:100%;display:flex;justify-content:flex-end">
+      <i (click)="showReiniciar = false" class="fas fa-times" style="font-size:14px;color:#ccc"></i>
+    </div>
+    <div style="margin-top:20px;width:100%;display:flex;justify-content:center">
+      <i class="fas fa-power-off" style="font-size:50px;color:slategrey"></i>
+    </div>
+    <div style="margin-top:20px;width:100%;text-align:center;color:#444;font-weight:600">
+      Reiniciar Rider
+    </div>
+    <div style="width:100%;text-align:center;color:#999;font-size:13px;padding:10px">
+      ¿Está seguro que desea reiniciar al rider? El rider debará cambiar su esta a En Línea.
+    </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:10px">
+      <div (click)="showReiniciar = false" style="color:#999;margin-right:15px;font-size:12px;font-weight:600">
+        CANCELAR
+      </div>
+      <div (click)="reiniciarRider()" style="color:darkblue;font-size:12px;font-weight:600">
+        REINICIAR
+      </div>
+    </div>
+
+  </div>
 </div>

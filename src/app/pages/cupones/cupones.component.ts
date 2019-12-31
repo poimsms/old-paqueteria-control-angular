@@ -11,13 +11,20 @@ import { ToastrService } from 'ngx-toastr';
 export class CuponesComponent implements OnInit {
 
   titulo: string;
-  descripcion: string;
-  descuento = '% descuento próximo pedido';
-  limite: string;
-  tope = '$3.000';
+  vendedor: string;
+  descuento = 10;
+  tope = 3000;
+  viajes = 3;
+  limite = 100;
+  isLimite = false;
+  isViajes = false;
+  isTope = false;
+  isDescuento = false;
+
+
 
   cupones = [];
-  termino = '2019-10-31';
+  termino = '2019-12-10';
 
   error_info_incompleta = false;
   error_limite = false;
@@ -26,54 +33,54 @@ export class CuponesComponent implements OnInit {
   showTabla = true;
   showCupones = true;
 
+  estatus_filtro = 'Estatus';
+
+
   constructor(
     private _control: ControlService,
     private _data: DataService,
     private toastr: ToastrService
   ) {
     this._control.activar('cupones');
-    this.getCupones();
+    this.getCodigos();
   }
 
   ngOnInit() {
   }
 
-  getCupones() {
-    this._control.isLoading = true;
-    this._data.getCupones().then((data: any) => {
+  getCodigos() {
+    const filtro = this.procesarFiltro();
+    this._data.getCodigosByFilter(filtro).then((data: any) => {
       this.cupones = [];
       this.cupones = data.cupones;
       this._control.isLoading = false;
     });
   }
 
-  crearCupon() {
+  crearHandler() {
 
     this.resetErros();
 
-    if (!(this.titulo && this.descripcion && this.limite && this.tope != '$3000' && this.descuento != '% descuento próximo pedido')) {
+    if (!(this.isDescuento && this.isTope && this.isViajes && this.titulo && this.vendedor)) {
       return this.error_info_incompleta = true;
-    }
-
-    if (!Number(this.limite)) {
-      return this.error_limite = true;
     }
 
     this._control.isLoading = true;
 
     const body = {
       titulo: this.titulo,
-      descripcion: this.descripcion,
-      descuento: Number(this.descuento),
-      tope: Number(this.tope),
-      limite_de_usos: Number(this.limite),
+      descuento: this.descuento,
+      tope: this.tope,
+      limite_de_usos: this.limite,
+      vendedor: this.vendedor,
+      viajes: this.viajes,
       termino: this.termino
     }
 
     this._data.createCupon(body).then((data: any) => {
       if (data.ok) {
         this.toastr.success('¡Cupón creado con éxito!');
-        this.getCupones();
+        this.getCodigos();
         this.resetVariables();
         this.showTabla = true;
         this.showCrear = false;
@@ -84,17 +91,48 @@ export class CuponesComponent implements OnInit {
     });
   }
 
+  procesarFiltro() {
+    const body: any = {};
+
+    body.isActive = true;
+
+    if (this.estatus_filtro != 'Estatus') {
+      if (this.estatus_filtro == 'Activo') {
+        body.activo = true;
+      }
+
+      if (this.estatus_filtro == 'Agotado') {
+        body.agotado = true;
+      }
+
+      if (this.estatus_filtro == 'Desactivado') {
+        body.isActive = false;
+      }
+
+      if (this.estatus_filtro == 'Vencido') {
+        body.vencido = true;
+      }
+    }
+
+    return body;
+  }
+
+
   resetErros() {
     this.error_info_incompleta = false;
-    this.error_limite = false;
   }
 
   resetVariables() {
     this.titulo = null;
-    this.descripcion = null;
-    this.descuento = '% descuento próximo pedido';
-    this.tope = '$3.000';
-    this.limite = null;
-    this.termino = '2019-10-31';
+    this.vendedor = null;
+    this.descuento = 10;
+    this.tope = 10;
+    this.limite = 10;
+    this.viajes = 10;
+    this.isDescuento = false;
+    this.isLimite = false;
+    this.isTope = false;
+    this.isViajes = false;
+    this.termino = '2019-12-10';
   }
 }

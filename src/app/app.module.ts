@@ -35,6 +35,8 @@ import { PopupsHomeComponent } from './components/popups-home/popups-home.compon
 import { TaximetroComponent } from './pages/taximetro/taximetro.component';
 import { GraficasComponent } from './pages/graficas/graficas.component';
 import { CuponesComponent } from './pages/cupones/cupones.component';
+import { PagosComponent } from './pages/pagos/pagos.component';
+import { CobrosComponent } from './pages/cobros/cobros.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { CuponesComponent } from './pages/cupones/cupones.component';
     PopupsHomeComponent,
     TaximetroComponent,
     GraficasComponent,
-    CuponesComponent
+    CuponesComponent,
+    PagosComponent,
+    CobrosComponent
   ],
   imports: [
     BrowserModule,

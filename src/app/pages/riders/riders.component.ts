@@ -11,14 +11,16 @@ import { ToastrService } from 'ngx-toastr';
 export class RidersComponent implements OnInit {
 
   nombre: string;
-  email: string;
+  apellido: string;
   telefono: string;
-  password_1: string;
-  password_2: string;
+  email: string;
+  modalidad = 'Seleccionar';
   vehiculo = 'Seleccionar';
-  relacion = "Seleccionar";
-  vehiculo_long = 'Seleccionar';
-  relacion_long = 'Seleccionar';
+  isTelefono = false;
+  isEmail = false;
+  isModalidad = false;
+  isVehiculo = false;
+  isImagen = false;
 
   riders = [];
   pedidos = [];
@@ -29,38 +31,24 @@ export class RidersComponent implements OnInit {
   isBusqueda = false;
   isUploadedImg = true;
   isLoadingImage = false;
+  showTabla = true;
 
   error_info_incompleta = false;
-  error_8_digitos_telefono = false;
-  error_num_telefono = false;
   error_telefono_existe = false;
-  error_password = false;
-  error_vehiculo = false;
-  error_relacion = false;
-  error_imagen = false;
-  error_email_no_valido = false;
 
   showFiltros = false;
   showBusqueda = false;
   showCrear = false;
 
-  filtro = {
-    cuenta: 'activada',
-    relacion: 'todo',
-    vehiculo: 'todo'
-  }
+  modalidad_filtro = 'Modalidad';
+  vehiculo_filtro = 'Vehiculo';
+  estatus_filtro = 'Estatus';
 
-  filtro_temp = {
-    cuenta: 'activada',
-    relacion: 'todo',
-    vehiculo: 'todo'
-  }
+  telefono_buscar: string;
 
-  filtro_telefono = {
-    telefono: 0,
-    inicio: '',
-    termino: ''
-  }
+  showPassword = false;
+  passwordRider: string;
+
 
   constructor(
     private _data: DataService,
@@ -69,7 +57,6 @@ export class RidersComponent implements OnInit {
 
   ) {
     this._control.activar('riders');
-    this.dateInit();
     this.getRiders();
   }
 
@@ -77,29 +64,34 @@ export class RidersComponent implements OnInit {
     this.isUploadedImg = false;
   }
 
-  dateInit() {
-    const now = new Date().toLocaleDateString('en-GB');
-    const dayNow = now.split('/')[0];
-    const monthNow = now.split('/')[1];
-    const yearNow = now.split('/')[2];
+  validarTelefono() {
+    setTimeout(() => {
+      if (this.telefono.length == 9 && Number(this.telefono)) {
+        this.isTelefono = true;
+      } else {
+        this.isTelefono = false;
+      }
+    }, 50);
+  }
 
-    const now_milliseconds = new Date(Number(yearNow), Number(monthNow) - 1, Number(dayNow)).getTime();
-    const past_miliseconds = now_milliseconds - 24 * 60 * 60 * 1000;
+  validarEmail() {
+    setTimeout(() => {
+      if (this.validateEmail(this.email)) {
+        this.isEmail = true;
+      } else {
+        this.isEmail = false;
+      }
+    }, 50);
+  }
 
-    const past = new Date(past_miliseconds).toLocaleDateString('en-GB');
-    const dayPast = past.split('/')[0];
-    const monthPast = past.split('/')[1];
-    const yearPast = past.split('/')[2];
-
-    const start = `${yearPast}-${monthPast}-${dayPast}`;
-    const end = `${yearNow}-${monthNow}-${dayNow}`;
-
-    this.filtro_telefono.inicio = start;
-    this.filtro_telefono.termino = end;
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
   }
 
   getRiders() {
-    this._data.getRidersByFilter(this.filtro).then((data: any) => {
+    const filtro = this.procesarFiltro();
+    this._data.getRidersByFilter(filtro).then((data: any) => {
       this.riders = [];
       this.riders = data.riders;
     });
@@ -133,7 +125,7 @@ export class RidersComponent implements OnInit {
     await this._data.updateRiderFirebase(usuario._id, 'rider', { isActive: !usuario.isActive })
     await this._data.updateRiderFirebase(usuario._id, 'coors', { isActive: !usuario.isActive })
     await this._data.updateRegistro({ isActive: !usuario.isActive });
-   
+
     this._control.isLoading = false;
 
     if (usuario.isActive) {
@@ -156,6 +148,7 @@ export class RidersComponent implements OnInit {
 
       if (res.ok) {
         this.imagen = res.image;
+        this.isImagen = true;
         this.isUploadedImg = true;
       }
 
@@ -163,53 +156,23 @@ export class RidersComponent implements OnInit {
     });
   }
 
-  crearRider() {
+  crearHandler() {
 
     this.resetErros();
 
-    if (!this.isUploadedImg) {
-      return this.error_imagen = true;
-    }
-
-    if (!Number(this.telefono)) {
-      return this.error_num_telefono = true;
-    }
-
-    if (!this.validateEmail(this.email)) {
-      return this.error_email_no_valido = true;
-    }
-
-    if (this.telefono.length != 8) {
-      return this.error_8_digitos_telefono = true;
-    }
-
-    if (this.password_1 != this.password_2) {
-      return this.error_password = true;
-    }
-
-    if (this.vehiculo == 'Seleccionar') {
-      return this.error_vehiculo = true;
-    }
-
-    if (this.relacion == 'Seleccionar') {
-      return this.error_relacion = true;
-    }
-
-
-    if (!(this.nombre && this.email)) {
-      this.error_info_incompleta = true;
+    if (!(this.nombre && this.apellido && this.isEmail && this.isTelefono && this.isImagen && this.isVehiculo && this.isModalidad)) {
+      return this.error_info_incompleta = true;
     }
 
     this._control.isLoading = true;
 
-    const body = {
-      nombre: this.nombre.toLowerCase(),
-      email: this.email.toLowerCase(),
+    const body: any = {
+      nombre: this.nombre.toLowerCase().trim() + ' ' + this.apellido.toLowerCase().trim(),
+      email: this.email.toLowerCase().trim(),
       telefono: this.telefono,
-      password: this.password_1,
       vehiculo: this.vehiculo,
-      relacion: this.relacion,
       img: this.imagen,
+      turnoSet: false,
       role: 'RIDER_ROLE',
       stats: {
         startsCount: 1,
@@ -218,12 +181,33 @@ export class RidersComponent implements OnInit {
       }
     };
 
-    this._data.createAccount(body).then((data: any) => {
+    if (this.modalidad == 'Turnos rotativos') {
+      body.turnoSet = true;
+    }
+
+    this._data.createAccount(body).then(async (data: any) => {
+
+      console.log(data, 'data')
+
       if (data.ok) {
+
+        const bodyBalances = {
+          rider: data.usuario._id,
+          turnoSet: this.modalidad == 'Turnos rotativos' ? true : false
+        };
+
+        // await this._data.createBalances(bodyBalances);
+        await this._data.createRiderCoorsFirebase(data.usuario);
+        await this._data.createRiderFirebase(data.usuario);
+        await this._data.createModalidadFirebase(data.usuario);
+
         this.toastr.success('Cuenta creada con exito', 'Nuevo rider');
-        this._data.createRiderCoorsFirebase(data.usuario);
-        this._data.createRiderFirebase(data.usuario);
+        this.passwordRider = data.password;
+        this.showPassword = true;
+
         this.close_crear();
+
+        this.getRiders();
       } else {
         this.error_telefono_existe = true;
       }
@@ -233,65 +217,66 @@ export class RidersComponent implements OnInit {
 
   close_crear() {
     this.showCrear = false;
+    this.showTabla = true;
     this.isUploadedImg = false;
     this.imagen = {};
     this.telefono = undefined;
     this.nombre = undefined;
     this.email = undefined;
-    this.password_1 = undefined;
-    this.password_2 = undefined;
     this.vehiculo = 'Seleccionar';
-    this.relacion = 'Seleccionar';
-    this.isUploadedImg = false;
-
+    this.modalidad = 'Seleccionar';
     this.resetErros();
   }
 
   resetErros() {
     this.error_info_incompleta = false;
-    this.error_8_digitos_telefono = false;
-    this.error_num_telefono = false;
     this.error_telefono_existe = false;
-    this.error_password = false;
-    this.error_vehiculo = false;
-    this.error_relacion = false;
-    this.error_imagen = false;
-    this.error_email_no_valido = false;
   }
 
   close_busqueda() {
     this.showBusqueda = false;
   }
 
-  close_filtros() {
-    this.filtro = JSON.parse(JSON.stringify(this.filtro_temp));
-    this.showFiltros = false;
+  procesarFiltro() {
+    const body: any = {};
+
+    body.role = 'RIDER_ROLE';
+
+    if (this.vehiculo_filtro != 'Vehiculo') {
+      body.vehiculo = this.vehiculo_filtro;
+    }
+
+    if (this.modalidad_filtro != 'Modalidad') {
+      if (this.modalidad_filtro == 'Turno') {
+        body.turnoSet = true;
+      } else {
+        body.turnoSet = false;
+      }
+    }
+
+    if (this.estatus_filtro != 'Estatus') {
+      if (this.estatus_filtro == 'Activo') {
+        body.isActive = true;
+      } else {
+        body.isActive = false;
+      }
+    }
+
+    return body;
   }
 
-  filtrar() {
-    this.filtro_temp = JSON.parse(JSON.stringify(this.filtro));
-    this.showFiltros = false;
-    this.getRiders();
+  buscarRider() {
+
+    const filtro = {
+      telefono: this.telefono_buscar,
+      role: 'RIDER_ROLE'
+    };
+
+    this._data.getRidersByFilter(filtro).then((data: any) => {
+      this.riders = [];
+      this.riders = data.riders;
+    });
   }
 
-  buscar() {
-
-    this.riders = [];
-    this.rider = null;
-
-    this._data.findPedidosByPhone_rider(this.filtro_telefono)
-      .then((data: any) => {
-        this.pedidos = data.pedidos;
-        this.isBusqueda = true;
-        this.isRiders = false;
-        this.showBusqueda = false;
-        this.rider = data.rider;
-      });
-  }
-
-  validateEmail(email) {
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  }
 }
 

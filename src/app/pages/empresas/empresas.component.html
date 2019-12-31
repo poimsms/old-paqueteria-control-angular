@@ -1,12 +1,114 @@
-<div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
+<div *ngIf="showCrear" style="height:50%;width:100%;padding:20px;padding-left:0px">
+  <div style="font-size:25px;color:#444">
+    Empresas <span style="font-size:16px;color:#999"> - Crear cuenta</span>
+  </div>
 
-  <!-- <div
-    style="border-radius:6px 6px 0px 0px;color:white;background:dodgerblue;padding:20px;font-weight:550;font-size:20px">
-    Empresas
-  </div> -->
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Nombre de la empresa:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="Ej: Joopiter Company" [(ngModel)]="nombre"
+        style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
+
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Imágen de perfil:
+    </div>
+    <div style="margin-top:5px;">
+
+      <div *ngIf="!isUploadedImg && !isLoadingImage" (click)="fileInput.click()"
+        style="position:relative;width:80px;height:80px;border:1px solid #e2e2e2;display:flex;align-items:center;justify-content:center;background:white">
+        <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
+        <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
+      </div>
+
+      <div *ngIf="isUploadedImg == true">
+        <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+      </div>
+
+    </div>
+  </div>
 
 
-  <div style="padding:15px;display:flex;">
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Teléfono:
+    </div>
+    <div
+      style="margin-top:20px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;background:white">
+      <div style="background:#eee;color:#555;padding:3px">
+        +56 9
+      </div>
+      <input type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Dirección de email:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="ejemplo@gmail.com" [(ngModel)]="email" style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Crea una contraseña:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="******" [(ngModel)]="password_1" style="width:350px;background:white" />
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Confirmar contras.:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="******" [(ngModel)]="password_2" style="width:350px;background:white" />
+    </div>
+  </div>
+
+
+  <div *ngIf="error_limite" style="margin-left:50px;margin-top:10px;color:red">
+    El campo "Límite de usos" debe ser un número.
+  </div>
+  <div *ngIf="error_info_incompleta" style="margin-left:50px;margin-top:10px;color:red">
+    Se deben completar todos los campos.
+  </div>
+
+  <div style="margin-top:30px;margin-left:170px;display:flex;align-items:center;">
+
+    <button (click)="showTabla = true; showCrear = false" type="button" class="btn btn-outline-primary"
+      style="margin-right: 30px">
+      Cancelar
+    </button>
+    <button (click)="crearHandler()" type="button" class="btn btn-primary">
+      Crear cupón
+    </button>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div *ngIf="showTabla" style="margin-top:15px">
+
+  <div style="font-size:25px;color:#444">
+    Empresas <span style="font-size:16px;color:#999"> - Información general</span>
+  </div>
+
+  <div style="padding:15px;display:flex;justify-content:flex-end">
 
     <a (click)="showFiltros = true"
       style="background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
@@ -16,7 +118,7 @@
       style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
       <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
     </a>
-    <a (click)="showCrear = true"
+    <a (click)="showCrear = true; showTabla = false"
       style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
       <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
     </a>
@@ -40,7 +142,7 @@
       <tr *ngFor="let empresa of empresas; let i = index">
         <th scope="row"> {{i + 1}} </th>
         <td style="text-transform:capitalize"> {{empresa.nombre}} </td>
-        <td> {{empresa.telefono}} </td>        
+        <td> {{empresa.telefono}} </td>
         <td> {{empresa.email}} </td>
         <td> 12-08-2019 </td>
 
@@ -230,7 +332,7 @@
 
 
 
-<div *ngIf="showCrear"
+<div *ngIf="false"
   style="overflow-y:scroll;z-index:999;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
   <div
     style="margin-top:25px;margin-bottom:30px;position:relative;padding:40px;padding-left:60px;padding-right:60px;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
@@ -310,4 +412,3 @@
     </button>
   </div>
 </div>
-

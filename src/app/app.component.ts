@@ -53,12 +53,25 @@ export class AppComponent {
     this._data.getPedido(this._control.pedidoID).then((pedido: any) => {
       this._control.pedido = pedido;
       this._control.rider = pedido.rider;
+      // this._control.isPedido = true;
       this._control.origen = { lat: pedido.origen.lat, lng: pedido.origen.lng };
       this._control.destino = { lat: pedido.destino.lat, lng: pedido.destino.lng };
       this._mapa.mapAction$.next({ accion: 'rastrear_rider', pedidoID: pedido._id });
       this._mapa.mapAction$.next({ accion: 'graficar_ruta' });
       this._control.isTracking = true;
+
+      this._data.getRiderFire(pedido.rider.telefono).then((data: any) => {
+        // this._control.rider = data.rider;
+        this._control.fase = data.fase;
+        this._control.isPedido = true;
+      });
     });
+
+    // this._data.getRiderFire('2323').then((data: any) => {
+    //   // this._control.rider = data.rider;
+    //   this._control.fase = data.fase;    
+    // });
+    //getRiderFire -> _contorl.fase_pedido = fire.fase;
 
   }
 

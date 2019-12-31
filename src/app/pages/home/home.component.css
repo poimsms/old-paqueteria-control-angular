@@ -1,7 +1,27 @@
-agm-map {
-  height: 85vh;
+#map {
+  height: 87vh;
 }
 
-#map {
-  height: 85vh;
+.bubble {
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:1px solid #ccc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.bubble-active {
+  background:#777;
+  border: 0px solid #ccc;  
+}
+
+.icono {
+  font-size:14px;
+  color:#bbb;
+}
+
+.icono-active {
+  color:whitesmoke;
 }

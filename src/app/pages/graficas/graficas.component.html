@@ -1,24 +1,130 @@
-<div style="margin-top:15px;background:white;box-shadow: 0 0 15px #bbb;border-radius:6px">
+<div
+  style="padding-left:15px;padding-right:15px;margin-top:0px;display:flex;align-items:flex-start;justify-content:space-between;width:100%">
 
-  <div style="padding:15px;padding-right:20px;display:flex;justify-content:flex-end">
-    <a (click)="showBusqueda = true"
-      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
-      <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
-    </a>
-  </div>
+  <div style="border-radius:3px;border: 1px solid #ccc;;width:430px;padding:15px">
 
-
-
-  <div class="flex">
+    <div style="width:100%;display:flex;align-items:center;justify-content:space-between">
+      <div style="margin-bottom:5px;font-size:18px;color:#444">
+        <i class="fas fa-laptop" style="margin-right:5px;color:#555"></i>
+        Riders activos mensuales
+      </div>
+      <i class="fas fa-ellipsis-v" style="color:#555;font-size:18px"></i>
+    </div>
     <div class="flex-item">
       <div style="display: block;">
-        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels"
+        <canvas baseChart width="400px" height="200" [datasets]="lineChartData" [labels]="lineChartLabels"
           [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
           [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
       </div>
     </div>
   </div>
 
+
+
+  <div style="border: 1px solid #ccc;height:260px;display:flex;flex-direction:column;justify-content:space-between">
+
+    <div
+      style="border-radius:3px;padding:0px;height:45%;width:430px;display:flex;align-items:center;justify-content:space-between">
+
+      <div style="height:100%;width:45%;padding:15px;border-radius:3px">
+        <div style="font-size:24px;color:#646C9A;font-weight:600">
+          32
+        </div>
+        <div style="color:#74788d">
+          Riders Ocupados
+        </div>
+        <img src="https://res.cloudinary.com/ddon9fx1n/image/upload/v1571866518/tools/m1.png" style="width:100px">
+
+      </div>
+
+      <div style="height:100%;width:45%;padding:15px;border-radius:3px">
+        <div style="font-size:24px;color:#646C9A;font-weight:600">
+          12
+        </div>
+        <div style="color:#74788d">
+          Riders Disponibles
+        </div>
+
+        <img src="https://res.cloudinary.com/ddon9fx1n/image/upload/v1571866693/tools/m2.png" style="width:100px">
+      </div>
+
+    </div>
+
+
+
+
+    <div
+      style="border-radius:3px;padding:0px;height:45%;width:430px;display:flex;align-items:center;justify-content:space-between">
+
+      <div style="height:100%;width:45%;padding:15px;border-radius:3px">
+        <div style="font-size:24px;color:#646C9A;font-weight:600">
+          142
+        </div>
+        <div style="color:#74788d">
+          Total Pedidos Express
+        </div>
+      </div>
+
+      <div style="height:100%;width:45%;padding:15px;border-radius:3px">
+        <div style="font-size:24px;color:#646C9A;font-weight:600">
+          46
+        </div>
+        <div style="color:#74788d">
+          Total Pedidos Programados
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div
+  style="padding-left:15px;padding-right:15px;margin-top:30px;display:flex;align-items:flex-start;justify-content:space-between;width:100%">
+
+  <div style="border-radius:3px;border: 1px solid #ccc;;padding:15px">
+
+    <div style="width:100%;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:18px;color:#444">
+        <i class="fas fa-bolt" style="margin-right:5px;color:#666"></i>
+        Pedidos express
+      </div>
+      <i class="fas fa-ellipsis-v" style="color:#555;font-size:18px"></i>
+    </div>
+    <div style="width:400px">
+      <div class="chart">
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+          [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div style="border-radius:3px;border: 1px solid #ccc;padding:15px">
+
+    <div style="width:100%;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:18px;color:#444">
+        <i class="far fa-clock" style="margin-right:5px;color:#666"></i>
+        Pedidos programados
+      </div>
+      <i class="fas fa-ellipsis-v" style="color:#555;font-size:18px"></i>
+    </div>
+    <div style="width:400px">
+      <div class="chart">
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+          [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
+        </canvas>
+      </div>
+    </div>
+  </div>
 </div>
 
 

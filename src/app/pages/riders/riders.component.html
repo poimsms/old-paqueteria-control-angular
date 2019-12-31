@@ -1,38 +1,238 @@
-<div style="margin-top:15px;">
+<div *ngIf="showCrear" style="height:50%;width:100%;padding:20px;padding-left:0px">
+  <div style="font-size:25px;color:#444">
+    <a (click)="showTabla = true; showCrear = false">
+      <i class="fas fa-arrow-left" style="margin-right:10px"></i>
+    </a>
+    Crear <span style="font-size:16px;color:#999"> - una cuenta de rider</span>
+  </div>
 
-  <!-- <div
-    style="border-radius:6px 6px 0px 0px;color:white;background:dodgerblue;padding:20px;font-weight:550;font-size:20px">
-    Riders
-  </div> -->
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Nombre:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="Eduardo" [(ngModel)]="nombre" style="text-transform:capitalize;width:350px;background:white" />
+    </div>
+    <div *ngIf="nombre" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Apellido:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input type="text" placeholder="Garrido" [(ngModel)]="apellido" style="text-transform:capitalize;width:350px;background:white" />
+    </div>
+    <div *ngIf="apellido" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+  <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
+
+  <div style="margin-top:20px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Imágen de perfil:
+    </div>
+    <div style="margin-top:5px;">
+      <div *ngIf="!isUploadedImg && !isLoadingImage" (click)="fileInput.click()"
+        style="position:relative;width:80px;height:80px;border:1px solid #e2e2e2;display:flex;align-items:center;justify-content:center;background:white">
+        <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
+        <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
+      </div>
+      <div *ngIf="isUploadedImg == true">
+        <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
+      </div>
+    </div>
+    <div *ngIf="isImagen" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Vehículo:
+    </div>
+    <div class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" [ngStyle]="{'color': vehiculo == 'Seleccionar' ? '#888': '#333'}"
+        style="border-radius:1px;margin-top:20px;padding:8px;border:1px solid #eee;background:white;width:360px;display:flex;justify-content:space-between;align-items:center">
+        {{vehiculo}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a (click)="vehiculo = 'Auto'; isVehiculo = true" class="dropdown-item">
+          <div style="color:gray">Automóvil</div>
+        </a>
+        <a (click)="vehiculo = 'Bicicleta'; isVehiculo = true" class="dropdown-item">
+          <div style="color:gray">Bicicleta</div>
+        </a>
+        <a (click)="vehiculo = 'Moto'; isVehiculo = true" class="dropdown-item">
+          <div style="color:gray">Moto</div>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="isVehiculo" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Modalidad:
+    </div>
+    <div class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" [ngStyle]="{'color': modalidad == 'Seleccionar' ? '#888': '#333'}"
+        style="border-radius:1px;margin-top:20px;padding:8px;border:1px solid #eee;background:white;width:360px;display:flex;justify-content:space-between;align-items:center">
+        {{modalidad}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a (click)="modalidad = 'Turnos rotativos'; isModalidad = true" class="dropdown-item">
+          <div style="color:gray">Turnos rotativos</div>
+        </a>
+        <a (click)="modalidad = 'Conexión y desconexión libre'; isModalidad = true" class="dropdown-item">
+          <div style="color:gray">Conexión y desconexión libre a la plataforma</div>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="isModalidad" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Teléfono:
+    </div>
+    <div
+      style="width:360px;margin-top:20px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;background:white">
+      <div style="color:#555;padding:3px">
+        +56
+      </div>
+      <input (ngModelChange)="validarTelefono()" type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
+    </div>
+    <div *ngIf="isTelefono" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+  <div style="margin-top:10px;display:flex;align-items:center;">
+    <div style="color:#555;font-weight:500;margin-right:20px;width:150px;text-align:right">
+      Dirección de email:
+    </div>
+    <div style="border-radius:1px;margin-top:20px;padding:4px;border:1px solid #eee;background:white">
+      <input (ngModelChange)="validarEmail()" type="text" placeholder="ejemplo@gmail.com" [(ngModel)]="email"
+        style="width:350px;background:white" />
+    </div>
+    <div *ngIf="isEmail" style="margin-left:10px">
+      <i class="fas fa-check-circle" style="color:limegreen;font-size:18px"></i>
+    </div>
+  </div>
+
+  <div *ngIf="error_info_incompleta" style="margin-left:50px;margin-top:10px;color:red">
+    Se deben completar todos los campos.
+  </div>
+
+  <div style="margin-top:30px;margin-left:170px;display:flex;align-items:center;">
+    <button (click)="crearHandler()" type="button" class="btn btn-primary">
+      Crear cuenta
+    </button>
+  </div>
+</div>
+
+
+
+
+<!-- ------------------------------------------------------- -->
+<!--              TABLAS DE INFORMACION                      -->
+<!-- ------------------------------------------------------- -->
+
+
+
+<div *ngIf="showTabla" style="margin-top:15px;">
 
   <div style="font-size:25px;color:#444">
     Riders <span style="font-size:16px;color:#999"> - Información general</span>
   </div>
 
+  <div style="padding:15px;padding-top:20px;display:flex;justify-content:space-between;align-items:center;">
 
-  <div style="padding:15px;padding-top:0px;display:flex;justify-content:flex-end">
+    <div style="display:flex">
+      <div class="nav-item dropdown" style="margin-right:15px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false"
+          style="color:#777;border-radius:1px;padding:5px;padding-left:10px;border-radius:4px;border:1px solid #eee;background:white;width:160px;display:flex;justify-content:space-between;align-items:center">
+          {{vehiculo_filtro}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a (click)="vehiculo_filtro = 'Auto'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Auto</div>
+          </a>
+          <a (click)="vehiculo_filtro = 'Bicicleta'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Bicicleta</div>
+          </a>
+          <a (click)="vehiculo_filtro = 'Moto'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Moto</div>
+          </a>
+        </div>
+      </div>
 
-    <a (click)="showFiltros = true"
-      style="background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
-      <i class="fas fa-filter" style="font-size:20px;color:#bbb"></i>
-    </a>
-    <a (click)="showBusqueda = true"
-      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
-      <i class="fas fa-search" style="font-size:20px;color:#bbb"></i>
-    </a>
-    <a (click)="showCrear = true"
-      style="margin-left:20px;background:#eee;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
-      <i class="fas fa-plus" style="font-size:20px;color:#bbb"></i>
-    </a>
+      <div class="nav-item dropdown" style="margin-right:15px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false"
+          style="color:#777;border-radius:1px;padding:5px;padding-left:10px;border-radius:4px;border:1px solid #eee;background:white;width:160px;display:flex;justify-content:space-between;align-items:center">
+          {{estatus_filtro}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a (click)="estatus_filtro = 'Activo'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Activo</div>
+          </a>
+          <a (click)="estatus_filtro = 'Bloqueado'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Bloqueado</div>
+          </a>
+        </div>
+      </div>
 
+      <div class="nav-item dropdown" style="margin-right:15px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false"
+          style="color:#777;border-radius:1px;padding:5px;padding-left:10px;border-radius:4px;border:1px solid #eee;background:white;width:160px;display:flex;justify-content:space-between;align-items:center">
+          {{modalidad_filtro}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a (click)="modalidad_filtro = 'Turno'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Turno</div>
+          </a>
+          <a (click)="modalidad_filtro = 'Tiempo libre'; getRiders()" class="dropdown-item">
+            <div style="color:gray">Tiempo libre</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <div
+        style="background:white;width:220px;padding:0px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center">
+        <div style="color:#333;padding:3px">
+          +56
+        </div>
+        <input type="tel" placeholder="" [(ngModel)]="telefono_buscar" />
+        <button (click)="buscarRider()" type="button" class="btn btn-secondary">
+          <i class="fas fa-search" style="font-size:18px;color:#fff"></i>
+        </button>
+      </div>
+      <a (click)="showCrear = true; showTabla = false"
+        style="margin-left:20px;background:#6c757d;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <i class="fas fa-plus" style="font-size:20px;color:#fff"></i>
+      </a>
+    </div>
   </div>
 
-
-  <!-- <div style="width:100%;text-align:right;margin-bottom:5px;padding-right:15px;color:#666">
-    {{periodo.inicio}} al {{periodo.termino}}
-  </div> -->
-
-  <table class="table table-striped" *ngIf="isRiders" style="border:1px solid #eee">
+  <table class="table" *ngIf="isRiders" style="border:1px solid #eee">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -40,8 +240,8 @@
         <th scope="col">Valoración</th>
         <th scope="col">Vehículo</th>
         <th scope="col">Teléfono</th>
-        <th scope="col">Registrado</th>
-        <th scope="col">Relación</th>
+        <th scope="col">Modalidad</th>
+        <th scope="col">Estatus</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
@@ -63,24 +263,26 @@
         </td>
         <td> {{rider.vehiculo}} </td>
         <td> {{rider.telefono}} </td>
-        <td> 12-08-2019 </td>
-
         <td>
-          <div *ngIf="rider.relacion == 'Prestación de servicio'">
-            P. de servicio
+          <div *ngIf="rider.turnoSet">
+            Turno
           </div>
-          <div *ngIf="rider.relacion == 'Contrato'">
-            Contrato
+          <div *ngIf="!rider.turnoSet">
+            Tiempo libre
           </div>
         </td>
         <td>
-          <button *ngIf="rider.isActive" (click)="toggleAccount(rider)" class="btn btn-primary btn-sm">
-            Desactivar
-          </button>
-
-          <button *ngIf="!rider.isActive" (click)="toggleAccount(rider)" class="btn btn-outline-primary btn-sm">
-            Activar
-          </button>
+          <div *ngIf="rider.isActive" style="color:green">
+            Activo
+          </div>
+          <div *ngIf="!rider.isActive" style="color:red">
+            Bloqueado
+          </div>
+        </td>
+        <td>
+          <a (click)="toggleAccount(rider)" style="padding:5px">
+            <i class="fas fa-exchange-alt"></i>
+          </a>
         </td>
       </tr>
     </tbody>
@@ -177,264 +379,29 @@
 
 
 
-
-
-
-
-
-
-<div *ngIf="showFiltros"
-  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
-  <div
-    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
-    <div (click)="close_filtros()" style="position:absolute;top:-5px;right:-5px;color:#555">
-      <i class="fas fa-times-circle" style="font-size:32px"></i>
+<div *ngIf="showPassword"
+  style="position:fixed;z-index:999;top:0px;left:0px;width:100%;height:100%;background:rgba(1, 10, 10, 0.3);display:flex;align-items:center;justify-content:center">
+  <div style="width:280px;background:white;border-radius:4px;padding:20px">
+    <div style="width:100%;display:flex;justify-content:flex-end">
+      <!-- <i (click)="showReiniciar = false" class="fas fa-unlock-alt" style="font-size:14px;color:#ccc"></i> -->
     </div>
-    <div style="display:flex;align-items:center;font-weight:550">
-      <i class="fas fa-filter" style="font-size:30px;color:#bbb;margin-right:10px"></i>
-      Filtros
+    <div style="margin-top:20px;width:100%;display:flex;justify-content:center">
+      <i class="fas fa-unlock-alt" style="font-size:50px;color:slategrey"></i>
     </div>
-
-    <div style="margin-top:20px">
-      Tipo de vehículo
+    <div style="font-size:18px;margin-top:20px;width:100%;color:#333;font-weight:600">
+      Contraseña
     </div>
-
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label (click)="filtro.vehiculo = 'Bicicleta'" class="btn btn-light"
-        [ngClass]="{'active': filtro.vehiculo == 'Bicicleta'}">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked> Bicicleta
-      </label>
-      <label (click)="filtro.vehiculo = 'Moto'" class="btn btn-light" [ngClass]="{'active': filtro.vehiculo == 'Moto'}">
-        <input type="radio" name="options" id="option2" autocomplete="off"> Moto
-      </label>
-      <label (click)="filtro.vehiculo = 'todo'" class="btn btn-light" [ngClass]="{'active': filtro.vehiculo == 'todo'}">
-        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
-      </label>
+    <div style="width:100%;color:#555;font-size:15px;padding:10px;padding-left:0">
+      La contraseña de activación del Rider es: {{passwordRider}}
     </div>
-
-    <div style="margin-top:20px">
-      Tipo de relación
-    </div>
-
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label (click)="filtro.relacion = 'Contrato'" class="btn btn-light"
-        [ngClass]="{'active': filtro.relacion == 'Contrato'}">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked> Contrato
-      </label>
-      <label (click)="filtro.relacion = 'Prestación de servicio'" class="btn btn-light"
-        [ngClass]="{'active': filtro.relacion == 'Prestación de servicio'}">
-        <input type="radio" name="options" id="option2" autocomplete="off"> Prestación de servicio
-      </label>
-      <label (click)="filtro.relacion = 'todo'" class="btn btn-light" [ngClass]="{'active': filtro.relacion == 'todo'}">
-        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
-      </label>
-    </div>
-
-    <div style="margin-top:20px">
-      Cuenta
-    </div>
-
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label (click)="filtro.cuenta = 'activada'" class="btn btn-light"
-        [ngClass]="{'active': filtro.cuenta == 'activada'}">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked> Activada
-      </label>
-      <label (click)="filtro.cuenta = 'desactivada'" class="btn btn-light"
-        [ngClass]="{'active': filtro.cuenta == 'desactivada'}">
-        <input type="radio" name="options" id="option2" autocomplete="off"> Desactivada
-      </label>
-      <label (click)="filtro.cuenta = 'todo'" class="btn btn-light" [ngClass]="{'active': filtro.cuenta == 'todo'}">
-        <input type="radio" name="options" id="option3" autocomplete="off"> Todo
-      </label>
-    </div>
-
-    <div style="margin-top:30px"></div>
-
-    <button (click)="filtrar()" type="button" class="btn btn-outline-primary btn-block">
-      Aplicar filtros
-    </button>
-
-  </div>
-</div>
-
-
-
-
-
-
-
-<div *ngIf="showBusqueda"
-  style="z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:center;justify-content:center;">
-  <div
-    style="position:relative;padding:40px;padding-left:40px;padding-right:60px;background:white;box-shadow: 0 0 15px #999;border-radius:4px">
-    <div (click)="close_busqueda()" style="position:absolute;top:-5px;right:-5px;color:#555">
-      <i class="fas fa-times-circle" style="font-size:32px"></i>
-    </div>
-    <div style="display:flex;align-items:center;font-weight:550">
-      <i class="fas fa-search" style="font-size:30px;color:#bbb;margin-right:10px"></i>
-      Búsqueda
-    </div>
-    <div style="margin-top:20px">
-      Teléfono
-    </div>
-    <div
-      style="margin-top:0px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center;width:400px">
-      <div style="background:#eee;color:#555;padding:3px">
-        +56 9
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:10px">
+      <div (click)="showPassword = false" style="color:#333;margin-right:15px;font-size:12px;font-weight:600">
+        ACEPTAR
       </div>
-      <input type="tel" placeholder="" [(ngModel)]="filtro_telefono.telefono" />
+      <!-- <div (click)="reiniciarRider()" style="color:darkblue;font-size:12px;font-weight:600">
+        ACEPTAR
+      </div> -->
     </div>
-    <div style="margin-top:20px">
-      Periodo
-    </div>
-    <div style="display:flex;border:1px solid #eee;padding:5px">
-      <div style="border-right:1px solid #eee;padding:7px;padding-top:0px;padding-bottom:0px">
-        <div style="font-size:14px;margin-bottom:-5px;">
-          Inicio
-        </div>
-        <div>
-          <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
-          <input id="date" type="date" [(ngModel)]="filtro_telefono.inicio" />
-        </div>
-      </div>
-      <div style="padding:7px;padding-top:0px;padding-bottom:0px">
-        <div style="font-size:14px;margin-bottom:-5px;">
-          Término
-        </div>
-        <div>
-          <i class="far fa-calendar" style="color:#bbb;margin-right:5px"></i>
-          <input id="date" type="date" [(ngModel)]="filtro_telefono.termino" />
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:30px"></div>
-
-    <button (click)="buscar()" type="button" class="btn btn-outline-primary btn-block">
-      Buscar rider
-    </button>
-  </div>
-</div>
-
-
-
-
-
-<div *ngIf="showCrear"
-  style="overflow-y:scroll;z-index:990;position:fixed;top:0px;left:0px;height:100%;width:100%;display:flex;align-items:flex-start;justify-content:center;">
-  <div
-    style="margin-top:25px;margin-bottom:30px;position:relative;padding:40px;padding-left:60px;padding-right:60px;width:500px;background:white;box-shadow: 0 0 15px #999;border-radius:4px;">
-    <div (click)="close_crear()" style="position:absolute;top:-5px;right:-5px;color:#555">
-      <i class="fas fa-times-circle" style="font-size:32px"></i>
-    </div>
-    <div style="display:flex;align-items:center;font-weight:550">
-      <i class="fas fa-user-circle" style="font-size:30px;color:#bbb;margin-right:10px"></i>
-      Nuevo Rider
-    </div>
-
-    <div style="margin-top:20px;color:#666">
-      Agregar imagen:
-    </div>
-
-    <input style="display:none" type="file" (change)="onFileSelected($event)" #fileInput>
-
-    <div style="margin-top:5px;width:100%;display:flex;justify-content:center">
-
-      <div *ngIf="!isUploadedImg && !isLoadingImage" (click)="fileInput.click()"
-        style="position:relative;width:80px;height:80px;border:1px solid #eee;display:flex;align-items:center;justify-content:center">
-        <i class="far fa-images" style="font-size:30px;color:#bbb"></i>
-        <i class="fas fa-plus-circle" style="position:absolute;bottom:-10px;right:25px;color:#999;font-size:24px"></i>
-      </div>
-
-      <div *ngIf="isUploadedImg == true">
-        <img [src]="imagen.url" style="width:80px;height:80px;border-radius:0px;object-fit:cover">
-      </div>
-
-    </div>
-
-    <div style="margin-top:25px;display:flex;align-items:center">
-      <div style="color:#666;margin-right:20px">
-        Vehículo:
-      </div>
-      <div class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          {{vehiculo}}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" (click)="vehiculo = 'Bicicleta'">Bicicleta</a>
-          <a class="dropdown-item" (click)="vehiculo = 'Moto'">Moto</a>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:10px;display:flex;align-items:center">
-      <div style="color:#666;margin-right:20px">
-        Relación:
-      </div>
-      <div class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          {{relacion}}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" (click)="relacion = 'Contrato'">Contrato</a>
-          <a class="dropdown-item" (click)="relacion = 'Prestación de servicios'">Prestación de servicios</a>
-        </div>
-      </div>
-    </div>
-
-    <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="text" placeholder="Nombre" [(ngModel)]="nombre" style="text-transform:capitalize" />
-    </div>
-
-    <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="email" placeholder="Email" [(ngModel)]="email" />
-    </div>
-    <div style="margin-top:20px;padding:4px;border-radius:4px;border:1px solid #eee;display:flex;align-items:center">
-      <div style="background:#eee;color:#555;padding:3px">
-        +56 9
-      </div>
-      <input type="tel" placeholder="Teléfono" [(ngModel)]="telefono" />
-    </div>
-    <div *ngIf="error_8_digitos_telefono" style="margin-top:5px;color:red">
-      Deben ser 8 digitos
-    </div>
-    <div *ngIf="error_num_telefono" style="margin-top:5px;color:red">
-      Deben ser solo números
-    </div>
-    <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="password" placeholder="Crear una contraseña" [(ngModel)]="password_1" />
-    </div>
-    <div style="border-radius:4px;margin-top:20px;padding:4px;border:1px solid #eee">
-      <input type="password" placeholder="Confirmar contraseña" [(ngModel)]="password_2" />
-    </div>
-    <div *ngIf="error_password" style="margin-top:5px;color:red">
-      Las contraseñas deben ser idénticas
-    </div>
-    <div *ngIf="error_vehiculo" style="margin-top:15px;color:red">
-      Debe seleccionar un vehículo
-    </div>
-    <div *ngIf="error_email_no_valido" style="margin-top:15px;color:red">
-      Email no válido
-    </div>
-    <div *ngIf="error_relacion" style="margin-top:15px;color:red">
-      Debe seleccionar un tipo de relación
-    </div>
-    <div *ngIf="error_imagen" style="margin-top:15px;color:red">
-      Debe seleccionar una imágen
-    </div>
-    <div *ngIf="error_info_incompleta" style="margin-top:15px;color:red">
-      Por favor completar todos los campos
-    </div>
-    <div *ngIf="error_telefono_existe" style="margin-top:15px;color:red">
-      Este teléfono ya está registrado
-    </div>
-
-    <div style="margin-top:20px;"></div>
-
-    <button (click)="crearRider()" type="button" class="btn btn-outline-primary btn-block">
-      Crear cuenta
-    </button>
 
   </div>
 </div>

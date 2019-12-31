@@ -39,6 +39,7 @@ export class EmpresasComponent implements OnInit {
   showFiltros = false;
   showBusqueda = false;
   showCrear = false;
+  showTabla = true;
 
   filtro = {
     cuenta: 'activada'
@@ -143,7 +144,7 @@ export class EmpresasComponent implements OnInit {
     });
   }
 
-  crearEmpresa() {
+  crearHandler() {
 
     this.resetErros();
 

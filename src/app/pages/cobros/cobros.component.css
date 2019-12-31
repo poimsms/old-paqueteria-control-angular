@@ -1,0 +1,10 @@
+input {
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: none !important;
+    border:0px solid #eee;
+    /* background: whitesmoke; */
+    padding: 5px;
+    width:80%;
+    border-radius:5px;
+}
