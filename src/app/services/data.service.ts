@@ -62,7 +62,7 @@ export class DataService {
     const data: any = {
       pagoPendiente: false,
       rider: rider._id,
-      ciudad: 'coquimbo_la_serena',
+      ciudad: 'valdivia',
       pedido: '',
       cliente: '',
       evento: 1,
